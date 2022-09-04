@@ -6,20 +6,20 @@
 import { defineStore } from 'pinia'
 
 export const useCounterStore = defineStore({
-  // 给仓库起一个名称(唯一标识)
   id: 'counter',
-  // 声明状态 储存数据 (相当于data储存数据)
-  state: () => ({
-    counter: 23123
-  }),
+  state: () => {
+    return {
+      message: '欢迎使用Pinia'
+    }
+  },
   // 计算状态变化 (相当于watch监听数据变化)
   getters: {
-    doubleCount: (state) => state.counter * 2
+    // 使用其他仓库的内容
+    changeMessage(): string {
+      // 引入的其他Store是一个函数方法
+      return this.message
+    }
   },
   //  进行一些方法逻辑处理 (相当于methods方法)
-  actions: {
-    increment() {
-      this.counter++
-    }
-  }
+  actions: {}
 })

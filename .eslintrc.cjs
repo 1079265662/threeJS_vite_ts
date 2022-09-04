@@ -18,7 +18,7 @@ module.exports = {
       'warn',
       {
         html: {
-          void: 'never',
+          void: 'always',
           normal: 'always',
           component: 'always'
         },
