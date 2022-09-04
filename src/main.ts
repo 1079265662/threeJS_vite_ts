@@ -4,6 +4,9 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
+// 导入清除默认样式css
+import 'reset-css'
+
 const app = createApp(App)
 
 app.use(createPinia())
