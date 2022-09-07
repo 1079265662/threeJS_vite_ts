@@ -13,6 +13,8 @@ module.exports = {
     ecmaVersion: 'latest'
   },
   rules: {
+    // 可以使用any
+    '@typescript-eslint/no-explicit-any': 'off',
     // 标签闭合
     'vue/html-self-closing': [
       'warn',

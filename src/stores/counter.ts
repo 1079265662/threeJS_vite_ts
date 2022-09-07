@@ -9,17 +9,12 @@ export const useCounterStore = defineStore({
   id: 'counter',
   state: () => {
     return {
-      message: '欢迎使用Pinia'
+      viewWidth: 0,
+      viewHeight: 0
     }
   },
   // 计算状态变化 (相当于watch监听数据变化)
-  getters: {
-    // 使用其他仓库的内容
-    changeMessage(): string {
-      // 引入的其他Store是一个函数方法
-      return this.message
-    }
-  },
+  getters: {},
   //  进行一些方法逻辑处理 (相当于methods方法)
   actions: {}
 })
