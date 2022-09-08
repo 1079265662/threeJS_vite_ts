@@ -4,18 +4,25 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 interface domElement {
-  appendChild: any | null
-  getBoundingClientRect: any
+  appendChild?: Document['appendChild'] | any
+  add: any
+  children: Array<any>
+  remove: any
 }
+
+// 1. 创建three.js场景
+const scene = new THREE.Scene()
+// 4. 创建一个渲染器
+const renderer = new THREE.WebGLRenderer({
+  antialias: true // 开启锯齿
+})
+
 /**
  *
  * @param {*} nameCanvas 接收页面传来的页面Dom元素
  */
 
-const getScene = function getScene<T extends domElement>(nameCanvas: T) {
-  // 1. 创建three.js场景
-  const scene = new THREE.Scene()
-
+function getScene<T extends domElement>(nameCanvas: T) {
   // 2. 创建一个透视相机
   const camera = new THREE.PerspectiveCamera(
     // 视觉角度
@@ -32,20 +39,19 @@ const getScene = function getScene<T extends domElement>(nameCanvas: T) {
   // 把相机添加到场景中
   scene.add(camera)
 
-  // 创建一个在网格模型中展示的几何体
-  const cubeGeometry = new THREE.BoxGeometry(1, 1, 1) // 默认就是1,1,1 宽高深度
-  // 设置该集合体的纹理材质
-  const cubeMaterial = new THREE.MeshBasicMaterial({ color: '#abe2e5' }) // 支持CSS颜色设置方式 但是需要字符串格式
+  // 声明一个三角形的顶点  三角形包含: 三个顶点的值 三个坐标位置
+  // const vertices: Float32Array = new Float32Array([
+  //   -1.0, -1.0, 1.0,
 
-  // 3. 创建一个网格模型 放入创建的几何体和其自身材质
-  const cube = new THREE.Mesh(cubeGeometry, cubeMaterial) // Mesh(几何体, 纹理材质)
-  // 将几何体添加到场景中
-  scene.add(cube)
+  //   1.0, -1.0, 1.0,
 
-  // 4. 创建一个渲染器
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true // 开启锯齿
-  })
+  //   1.0, 1.0, 1.0
+  // ])
+
+  // 添加辅助线
+  const axesHelper = new THREE.AxesHelper(5)
+  scene.add(axesHelper)
+
   // 设置渲染器(画布)的大小 通过setSize()设置
   renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
 
@@ -83,5 +89,46 @@ const getScene = function getScene<T extends domElement>(nameCanvas: T) {
     // 更新渲染器的像素比
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
+  getters(scene)
 }
-export { getScene }
+
+function getters<T extends domElement>(scene: T) {
+  // if (scene.children.length > 1500) {
+  //   scene.children = []
+  // }
+  // 创建50个三角形
+  for (let i = 0; i < 50; i++) {
+    // 创建一个在网格模型中展示的几何体
+    const cubeGeometry = new THREE.BufferGeometry()
+    // 创建一个浮点数类型的32位数组
+    const vertices = new Float32Array(9) // 需要规定生成的长度 9个顶点
+
+    // 创建三角形的顶点  三角形包含: 3个订单包含3个坐标位置 3x3
+    for (let j = 0; j < 9; j++) {
+      // 随机1-5的数
+      vertices[j] = Math.random() * 10 - 5
+    }
+
+    // 设置属性
+    cubeGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+
+    // 设置随机颜色
+    const color = new THREE.Color(Math.random(), Math.random(), Math.random())
+
+    // 设置该集合体的纹理材质
+    const cubeMaterial = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: Math.random() }) // 支持CSS颜色设置方式 但是需要字符串格式
+
+    // 3. 创建一个网格模型 放入创建的几何体和其自身材质
+    const cube = new THREE.Mesh(cubeGeometry, cubeMaterial) // Mesh(几何体, 纹理材质)
+    // 将几何体添加到场景中
+    scene.add(cube)
+  }
+}
+
+function clear<T extends domElement>(nameCanvas: T) {
+  scene.children.splice(0, scene.children.length)
+  // // renderer.remove()
+  getters(nameCanvas)
+}
+
+export { getScene, getters, clear, scene }

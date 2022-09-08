@@ -19,7 +19,7 @@ const routes = [
         // 首页无需按需加载
         component: HomeView,
         meta: {
-          title: '首页'
+          title: '破碎的玻璃'
         }
       },
       {
