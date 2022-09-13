@@ -7,7 +7,7 @@
 // 导入Vue组合API
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 // 导入webgl 渲染方法
-import { getScene, getters, scene, clear, cameraChange, controls } from './components/renderer'
+import { getScene, getters, scene, clear, cameraChange, controls, dispose } from './components/renderer'
 // 导入储存
 import { setDistance } from '@/utils/local'
 // 实例化 getCurrentInstance 使用原型链对象方法 并且结构proxy
@@ -29,6 +29,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   const ret = cameraChange(controls)
   setDistance(Math.trunc(ret).toString())
+  dispose()
 })
 </script>
 

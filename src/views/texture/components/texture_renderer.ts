@@ -14,6 +14,12 @@ interface domElement {
  *
  * @param {*} nameCanvas 接收页面传来的页面Dom元素
  */
+// 储存动画id
+let animationId: number
+// 4. 创建一个渲染器
+const renderer = new THREE.WebGLRenderer({
+  antialias: true // 开启锯齿
+})
 function getScene<T extends domElement>(nameCanvas: T) {
   // 1. 创建three.js场景
   const scene = new THREE.Scene()
@@ -60,10 +66,6 @@ function getScene<T extends domElement>(nameCanvas: T) {
   const axesHelper = new THREE.AxesHelper(20)
   scene.add(axesHelper)
 
-  // 4. 创建一个渲染器
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true // 开启锯齿
-  })
   // 设置渲染器(画布)的大小 通过setSize()设置
   renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
 
@@ -83,7 +85,7 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 使用渲染器,通过相机将场景渲染出来
     renderer.render(scene, camera) // render(场景, 相机)
     // 使用动画更新的回调API实现持续更新动画的效果
-    requestAnimationFrame(render)
+    animationId = requestAnimationFrame(render)
   }
   // 执行创建更新动画的方法
   render()
@@ -102,4 +104,12 @@ function getScene<T extends domElement>(nameCanvas: T) {
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
 }
-export { getScene }
+// 清除内容
+function dispose() {
+  // 清除渲染器
+  renderer.dispose()
+  // 清除动画
+  cancelAnimationFrame(animationId)
+}
+
+export { getScene, dispose }

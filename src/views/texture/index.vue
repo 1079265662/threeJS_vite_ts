@@ -3,11 +3,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { getScene } from './components/texture_renderer'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { getScene, dispose } from './components/texture_renderer'
 const stateDom = ref()
 onMounted(() => {
   getScene(stateDom.value)
+})
+onBeforeUnmount(() => {
+  dispose()
 })
 </script>
 <script lang="ts">

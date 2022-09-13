@@ -9,8 +9,11 @@ interface domElement {
   add: any
   children: Array<any>
   remove: any
+  innerHTML?: any
 }
 
+// 储存动画id
+let animationId: number
 //  创建three.js场景
 const scene = new THREE.Scene()
 // 创建一个渲染器
@@ -32,13 +35,14 @@ const camera = new THREE.PerspectiveCamera(
 const controls = new OrbitControls(camera, renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
 
 /**
- *
- * @param {*} nameCanvas 接收页面传来的页面Dom元素
+ * @function 渲染元素
+ * @param nameCanvas Dom元素
  */
-
 function getScene<T extends domElement>(nameCanvas: T) {
-  // 获取物体位置
-  const distance = Number(getDistance())
+  console.log(scene)
+
+  // 获取物体在x轴的位置 默认为10
+  const distance = Number(getDistance()) || 10
   // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
   camera.position.set(0, 0, distance) // 默认没有参数 需要设置参数
   // 把相机添加到场景中
@@ -63,7 +67,7 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 使用渲染器,通过相机将场景渲染出来
     renderer.render(scene, camera) // render(场景, 相机)
     // 使用动画更新的回调API实现持续更新动画的效果
-    requestAnimationFrame(render)
+    animationId = requestAnimationFrame(render)
   }
 
   // 实现画面变化 更新渲染的内容
@@ -86,7 +90,10 @@ function getScene<T extends domElement>(nameCanvas: T) {
   getters(scene)
 }
 
-// 创建三角形
+/**
+ * @function 创建三角形
+ * @param scene 场景
+ */
 function getters<T extends domElement>(scene: T) {
   // if (scene.children.length > 1500) {
   //   scene.children = []
@@ -119,15 +126,29 @@ function getters<T extends domElement>(scene: T) {
     scene.add(cube)
   }
 }
-// 清除重置三角形
+
+// 清除内容
+function dispose() {
+  renderer.dispose()
+
+  cancelAnimationFrame(animationId)
+}
+
+/**
+ * @function 重置三角形
+ * @param nameCanvas Dom元素
+ */
 function clear<T extends domElement>(nameCanvas: T) {
   scene.children.splice(0, scene.children.length)
   getters(nameCanvas)
 }
 
-// 监听镜头变化
+/**
+ * @function 监听镜头变化
+ * @param controls 缓存名称
+ */
 function cameraChange(controls: any): number {
   return controls.getDistance()
 }
 
-export { getScene, getters, clear, cameraChange, scene, controls }
+export { getScene, getters, clear, cameraChange, dispose, scene, controls }
