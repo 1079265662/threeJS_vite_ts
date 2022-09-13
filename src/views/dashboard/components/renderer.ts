@@ -2,7 +2,8 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
+// 导入储存
+import { getDistance } from '@/utils/local'
 interface domElement {
   appendChild?: Document['appendChild'] | any
   add: any
@@ -10,12 +11,25 @@ interface domElement {
   remove: any
 }
 
-// 1. 创建three.js场景
+//  创建three.js场景
 const scene = new THREE.Scene()
-// 4. 创建一个渲染器
+// 创建一个渲染器
 const renderer = new THREE.WebGLRenderer({
   antialias: true // 开启锯齿
 })
+// 创建一个透视相机
+const camera = new THREE.PerspectiveCamera(
+  // 视觉角度
+  75,
+  // 相机纵横比 取整个屏幕 宽 / 高
+  window.innerWidth / window.innerHeight,
+  // 相机的进截面 (近距离不可见范围)
+  0.1,
+  // 远截面 (远距离不可见范围)
+  1000
+)
+// 创建创建一个轨道控制器 实现交互渲染
+const controls = new OrbitControls(camera, renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
 
 /**
  *
@@ -23,30 +37,12 @@ const renderer = new THREE.WebGLRenderer({
  */
 
 function getScene<T extends domElement>(nameCanvas: T) {
-  // 2. 创建一个透视相机
-  const camera = new THREE.PerspectiveCamera(
-    // 视觉角度
-    75,
-    // 相机纵横比 取整个屏幕 宽 / 高
-    window.innerWidth / window.innerHeight,
-    // 相机的进截面 (近距离不可见范围)
-    0.1,
-    // 远截面 (远距离不可见范围)
-    1000
-  )
+  // 获取物体位置
+  const distance = Number(getDistance())
   // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-  camera.position.set(0, 0, 10) // 默认没有参数 需要设置参数
+  camera.position.set(0, 0, distance) // 默认没有参数 需要设置参数
   // 把相机添加到场景中
   scene.add(camera)
-
-  // 声明一个三角形的顶点  三角形包含: 三个顶点的值 三个坐标位置
-  // const vertices: Float32Array = new Float32Array([
-  //   -1.0, -1.0, 1.0,
-
-  //   1.0, -1.0, 1.0,
-
-  //   1.0, 1.0, 1.0
-  // ])
 
   // 添加辅助线
   const axesHelper = new THREE.AxesHelper(5)
@@ -55,16 +51,12 @@ function getScene<T extends domElement>(nameCanvas: T) {
   // 设置渲染器(画布)的大小 通过setSize()设置
   renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
 
-  // 5. 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
+  // 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
   nameCanvas.appendChild(renderer.domElement)
-
-  // 6. 创建创建一个轨道控制器 实现交互渲染
-  const controls = new OrbitControls(camera, renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
   // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
   controls.enableDamping = true
-  console.log(controls)
 
-  // 7. 创建更新动画的方法
+  // 创建更新动画的方法
   const render = () => {
     // 设置阻尼感必须在动画中调用.update()
     controls.update()
@@ -73,8 +65,6 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 使用动画更新的回调API实现持续更新动画的效果
     requestAnimationFrame(render)
   }
-  // 执行创建更新动画的方法
-  render()
 
   // 实现画面变化 更新渲染的内容
   window.addEventListener('resize', () => {
@@ -89,9 +79,14 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 更新渲染器的像素比
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
+
+  // 执行创建更新动画的方法
+  render()
+  // 生成三角形
   getters(scene)
 }
 
+// 创建三角形
 function getters<T extends domElement>(scene: T) {
   // if (scene.children.length > 1500) {
   //   scene.children = []
@@ -124,11 +119,15 @@ function getters<T extends domElement>(scene: T) {
     scene.add(cube)
   }
 }
-
+// 清除重置三角形
 function clear<T extends domElement>(nameCanvas: T) {
   scene.children.splice(0, scene.children.length)
-  // // renderer.remove()
   getters(nameCanvas)
 }
 
-export { getScene, getters, clear, scene }
+// 监听镜头变化
+function cameraChange(controls: any): number {
+  return controls.getDistance()
+}
+
+export { getScene, getters, clear, cameraChange, scene, controls }

@@ -5,15 +5,14 @@
 
 <script lang="ts" setup>
 // 导入Vue组合API
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 // 导入webgl 渲染方法
-import { getScene, getters, scene, clear } from './components/renderer'
-// 导入getCurrentInstance 使用原型链对象方法
-import { getCurrentInstance } from 'vue'
+import { getScene, getters, scene, clear, cameraChange, controls } from './components/renderer'
+// 导入储存
+import { setDistance } from '@/utils/local'
 // 实例化 getCurrentInstance 使用原型链对象方法 并且结构proxy
-const { proxy } = getCurrentInstance() as any
-// 使用原型链上的内容
-console.log(proxy.$b.reset)
+// 获取元素的Dom
+const stateDom = ref()
 
 // 添加三角
 const changeTriangle = () => {
@@ -23,11 +22,13 @@ const changeTriangle = () => {
 const clearThis = () => {
   clear(scene)
 }
-// 获取元素的Dom
-const stateDom = ref()
 onMounted(() => {
   // 加载webgl
   getScene(stateDom.value)
+})
+onBeforeUnmount(() => {
+  const ret = cameraChange(controls)
+  setDistance(Math.trunc(ret).toString())
 })
 </script>
 

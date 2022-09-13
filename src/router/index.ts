@@ -23,12 +23,12 @@ const routes = [
         }
       },
       {
-        path: '/about',
-        name: 'about',
+        path: '/texture',
+        name: 'TexTure',
         // 设置按需加载
-        component: () => import('@/views/AboutView.vue'),
+        component: () => import('@/views/texture/index.vue'),
         meta: {
-          title: '关于'
+          title: '纹理内容 '
         }
       }
     ]
