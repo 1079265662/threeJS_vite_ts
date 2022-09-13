@@ -104,7 +104,7 @@ function getScene<T extends domElement>(nameCanvas: T) {
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
 }
-// 清除内容
+// 清除加载器和动画(销毁方法)
 function dispose() {
   // 清除渲染器
   renderer.dispose()

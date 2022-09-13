@@ -127,10 +127,11 @@ function getters<T extends domElement>(scene: T) {
   }
 }
 
-// 清除内容
+/**
+ * @function 清除加载器和动画(销毁方法)
+ */
 function dispose() {
   renderer.dispose()
-
   cancelAnimationFrame(animationId)
 }
 
