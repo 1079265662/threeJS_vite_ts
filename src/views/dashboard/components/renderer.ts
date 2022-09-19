@@ -35,7 +35,7 @@ const camera = new THREE.PerspectiveCamera(
 const controls = new OrbitControls(camera, renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
 
 /**
- * @function 渲染元素
+ * @description 渲染元素
  * @param nameCanvas Dom元素
  */
 function getScene<T extends domElement>(nameCanvas: T) {
@@ -91,7 +91,7 @@ function getScene<T extends domElement>(nameCanvas: T) {
 }
 
 /**
- * @function 创建三角形
+ * @description 创建三角形
  * @param scene 场景
  */
 function getters<T extends domElement>(scene: T) {
@@ -128,7 +128,7 @@ function getters<T extends domElement>(scene: T) {
 }
 
 /**
- * @function 清除加载器和动画(销毁方法)
+ * @description 清除加载器和动画(销毁方法)
  */
 function dispose() {
   renderer.dispose()
@@ -136,7 +136,7 @@ function dispose() {
 }
 
 /**
- * @function 重置三角形
+ * @description 重置三角形
  * @param nameCanvas Dom元素
  */
 function clear<T extends domElement>(nameCanvas: T) {
@@ -145,7 +145,7 @@ function clear<T extends domElement>(nameCanvas: T) {
 }
 
 /**
- * @function 监听镜头变化
+ * @description 监听镜头变化
  * @param controls 缓存名称
  */
 function cameraChange(controls: any): number {

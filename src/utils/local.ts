@@ -6,9 +6,8 @@ const distanceName = 'distance'
 function setDistance(distance: string) {
   return session.setItem(distanceName, distance)
 }
+
 // 获取镜头距离
-function getDistance() {
-  return session.getItem(distanceName)
-}
+const getDistance = () => session.getItem(distanceName)
 
 export { distanceName, setDistance, getDistance }

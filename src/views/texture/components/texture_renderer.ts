@@ -6,6 +6,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import logo from '@/assets/door/color.jpg'
 // 导入灰度纹理
 import logoGray from '@/assets/door/alpha.jpg'
+// 导入环境遮挡贴图
+import logoEnv from '@/assets/door/ambientOcclusion.jpg'
+// 导入置换纹理
+import displacementMap from '@/assets/door/height.jpg'
 
 interface domElement {
   appendChild: Document['appendChild']
@@ -44,23 +48,41 @@ function getScene<T extends domElement>(nameCanvas: T) {
   const texture = new THREE.TextureLoader().load(logo)
   // 创建灰度纹理
   const textureGray = new THREE.TextureLoader().load(logoGray)
-
+  // 创建环境遮挡贴图
+  const textureEnv = new THREE.TextureLoader().load(logoEnv)
+  // 创建置换纹理
+  const textureDisplacementMap = new THREE.TextureLoader().load(displacementMap)
   // 创建一个在网格模型中展示的几何体
-  const cubeGeometry = new THREE.BoxGeometry(3, 3, 3) // 默认就是1,1,1 宽高深度
-  // 设置该集合体的纹理材质
-  const cubeMaterial = new THREE.MeshBasicMaterial({
+  const cubeGeometry = new THREE.BoxGeometry(3, 3, 3, 200, 200, 200) // 参数为长宽高 以及长宽高的分段数 横截面，利于变形使用，段数越多越柔和，则段数越少越生硬。
+
+  // 使用PBR材质
+  const cubeMaterial = new THREE.MeshStandardMaterial({
     // 设置纹理贴图
     map: texture,
     // 设置灰度纹理贴图
     alphaMap: textureGray,
     // 设置透明度 一定要把透明度设置为true
-    transparent: true
+    transparent: true,
+    // 设置环境遮挡贴图
+    aoMap: textureEnv,
+    // 设置环境遮挡贴图强度
+    aoMapIntensity: 1, // 默认为1 最小值为0 最大值为1
+    // 使用置换纹理
+    displacementMap: textureDisplacementMap,
+    // 设置置换纹理强度
+    displacementScale: 0.1 // 默认为1 最小值为0 最大值为1
   })
-
-  // 3. 创建一个网格模型 放入创建的几何体和其自身材质
+  // 创建一个网格模型 放入创建的几何体和其自身材质
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial) // Mesh(几何体, 纹理材质)
+  // 设置环境遮挡贴图第二组uv坐标 (就是把第一组uv坐标的值赋值给第二组uv坐标)
+  cube.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(cube.geometry.attributes.uv.array, 2))
   // 将几何体添加到场景中
   scene.add(cube)
+
+  // 添加一个环境光 四面八方的光
+  const ambientLight = new THREE.AmbientLight('#FFFFFF', 1)
+  // 将环境光添加到场景中
+  scene.add(ambientLight)
 
   // 创建一个辅助线
   const axesHelper = new THREE.AxesHelper(20)
@@ -68,7 +90,6 @@ function getScene<T extends domElement>(nameCanvas: T) {
 
   // 设置渲染器(画布)的大小 通过setSize()设置
   renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
-
   // 5. 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
   nameCanvas.appendChild(renderer.domElement)
 
