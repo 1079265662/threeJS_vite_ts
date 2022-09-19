@@ -30,6 +30,8 @@ export default defineConfig({
   // 导入插件
   plugins: [
     vue(),
+    // 使用清除console插件
+    removeConsole(),
     createHtmlPlugin({
       // 是否启动压缩html
       minify: true,
@@ -48,18 +50,6 @@ export default defineConfig({
       resolvers: [NaiveUiResolver()]
     })
   ],
-  build: {
-    // 缩小器
-    minify: 'esbuild',
-    terserOptions: {
-      compress: {
-        //生产环境时移除console
-        drop_console: true,
-        // 生产时候移除debugger
-        drop_debugger: true
-      }
-    }
-  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
