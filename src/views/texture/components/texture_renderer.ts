@@ -10,7 +10,12 @@ import logoGray from '@/assets/door/alpha.jpg'
 import logoEnv from '@/assets/door/ambientOcclusion.jpg'
 // 导入置换纹理
 import displacementMap from '@/assets/door/height.jpg'
-
+// 导入粗糙度纹理
+import roughness from '@/assets/door/roughness.jpg'
+// 导入金属贴图
+import metalness from '@/assets/door/metalness.jpg'
+// 导入法线贴图
+import normal from '@/assets/door/normal.jpg'
 interface domElement {
   appendChild: Document['appendChild']
 }
@@ -55,6 +60,12 @@ function getScene<T extends domElement>(nameCanvas: T) {
   const textureEnv = new THREE.TextureLoader().load(logoEnv)
   // 创建置换纹理
   const textureDisplacementMap = new THREE.TextureLoader().load(displacementMap)
+  // 创建粗糙度纹理
+  const textureRoughness = new THREE.TextureLoader().load(roughness)
+  // 创建金属贴图
+  const textureMetalness = new THREE.TextureLoader().load(metalness)
+  // 创建法线贴图
+  const textureNormal = new THREE.TextureLoader().load(normal)
   // 创建一个在网格模型中展示的几何体
   const cubeGeometry = new THREE.BoxGeometry(3, 3, 3, 200, 200, 200) // 参数为长宽高 以及长宽高的分段数 横截面，利于变形使用，段数越多越柔和，则段数越少越生硬。
 
@@ -73,7 +84,17 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 使用置换纹理
     displacementMap: textureDisplacementMap,
     // 设置置换纹理强度
-    displacementScale: 0.1 // 默认为1 最小值为0 最大值为1
+    displacementScale: 0.1, // 默认为1 最小值为0 最大值为1
+    // 设置粗糙度纹理
+    roughnessMap: textureRoughness,
+    // // 设置粗糙度
+    // roughness: 0.5, // 默认为0.5 最小值为0 最大值为1
+    // // 设置金属度
+    metalness: 0.5, // 默认为0.5 最小值为0 最大值为1
+    // 设置金属贴图
+    metalnessMap: textureMetalness,
+    // 导入法线贴图
+    normalMap: textureNormal
   })
 
   // 创建一个网格模型 放入创建的几何体和其自身材质
@@ -84,10 +105,13 @@ function getScene<T extends domElement>(nameCanvas: T) {
   // 将几何体添加到场景中
   scene.add(cube)
 
-  // 添加一个环境光 四面八方的光
-  const ambientLight = new THREE.AmbientLight('#FFFFFF', 1)
-  // 将环境光添加到场景中
-  scene.add(ambientLight)
+  // 环境光
+  const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
+  scene.add(light)
+  // 平行光
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+  directionalLight.position.set(0, 0, 10)
+  scene.add(directionalLight)
 
   // 创建一个辅助线
   const axesHelper = new THREE.AxesHelper(20)
