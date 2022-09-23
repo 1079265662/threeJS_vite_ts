@@ -29,9 +29,8 @@ const defaultValue = ref(route.path)
 // 储存处理好的路由菜单
 const routerList = ref([])
 
-// 递归路由
 /**
- *
+ * @description: 递归路由
  * @param routerList 是一个空数组
  * @param routes routes是路由菜单
  * @returns
@@ -40,7 +39,7 @@ const getRouterList = (routerList: any[], routes: any[]) => {
   for (const item of routes) {
     // 解构数据
     const {
-      meta: { title, icon = undefined },
+      meta: { title = '暂无标题', icon = undefined },
       path,
       component
     } = item
@@ -84,7 +83,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 .layOut {
-  height: 100vh;
+  // height: 100vh;
+  // max-width: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  height: 100%;
+  width: 100%;
   max-width: none;
   .layoutColor {
     margin-block: 10px;

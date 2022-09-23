@@ -14,16 +14,19 @@ import displacementMap from '@/assets/door/height.jpg'
 interface domElement {
   appendChild: Document['appendChild']
 }
-/**
- *
- * @param {*} nameCanvas 接收页面传来的页面Dom元素
- */
+
 // 储存动画id
 let animationId: number
 // 4. 创建一个渲染器
 const renderer = new THREE.WebGLRenderer({
   antialias: true // 开启锯齿
 })
+
+/**
+ * @description: 初始化渲染器
+ * @param {*} nameCanvas 接收页面传来的页面Dom元素
+ * @return {*} 返回场景
+ */
 function getScene<T extends domElement>(nameCanvas: T) {
   // 1. 创建three.js场景
   const scene = new THREE.Scene()
@@ -57,7 +60,7 @@ function getScene<T extends domElement>(nameCanvas: T) {
 
   // 使用PBR材质
   const cubeMaterial = new THREE.MeshStandardMaterial({
-    // 设置纹理贴图
+    // 设置纹理贴图image.png
     map: texture,
     // 设置灰度纹理贴图
     alphaMap: textureGray,
@@ -72,10 +75,12 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 设置置换纹理强度
     displacementScale: 0.1 // 默认为1 最小值为0 最大值为1
   })
+
   // 创建一个网格模型 放入创建的几何体和其自身材质
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial) // Mesh(几何体, 纹理材质)
   // 设置环境遮挡贴图第二组uv坐标 (就是把第一组uv坐标的值赋值给第二组uv坐标)
   cube.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(cube.geometry.attributes.uv.array, 2))
+
   // 将几何体添加到场景中
   scene.add(cube)
 
@@ -124,8 +129,13 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 更新渲染器的像素比
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
+
+  return scene
 }
-// 清除加载器和动画(销毁方法)
+
+/**
+ * @description: 清除加载器和动画(销毁方法)
+ */
 function dispose() {
   // 清除渲染器
   renderer.dispose()
