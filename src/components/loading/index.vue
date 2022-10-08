@@ -1,7 +1,10 @@
 <template>
   <transition name="fade">
     <div id="loading-mask" v-if="visible">
-      <div class="container">
+      <div class="loadingLine">
+        <n-progress style="max-width: 300px" :percentage="loadingNumber" :indicator-placement="'inside'" processing />
+      </div>
+      <!-- <div class="container">
         <div class="support">
           <div class="dot" />
         </div>
@@ -21,15 +24,28 @@
           <div class="dot" />
         </div>
         <p class="txt">模型正在加载中</p>
-      </div>
+      </div> -->
     </div>
   </transition>
 </template>
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+const visible = ref(true)
 const props = defineProps({
-  // eslint-disable-line no-unused-vars
-  visible: Boolean
+  loadingNumber: {
+    type: Number,
+    default: 0
+  }
 })
+// 监听加载
+watch(
+  () => props.loadingNumber,
+  (newVal: number) => {
+    if (newVal === 100) {
+      visible.value = false
+    }
+  }
+)
 </script>
 <script lang="ts">
 export default {
@@ -136,5 +152,11 @@ $pointColor: rgba(255, 255, 255, 1);
   position: relative;
   top: 37px;
   left: 7px;
+}
+.loadingLine {
+  display: grid;
+  place-items: center;
+  // max-width: 400px;
+  height: 100%;
 }
 </style>

@@ -19,18 +19,19 @@ import normal from '@/assets/door/normal.jpg'
 interface domElement {
   appendChild: Document['appendChild']
 }
-
+// 导入Vue响应式
+import { ref } from 'vue'
+const loadingNumber = ref(0)
 // 储存动画id
 let animationId: number
 // 4. 创建一个渲染器
 const renderer = new THREE.WebGLRenderer({
   antialias: true // 开启锯齿
 })
-
 /**
- * @description: 初始化渲染器
- * @param {*} nameCanvas 接收页面传来的页面Dom元素
- * @return {*} 返回场景
+ * Description 创建
+ * @param {T} nameCanvas
+ * @returns {any}
  */
 function getScene<T extends domElement>(nameCanvas: T) {
   // 1. 创建three.js场景
@@ -52,23 +53,24 @@ function getScene<T extends domElement>(nameCanvas: T) {
   // 把相机添加到场景中
   scene.add(camera)
 
+  // 设置一个统一的纹理加载器
+  const textureLoader = new THREE.TextureLoader(loading())
   // 创建纹理
-  const texture = new THREE.TextureLoader().load(logo)
+  const texture = textureLoader.load(logo)
   // 创建灰度纹理
-  const textureGray = new THREE.TextureLoader().load(logoGray)
+  const textureGray = textureLoader.load(logoGray)
   // 创建环境遮挡贴图
-  const textureEnv = new THREE.TextureLoader().load(logoEnv)
+  const textureEnv = textureLoader.load(logoEnv)
   // 创建置换纹理
-  const textureDisplacementMap = new THREE.TextureLoader().load(displacementMap)
+  const textureDisplacementMap = textureLoader.load(displacementMap)
   // 创建粗糙度纹理
-  const textureRoughness = new THREE.TextureLoader().load(roughness)
+  const textureRoughness = textureLoader.load(roughness)
   // 创建金属贴图
-  const textureMetalness = new THREE.TextureLoader().load(metalness)
+  const textureMetalness = textureLoader.load(metalness)
   // 创建法线贴图
-  const textureNormal = new THREE.TextureLoader().load(normal)
+  const textureNormal = textureLoader.load(normal)
   // 创建一个在网格模型中展示的几何体
   const cubeGeometry = new THREE.BoxGeometry(3, 3, 3, 200, 200, 200) // 参数为长宽高 以及长宽高的分段数 横截面，利于变形使用，段数越多越柔和，则段数越少越生硬。
-
   // 使用PBR材质
   const cubeMaterial = new THREE.MeshStandardMaterial({
     // 设置纹理贴图image.png
@@ -87,9 +89,9 @@ function getScene<T extends domElement>(nameCanvas: T) {
     displacementScale: 0.1, // 默认为1 最小值为0 最大值为1
     // 设置粗糙度纹理
     roughnessMap: textureRoughness,
-    // // 设置粗糙度
+    // 设置粗糙度
     // roughness: 0.5, // 默认为0.5 最小值为0 最大值为1
-    // // 设置金属度
+    // 设置金属度
     metalness: 0.5, // 默认为0.5 最小值为0 最大值为1
     // 设置金属贴图
     metalnessMap: textureMetalness,
@@ -153,8 +155,20 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 更新渲染器的像素比
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
+}
 
-  return scene
+/**
+ * @description: 声明加载管理器
+ * @returns {any}
+ */
+function loading() {
+  // 创建加载器
+  const manager = new THREE.LoadingManager()
+  // 加载中的参数
+  manager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    loadingNumber.value = Number(((itemsLoaded / itemsTotal) * 100).toFixed(2))
+  }
+  return manager
 }
 
 /**
@@ -165,6 +179,8 @@ function dispose() {
   renderer.dispose()
   // 清除动画
   cancelAnimationFrame(animationId)
+  // 还原加载状态位
+  loadingNumber.value = 0
 }
 
-export { getScene, dispose }
+export { getScene, dispose, loadingNumber }

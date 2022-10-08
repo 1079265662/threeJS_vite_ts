@@ -1,21 +1,18 @@
 <template>
-  <LoaDing :visible="loading" />
+  <LoaDing :loadingNumber="loadingNumber" />
+  <!-- <div>{{ loadingNumber }}</div> -->
   <div class="canvas" ref="stateDom" />
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { getScene, dispose } from './components/texture_renderer'
+import { getScene, dispose, loadingNumber } from './components/texture_renderer'
 
 const stateDom = ref()
-const loading = ref(true)
 
 onMounted(() => {
-  const scene = getScene(stateDom.value)
-  if (scene) {
-    console.log(scene)
-    loading.value = false
-  }
+  getScene(stateDom.value)
+  console.log(loadingNumber.value)
 })
 
 onBeforeUnmount(() => {
