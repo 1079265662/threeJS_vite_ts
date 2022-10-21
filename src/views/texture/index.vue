@@ -12,7 +12,6 @@ const stateDom = ref()
 
 onMounted(() => {
   getScene(stateDom.value)
-  console.log(loadingNumber.value)
 })
 
 onBeforeUnmount(() => {

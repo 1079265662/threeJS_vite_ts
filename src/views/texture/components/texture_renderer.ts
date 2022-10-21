@@ -156,12 +156,11 @@ function getScene<T extends domElement>(nameCanvas: T) {
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
 }
-
 /**
  * @description: 声明加载管理器
  * @returns {any}
  */
-function loading() {
+function loading(): any {
   // 创建加载器
   const manager = new THREE.LoadingManager()
   // 加载中的参数
@@ -170,7 +169,6 @@ function loading() {
   }
   return manager
 }
-
 /**
  * @description: 清除加载器和动画(销毁方法)
  */

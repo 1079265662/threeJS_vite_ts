@@ -30,6 +30,24 @@ const routes = [
         meta: {
           title: '纹理内容 '
         }
+      },
+      {
+        path: '/envmap',
+        name: 'EnvMap',
+        // 设置按需加载
+        component: () => import('@/views/envmap/index.vue'),
+        meta: {
+          title: '环境贴图'
+        }
+      },
+      {
+        path: '/hdr',
+        name: 'HdR',
+        // 设置按需加载
+        component: () => import('@/views/hdr/index.vue'),
+        meta: {
+          title: 'hdr贴图'
+        }
       }
     ]
   }
