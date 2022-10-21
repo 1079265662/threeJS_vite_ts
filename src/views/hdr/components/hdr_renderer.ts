@@ -128,6 +128,8 @@ function getScene<T extends domElement>(nameCanvas: T) {
 function loading(total: number | void, loaded: number | void): any {
   // 对于单独文件的加载进行计算
   if (total && loaded) {
+    console.log((loadingNumber.value = Number(((loaded / total) * 100).toFixed(2))))
+
     loadingNumber.value = Number(((loaded / total) * 100).toFixed(2))
     return
   }

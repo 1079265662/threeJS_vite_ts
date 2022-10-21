@@ -1,5 +1,7 @@
 <template>
-  <LoaDing :loadingNumber="loadingNumber" />
+  <LoaDing :loadingNumber="loadingNumber">
+    {{ loadingNumber }}
+  </LoaDing>
   <div class="canvas" ref="stateDom" />
 </template>
 <script setup lang="ts">
