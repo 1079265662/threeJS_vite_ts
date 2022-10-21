@@ -59,9 +59,12 @@ function getScene<T extends domElement>(nameCanvas: T) {
   // 添加HDR
   const HDRloader = new RGBELoader()
   // 加载HDR
-  HDRloader.loadAsync(getAssetsFile('hdr/002.hdr'), ({ total, loaded }) => {
-    loading(total, loaded)
-  }).then((HDRtexture) => {
+  HDRloader.loadAsync(
+    'https://jinyanlong-1305883696.cos.ap-hongkong.myqcloud.com/threeJS/002.hdr',
+    ({ total, loaded }) => {
+      loading(total, loaded)
+    }
+  ).then((HDRtexture) => {
     // 设置HDR贴图的贴图环绕方式
     HDRtexture.mapping = THREE.EquirectangularReflectionMapping
     // 给场景设置HDR背景图

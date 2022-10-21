@@ -2,7 +2,7 @@
   <transition name="fade">
     <div id="loading-mask" v-if="visible">
       <div class="loadingLine">
-        <n-progress style="max-width: 300px" :percentage="loadingNumber" :indicator-placement="'inside'" processing />
+        <n-progress style="max-width: 300px" :percentage="loadingNumberFixed" :indicator-placement="'inside'" processing />
       </div>
       <!-- <div class="container">
         <div class="support">
@@ -29,19 +29,24 @@
   </transition>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 const visible = ref(true)
+
 const props = defineProps({
   loadingNumber: {
     type: Number,
     default: 0
   }
 })
+
+// 计算属性 取消小数点 不是整数会报错
+const loadingNumberFixed = computed(() => Number(props.loadingNumber.toFixed(0)))
+
 // 监听加载
 watch(
   () => props.loadingNumber,
   (newVal: number) => {
-    if (newVal === 100) {
+    if (newVal >= 100) {
       visible.value = false
     }
   }
