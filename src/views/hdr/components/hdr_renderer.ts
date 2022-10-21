@@ -121,13 +121,15 @@ function getScene<T extends domElement>(nameCanvas: T) {
 
 /**
  * @description: 声明加载管理器
- * @param {number | void} total
- * @param {number | void} loaded
+ * @param {number | void} total 总大小
+ * @param {number | void} loaded 已加载大小
  * @returns {any}
  */
 function loading(total: number | void, loaded: number | void): any {
   // 对于单独文件的加载进行计算
   if (total && loaded) {
+    console.log('已加载大小:' + loaded, '总大小:' + total)
+
     console.log((loadingNumber.value = Number(((loaded / total) * 100).toFixed(2))))
 
     loadingNumber.value = Number(((loaded / total) * 100).toFixed(2))
