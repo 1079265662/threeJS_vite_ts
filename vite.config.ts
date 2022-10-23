@@ -31,7 +31,7 @@ export default defineConfig({
   plugins: [
     vue(),
     // 使用清除console插件
-    // removeConsole(),
+    removeConsole(),
     createHtmlPlugin({
       // 是否启动压缩html
       minify: true,

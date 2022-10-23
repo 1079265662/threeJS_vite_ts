@@ -48,6 +48,15 @@ const routes = [
         meta: {
           title: 'hdr贴图'
         }
+      },
+      {
+        path: '/shadow',
+        name: 'ShaDow',
+        // 设置按需加载
+        component: () => import('@/views/shadow/index.vue'),
+        meta: {
+          title: '物体阴影'
+        }
       }
     ]
   }

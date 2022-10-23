@@ -2,16 +2,11 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { getAssetsFile } from '@/utils/getAssetsFile'
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 interface domElement {
   appendChild: Document['appendChild']
 }
 // 储存动画id
 let animationId: number
-// 导入Vue响应式
-import { ref } from 'vue'
-const loadingNumber = ref(0)
 // 创建一个渲染器
 const renderer = new THREE.WebGLRenderer({
   antialias: true // 开启锯齿
@@ -37,45 +32,44 @@ function getScene<T extends domElement>(nameCanvas: T) {
     1000
   )
   // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-  camera.position.set(0, 0, 10) // 默认没有参数 需要设置参数
+  camera.position.set(-4, 5, 10) // 默认没有参数 需要设置参数
   // 把相机添加到场景中
   scene.add(camera)
 
   // 声明一个球体
   const sphere = new THREE.SphereGeometry(1, 20, 20)
-
   // 声明一个标准材质
-  const mmaterial = new THREE.MeshStandardMaterial({
-    // 设置金属度
-    metalness: 0.7,
-    // 设置光滑度
-    roughness: 0.1
-  })
+  const mmaterial = new THREE.MeshStandardMaterial()
   // 创建网格模型
-  const mesh = new THREE.Mesh(sphere, mmaterial)
+  const sphereMesh = new THREE.Mesh(sphere, mmaterial)
+  // 开启物体投射阴影
+  sphereMesh.castShadow = true
   // 添加到场景
-  scene.add(mesh)
+  scene.add(sphereMesh)
 
-  // 添加HDR
-  const HDRloader = new RGBELoader()
-  // 加载HDR
-  HDRloader.loadAsync('https://jinyanlong-1305883696.cos.ap-hongkong.myqcloud.com/threeJS/002.hdr', ({ total, loaded }) => {
-    loading(total, loaded)
-  }).then((HDRtexture) => {
-    // 设置HDR贴图的贴图环绕方式
-    HDRtexture.mapping = THREE.EquirectangularReflectionMapping
-    // 给场景设置HDR背景图
-    scene.background = HDRtexture
-    // 给场景内所有的物体添加默认的环境贴图 (如果物体不单独设置环境贴图 默认使用这个环境贴图)
-    scene.environment = HDRtexture
-  })
+  // 声明一个平面
+  const plane = new THREE.PlaneGeometry(10, 10)
+  // 声明一个标准材质
+  const pmaterial = new THREE.MeshStandardMaterial()
+  // 创建网格模型
+  const planeMesh = new THREE.Mesh(plane, pmaterial)
+  // 定位平面
+  planeMesh.position.set(0, -1, 0)
+  // 旋转平面到底部
+  planeMesh.rotation.x = -Math.PI / 2
+  // 开启物体接收阴影
+  planeMesh.receiveShadow = true
+  // 添加到场景
+  scene.add(planeMesh)
 
   // 环境光
   const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
   scene.add(light)
   // 平行光
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-  directionalLight.position.set(8, 3, 4)
+  directionalLight.position.set(10, 10, 10)
+  // 开启光照投射阴影
+  directionalLight.castShadow = true
   scene.add(directionalLight)
 
   // 创建一个辅助线
@@ -84,6 +78,8 @@ function getScene<T extends domElement>(nameCanvas: T) {
 
   // 4. 设置渲染器(画布)的大小 通过setSize()设置
   renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
+  // 开启阴影
+  renderer.shadowMap.enabled = true
   // 5. 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
   nameCanvas.appendChild(renderer.domElement)
 
@@ -120,30 +116,6 @@ function getScene<T extends domElement>(nameCanvas: T) {
 }
 
 /**
- * @description: 声明加载管理器
- * @param {number | void} total 总大小
- * @param {number | void} loaded 已加载大小
- * @returns {any}
- */
-function loading(total: number | void, loaded: number | void): any {
-  // 对于单独文件的加载进行计算
-  if (total && loaded) {
-    loadingNumber.value = Number(((loaded / total) * 100).toFixed(2))
-    return
-  }
-
-  // 对于多个文件的加载使用加载器进行计算
-  // 创建加载器
-  const manager = new THREE.LoadingManager()
-  // 加载中的参数
-  manager.onProgress = (url, itemsLoaded, itemsTotal) => {
-    console.log(url, itemsLoaded, itemsTotal)
-    loadingNumber.value = Number(((itemsLoaded / itemsTotal) * 100).toFixed(2))
-  }
-  return manager
-}
-
-/**
  * @description: 清除加载器和动画(销毁方法)
  */
 function dispose() {
@@ -151,8 +123,6 @@ function dispose() {
   renderer.dispose()
   // 清除动画
   cancelAnimationFrame(animationId)
-  // 还原加载状态位
-  loadingNumber.value = 0
 }
 
-export { getScene, dispose, loadingNumber }
+export { getScene, dispose }
