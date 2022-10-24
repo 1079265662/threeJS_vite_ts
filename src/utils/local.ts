@@ -1,13 +1,23 @@
 // 缓存储存
 const session = window.sessionStorage
 // 储存镜头距离(z轴)
-const distanceName = 'distance'
+export const distanceName = 'distance'
+// 储存相机全部信息
+export const cameraData = 'cameraData'
+
 // 储存镜头距离
-function setDistance(distance: string) {
+export function setDistance(distance: string) {
   return session.setItem(distanceName, distance)
 }
 
-// 获取镜头距离
-const getDistance = () => session.getItem(distanceName)
+// 储存镜头全部数据
+export function setCameraData(data: object) {
+  return session.setItem(cameraData, JSON.stringify(data))
+}
+// 获取镜头全部数据
+export function getCameraData() {
+  return JSON.parse(session.getItem(cameraData) || '{}') || '{}'
+}
 
-export { distanceName, setDistance, getDistance }
+// 获取镜头距离
+export const getDistance = () => session.getItem(distanceName)

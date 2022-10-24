@@ -149,6 +149,8 @@ function clear<T extends domElement>(nameCanvas: T) {
  * @param controls 缓存名称
  */
 function cameraChange(controls: any): number {
+  console.log(controls.getDistance())
+
   return controls.getDistance()
 }
 

@@ -2,26 +2,35 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// 储存数据
+import { setCameraData, getCameraData } from '@/utils/local'
 interface domElement {
   appendChild: Document['appendChild']
+  camera: any
+  this: any
 }
+
 // 储存动画id
 let animationId: number
 // 创建一个渲染器
 const renderer = new THREE.WebGLRenderer({
   antialias: true // 开启锯齿
 })
+// 创造轨道控制器
+let controls: any
+// 创建相机
+let camera: any
 /**
- * Description 创建
+ * Description GetScene
  * @param {T} nameCanvas
  * @returns {any}
  */
-function getScene<T extends domElement>(nameCanvas: T) {
+export function GetScene<T extends domElement>(nameCanvas: T) {
   // 1. 创建three.js场景
   const scene = new THREE.Scene()
 
   // 2. 创建一个透视相机
-  const camera = new THREE.PerspectiveCamera(
+  camera = new THREE.PerspectiveCamera(
     // 视觉角度
     75,
     // 相机纵横比 取整个屏幕 宽 / 高
@@ -32,7 +41,11 @@ function getScene<T extends domElement>(nameCanvas: T) {
     1000
   )
   // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-  camera.position.set(-4, 5, 10) // 默认没有参数 需要设置参数
+  console.log(getCameraData())
+
+  camera.position.set(getCameraData().x || 8, getCameraData().y || 8, getCameraData().z) // 默认没有参数 需要设置参数
+  console.log()
+
   // 把相机添加到场景中
   scene.add(camera)
 
@@ -84,7 +97,7 @@ function getScene<T extends domElement>(nameCanvas: T) {
   nameCanvas.appendChild(renderer.domElement)
 
   // 6. 创建创建一个轨道控制器 实现交互渲染
-  const controls = new OrbitControls(camera, renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
+  controls = new OrbitControls(camera, renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
   // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
   controls.enableDamping = true
 
@@ -113,16 +126,26 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 更新渲染器的像素比
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   })
+
+  return { controls }
 }
 
 /**
  * @description: 清除加载器和动画(销毁方法)
  */
-function dispose() {
+export function dispose() {
   // 清除渲染器
   renderer.dispose()
+  // 清除轨道控制器
+  controls.dispose()
   // 清除动画
   cancelAnimationFrame(animationId)
 }
 
-export { getScene, dispose }
+/**
+ * @description 监听镜头变化
+ * @param controlsData 缓存名称
+ */
+export function cameraChange(controlsData: any = camera) {
+  setCameraData(camera.position)
+}
