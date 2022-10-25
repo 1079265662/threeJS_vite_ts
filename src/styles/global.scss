@@ -7,3 +7,11 @@
 .fade-leave-to {
   opacity: 0;
 }
+.dg.ac {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  z-index: 9999999 !important;
+}

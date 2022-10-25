@@ -57,6 +57,15 @@ const routes = [
         meta: {
           title: '物体阴影'
         }
+      },
+      {
+        path: '/spotlight',
+        name: 'SpotLight',
+        // 设置按需加载
+        component: () => import('@/views/spotlight/index.vue'),
+        meta: {
+          title: '聚光灯'
+        }
       }
     ]
   }

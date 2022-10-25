@@ -41,11 +41,7 @@ export function GetScene<T extends domElement>(nameCanvas: T) {
     1000
   )
   // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-  console.log(getCameraData())
-
   camera.position.set(getCameraData().x || 8, getCameraData().y || 8, getCameraData().z) // 默认没有参数 需要设置参数
-  console.log()
-
   // 把相机添加到场景中
   scene.add(camera)
 
@@ -80,9 +76,13 @@ export function GetScene<T extends domElement>(nameCanvas: T) {
   scene.add(light)
   // 平行光
   const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+  // 设置光源位置
   directionalLight.position.set(10, 10, 10)
   // 开启光照投射阴影
   directionalLight.castShadow = true
+  // 设置阴影模糊度
+  directionalLight.shadow.mapSize.set(1024, 1024)
+  // 添加到场景
   scene.add(directionalLight)
 
   // 创建一个辅助线
@@ -103,6 +103,8 @@ export function GetScene<T extends domElement>(nameCanvas: T) {
 
   // 7. 创建更新动画的方法
   const render = () => {
+    // const vector = camera.position.clone()
+    // directionalLight.position.set(vector.x, vector.y, vector.z)
     // 设置阻尼感必须在动画中调用.update()
     controls.update()
     // 使用渲染器,通过相机将场景渲染出来
@@ -147,5 +149,5 @@ export function dispose() {
  * @param controlsData 缓存名称
  */
 export function cameraChange(controlsData: any = camera) {
-  setCameraData(camera.position)
+  setCameraData(controlsData.position)
 }
