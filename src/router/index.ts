@@ -66,6 +66,15 @@ const routes = [
         meta: {
           title: '聚光灯'
         }
+      },
+      {
+        path: '/lightball',
+        name: 'LightBall',
+        // 设置按需加载
+        component: () => import('@/views/light_ball/index.vue'),
+        meta: {
+          title: '小灯球'
+        }
       }
     ]
   }
