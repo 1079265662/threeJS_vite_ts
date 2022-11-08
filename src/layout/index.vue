@@ -1,13 +1,43 @@
 <template>
-  <n-layout has-sider class="layOut">
-    <n-layout-sider @collapse="collapsed = true" @expand="collapsed = false" bordered collapse-mode="width" :collapsed="collapsed" :collapsed-width="0" default-expand-all :width="240" show-trigger :inverted="inverted">
+  <n-layout has-sider>
+    <!-- 左侧菜单 -->
+    <n-layout-sider
+      :native-scrollbar="false"
+      class="layOut"
+      @collapse="collapsed = true"
+      @expand="collapsed = false"
+      bordered
+      collapse-mode="width"
+      :collapsed="collapsed"
+      :collapsed-width="0"
+      default-expand-all
+      :width="240"
+      show-trigger
+      :inverted="inverted"
+    >
       <div class="layoutColor">
         换色
         <n-switch v-model:value="inverted" />
       </div>
-      <n-menu default-expand-all :default-value="defaultValue" :inverted="inverted" :collapsed-width="64" :collapsed-icon-size="22" :options="routerList" key-field="path" label-field="title" @update:value="gotoRouter" />
+      <n-menu
+        default-expand-all
+        :default-value="defaultValue"
+        :inverted="inverted"
+        :collapsed-width="64"
+        :collapsed-icon-size="22"
+        :options="routerList"
+        key-field="path"
+        label-field="title"
+        @update:value="gotoRouter"
+      />
     </n-layout-sider>
-    <router-view />
+    <!-- 右侧路由内容1 -->
+    <router-view
+      :class="[
+        'router-box',
+        collapsed ? 'router-box-close' : 'router-box-open'
+      ]"
+    />
   </n-layout>
 </template>
 
@@ -18,13 +48,15 @@ import { routes } from '@/router/index'
 import { ref } from 'vue'
 // 导入操作路由方法
 import { useRouter, useRoute } from 'vue-router'
+
 // 注册操作路由方法
 const router = useRouter()
 const route = useRoute()
-// 储存变量
+// 开启对比色(黑暗/白色)
 const inverted = ref(true)
+// 设置展开/收起状态位
 const collapsed = ref(true)
-// 获取当前地址 进行赋值
+// 获取当前地址 用于设置默认选中菜单
 const defaultValue = ref(route.path)
 // 储存处理好的路由菜单
 const routerList = ref([])
@@ -76,6 +108,7 @@ const gotoRouter = (e: string) => {
   router.push(e)
 }
 </script>
+
 <script lang="ts">
 export default {
   name: 'LayOut'
@@ -83,20 +116,27 @@ export default {
 </script>
 <style lang="scss" scoped>
 .layOut {
-  // height: 100vh;
-  // max-width: none;
+  // 设置fixed 使其不随滚动条滚动
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 99;
   height: 100%;
   width: 100%;
-  max-width: none;
   .layoutColor {
     margin-block: 10px;
   }
 }
-:deep(.n-layout-sider .n-layout-sider-scroll-container) {
-  max-width: none;
+.router-box {
+  position: relative;
+  transition: margin-left ease-in-out 0.28s;
+  min-height: 100vh;
+}
+// 开启的时候左边距
+.router-box-open {
+  margin-left: 240px;
+}
+// 关不时候的左边距
+.router-box-close {
+  margin-left: 0px;
 }
 </style>

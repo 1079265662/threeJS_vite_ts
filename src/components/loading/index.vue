@@ -60,7 +60,7 @@ export default {
 <style lang="scss" scoped>
 $pointColor: rgba(255, 255, 255, 1);
 #loading-mask {
-  position: sticky;
+  position: absolute;
   left: 0;
   top: 0;
   user-select: none;

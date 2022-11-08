@@ -29,11 +29,4 @@ export default {
   name: 'LightBall'
 }
 </script>
-<style lang="scss" scoped>
-.canvas {
-  background: #000;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-</style>
+<style lang="scss" scoped></style>

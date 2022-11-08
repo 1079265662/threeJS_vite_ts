@@ -2,7 +2,6 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { getAssetsFile } from '@/utils/getAssetsFile'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 interface domElement {
   appendChild: Document['appendChild']

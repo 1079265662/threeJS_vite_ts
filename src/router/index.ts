@@ -3,7 +3,9 @@ import HomeView from '@/views/dashboard/index.vue'
 // 导入通用配置
 import { viewSettings } from '@/settings'
 /* Layout */
-import Layout from '@/layout/index.vue'
+// import Layout from '@/layout/index.vue'
+// 使用动态导入/懒加载
+const Layout = () => import('@/layout/index.vue')
 
 const routes = [
   {
@@ -74,6 +76,42 @@ const routes = [
         component: () => import('@/views/light_ball/index.vue'),
         meta: {
           title: '小灯球'
+        }
+      },
+      {
+        path: '/pointlight',
+        name: 'PointLight',
+        // 设置按需加载
+        component: () => import('@/views/point_light/index.vue'),
+        meta: {
+          title: '点材质'
+        }
+      }
+    ]
+  },
+  {
+    path: '/css',
+    component: Layout,
+    meta: <any>{
+      title: 'CSS操练场'
+    },
+    children: [
+      {
+        path: '/csstext',
+        name: 'CssText',
+        // 首页无需按需加载
+        component: () => import('@/views/css_menu/css_test/index.vue'),
+        meta: {
+          title: '滚动字体'
+        }
+      },
+      {
+        path: '/loveclick',
+        name: 'LoveClick',
+        // 首页无需按需加载
+        component: () => import('@/views/css_menu/love_click/index.vue'),
+        meta: {
+          title: '一颗爱心'
         }
       }
     ]

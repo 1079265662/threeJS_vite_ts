@@ -1,7 +1,7 @@
 <template>
-  <LoaDing :loadingNumber="loadingNumber" />
-  <!-- <div>{{ loadingNumber }}</div> -->
-  <div class="canvas" ref="stateDom" />
+  <div class="canvas" ref="stateDom">
+    <LoaDing :loadingNumber="loadingNumber" />
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -25,10 +25,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-</style>
+<style lang="scss" scoped></style>

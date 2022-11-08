@@ -1,6 +1,7 @@
 <template>
-  <LoaDing :loadingNumber="loadingNumber" />
-  <div class="canvas" ref="stateDom" />
+  <div ref="stateDom">
+    <LoaDing :loadingNumber="loadingNumber" />
+  </div>
 </template>
 <script setup lang="ts">
 // 导入Vue3的API
@@ -25,11 +26,4 @@ export default {
   name: 'EnvMap'
 }
 </script>
-<style lang="scss" scoped>
-.canvas {
-  background: #000;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-</style>
+<style lang="scss" scoped></style>

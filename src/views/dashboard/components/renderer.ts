@@ -112,13 +112,20 @@ function getters<T extends domElement>(scene: T) {
     }
 
     // 设置属性
-    cubeGeometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+    cubeGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(vertices, 3)
+    )
 
     // 设置随机颜色
     const color = new THREE.Color(Math.random(), Math.random(), Math.random())
 
     // 设置该集合体的纹理材质
-    const cubeMaterial = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: Math.random() }) // 支持CSS颜色设置方式 但是需要字符串格式
+    const cubeMaterial = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: Math.random()
+    }) // 支持CSS颜色设置方式 但是需要字符串格式
 
     // 3. 创建一个网格模型 放入创建的几何体和其自身材质
     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial) // Mesh(几何体, 纹理材质)

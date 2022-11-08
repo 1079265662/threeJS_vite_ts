@@ -28,7 +28,6 @@ module.exports = {
         math: 'always'
       }
     ],
-    'space-before-function-paren': 0,
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     // 设置name时候自动转大小写  ["error", "PascalCase" | "kebab-case"]
