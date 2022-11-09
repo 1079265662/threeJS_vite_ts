@@ -6,7 +6,10 @@ import { viewSettings } from '@/settings'
 // import Layout from '@/layout/index.vue'
 // 使用动态导入/懒加载
 const Layout = () => import('@/layout/index.vue')
-
+// 导入拆分的路由
+import { css_menu } from './modules/css_menu'
+import { threejs_menu } from './modules/threejs_menu'
+import { classic } from './modules/classic'
 const routes = [
   {
     path: '/',
@@ -24,70 +27,16 @@ const routes = [
           title: '破碎的玻璃'
         }
       },
-      {
-        path: '/texture',
-        name: 'TexTure',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/texture/index.vue'),
-        meta: {
-          title: '纹理内容 '
-        }
-      },
-      {
-        path: '/envmap',
-        name: 'EnvMap',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/envmap/index.vue'),
-        meta: {
-          title: '环境贴图'
-        }
-      },
-      {
-        path: '/hdr',
-        name: 'HdR',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/hdr/index.vue'),
-        meta: {
-          title: 'hdr贴图'
-        }
-      },
-      {
-        path: '/shadow',
-        name: 'ShaDow',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/shadow/index.vue'),
-        meta: {
-          title: '物体阴影'
-        }
-      },
-      {
-        path: '/spotlight',
-        name: 'SpotLight',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/spotlight/index.vue'),
-        meta: {
-          title: '聚光灯'
-        }
-      },
-      {
-        path: '/lightball',
-        name: 'LightBall',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/light_ball/index.vue'),
-        meta: {
-          title: '小灯球'
-        }
-      },
-      {
-        path: '/pointlight',
-        name: 'PointLight',
-        // 设置按需加载
-        component: () => import('@/views/threejs_menu/point_light/index.vue'),
-        meta: {
-          title: '点材质'
-        }
-      }
+      ...threejs_menu
     ]
+  },
+  {
+    path: '/classic',
+    component: Layout,
+    meta: <any>{
+      title: 'webgl作品'
+    },
+    children: [...classic]
   },
   {
     path: '/css',
@@ -95,26 +44,7 @@ const routes = [
     meta: <any>{
       title: 'CSS操练场'
     },
-    children: [
-      {
-        path: '/csstext',
-        name: 'CssText',
-        // 首页无需按需加载
-        component: () => import('@/views/css_menu/css_test/index.vue'),
-        meta: {
-          title: '滚动字体'
-        }
-      },
-      {
-        path: '/loveclick',
-        name: 'LoveClick',
-        // 首页无需按需加载
-        component: () => import('@/views/css_menu/love_click/index.vue'),
-        meta: {
-          title: '一颗爱心'
-        }
-      }
-    ]
+    children: [...css_menu]
   }
 ]
 
