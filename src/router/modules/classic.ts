@@ -5,7 +5,7 @@ export const classic = [
     // 设置按需加载
     component: () => import('@/views/classic/sky/index.vue'),
     meta: {
-      title: '星空'
+      title: '下雪啦'
     }
   }
 ]
