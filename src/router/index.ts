@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '@/views/dashboard/index.vue'
+import HomeView from '@/views/threejs_menu/dashboard/index.vue'
 // 导入通用配置
 import { viewSettings } from '@/settings'
 /* Layout */
@@ -28,7 +28,7 @@ const routes = [
         path: '/texture',
         name: 'TexTure',
         // 设置按需加载
-        component: () => import('@/views/texture/index.vue'),
+        component: () => import('@/views/threejs_menu/texture/index.vue'),
         meta: {
           title: '纹理内容 '
         }
@@ -37,7 +37,7 @@ const routes = [
         path: '/envmap',
         name: 'EnvMap',
         // 设置按需加载
-        component: () => import('@/views/envmap/index.vue'),
+        component: () => import('@/views/threejs_menu/envmap/index.vue'),
         meta: {
           title: '环境贴图'
         }
@@ -46,7 +46,7 @@ const routes = [
         path: '/hdr',
         name: 'HdR',
         // 设置按需加载
-        component: () => import('@/views/hdr/index.vue'),
+        component: () => import('@/views/threejs_menu/hdr/index.vue'),
         meta: {
           title: 'hdr贴图'
         }
@@ -55,7 +55,7 @@ const routes = [
         path: '/shadow',
         name: 'ShaDow',
         // 设置按需加载
-        component: () => import('@/views/shadow/index.vue'),
+        component: () => import('@/views/threejs_menu/shadow/index.vue'),
         meta: {
           title: '物体阴影'
         }
@@ -64,7 +64,7 @@ const routes = [
         path: '/spotlight',
         name: 'SpotLight',
         // 设置按需加载
-        component: () => import('@/views/spotlight/index.vue'),
+        component: () => import('@/views/threejs_menu/spotlight/index.vue'),
         meta: {
           title: '聚光灯'
         }
@@ -73,7 +73,7 @@ const routes = [
         path: '/lightball',
         name: 'LightBall',
         // 设置按需加载
-        component: () => import('@/views/light_ball/index.vue'),
+        component: () => import('@/views/threejs_menu/light_ball/index.vue'),
         meta: {
           title: '小灯球'
         }
@@ -82,7 +82,7 @@ const routes = [
         path: '/pointlight',
         name: 'PointLight',
         // 设置按需加载
-        component: () => import('@/views/point_light/index.vue'),
+        component: () => import('@/views/threejs_menu/point_light/index.vue'),
         meta: {
           title: '点材质'
         }

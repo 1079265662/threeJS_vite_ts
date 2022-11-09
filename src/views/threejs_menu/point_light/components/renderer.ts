@@ -2,7 +2,8 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
+// 导入点材质
+import PointMaterial from '@/assets/particles/2.png'
 export class CreateWorld {
   constructor(canvas: any) {
     // 接收传入的画布Dom元素
@@ -34,12 +35,12 @@ export class CreateWorld {
   // 创建场景
   createScene() {
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(0, 5, 20) // 默认没有参数 需要设置参数
+    this.camera.position.set(3, 0, 10) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
     // 声明一个球体
-    const sphere = new THREE.SphereGeometry(3, 20, 20)
+    const sphere = new THREE.SphereGeometry(3, 30, 30)
     // 声明一个标准材质
     const mmaterial = new THREE.MeshStandardMaterial({
       // 开启线框模式
@@ -51,10 +52,20 @@ export class CreateWorld {
     // 添加到场景
     this.scene.add(mesh)
 
+    // 创建材质贴图加载器
+    const loader = new THREE.TextureLoader()
+    // 加载点材质贴图
+    const texture = loader.load(PointMaterial)
+
     // 创建点材质
     const pmaterial = new THREE.PointsMaterial({
-      color: 0xffffff,
-      size: 0.1
+      color: '#ff3040',
+      size: 0.2,
+      transparent: true, // 开启透明度
+      map: texture, // 设置贴图
+      alphaMap: texture, // 设置透明贴图
+      depthWrite: false, // 关闭深度写入(防止点被遮挡)
+      blending: THREE.NormalBlending // 设置混合模式 AdditiveBlending为叠加 NormalBlending 为正常(默认值)
     })
     // 创建点模型
     const points = new THREE.Points(sphere, pmaterial)

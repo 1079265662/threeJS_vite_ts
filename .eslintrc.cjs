@@ -28,6 +28,7 @@ module.exports = {
         math: 'always'
       }
     ],
+    'vue/html-indent': ['off'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     // 设置name时候自动转大小写  ["error", "PascalCase" | "kebab-case"]

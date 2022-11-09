@@ -42,7 +42,11 @@ export class CreateWorld {
   // 创建场景
   createScene() {
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(getCameraData().x || 8, getCameraData().y || 8, getCameraData().z) // 默认没有参数 需要设置参数
+    this.camera.position.set(
+      getCameraData().x || 8,
+      getCameraData().y || 8,
+      getCameraData().z
+    ) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
@@ -162,16 +166,36 @@ export class CreateWorld {
     console.log(SpotLight.distance)
 
     // 设置distance聚焦距离
-    this.gui.add(SpotLight, 'distance').min(1).max(100).step(0.01).name('聚焦距离')
+    this.gui
+      .add(SpotLight, 'distance')
+      .min(1)
+      .max(100)
+      .step(0.01)
+      .name('聚焦距离')
 
     // 设置distance半影效果
-    this.gui.add(SpotLight, 'penumbra').min(0).max(1).step(0.01).name('半影效果')
+    this.gui
+      .add(SpotLight, 'penumbra')
+      .min(0)
+      .max(1)
+      .step(0.01)
+      .name('半影效果')
 
     // 设置灯光亮度
-    this.gui.add(SpotLight, 'intensity').min(0).max(5).step(0.01).name('灯光亮度')
+    this.gui
+      .add(SpotLight, 'intensity')
+      .min(0)
+      .max(5)
+      .step(0.01)
+      .name('灯光亮度')
 
     // 设置灯光的衰减量
-    this.gui.add(SpotLight, 'decay').min(0).max(2).step(0.01).name('灯光的衰减量')
+    this.gui
+      .add(SpotLight, 'decay')
+      .min(0)
+      .max(2)
+      .step(0.01)
+      .name('灯光的衰减量')
 
     // 是否开启物理光照效果
     this.gui.add(this.renderer, 'physicallyCorrectLights').name('物理光照效果')

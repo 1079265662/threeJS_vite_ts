@@ -22,13 +22,13 @@ onMounted(() => {
   gsap
     .timeline({
       scrollTrigger: {
-        trigger: '.g-scroll',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 1
+        trigger: '.g-scroll', // gsap滚动动画触发器
+        start: 'top top', // 开始位置 开始位置为滚动条滚动到触发器顶部时
+        end: 'bottom bottom', // 结束位置 结束位置为滚动条滚动到触发器底部时
+        scrub: 1 // 滚动动画的速度 类似于过度效果
       }
     })
-    .fromTo('.bg', { y: 0 }, { y: '-75%' }, 0)
+    .fromTo('.bg', { translateY: 0 }, { translateY: '-75%' }, 0) // translateY 为垂直方向的位移 从0位移到-75%
 })
 </script>
 <script lang="ts">
@@ -72,28 +72,33 @@ export default {
         #000
       );
       // animation: textScroll 6s infinite linear alternate;
-      mix-blend-mode: darken;
+      mix-blend-mode: darken; // 设置背景 混合模式
       z-index: 1;
     }
   }
-
-  // @keyframes textScroll {
-  //   100% {
-  //     transform: translate(0, -75%);
-  //   }
-  // }
 }
+// @keyframes textScroll {
+//   100% {
+//     transform: translate(0, -75%);
+//   }
+// }
 .g-scroll {
   width: 100vw;
   height: 100vw;
 }
 // .iPhone-box {
-//   display: grid;
-//   place-items: center;
 //   font-size: 48px;
 //   .iPhone-text {
 //     width: 100%;
-//     background: linear-gradient(-4deg, transparent, transparent 25%, #ffb6ff, #b344ff, transparent 75%, transparent);
+//     background: linear-gradient(
+//       -4deg,
+//       transparent,
+//       transparent 25%,
+//       #ffb6ff,
+//       #b344ff,
+//       transparent 75%,
+//       transparent
+//     );
 //     background-clip: text;
 //     -webkit-background-clip: text;
 //     -moz-background-clip: text;
