@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="stateDom" />
-    <n-button class="radio" type="success" @click="radio">
+    <n-button class="radio" type="success" @click="radio" ghost>
       {{ '音 乐' }}
     </n-button>
   </div>
