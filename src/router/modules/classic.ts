@@ -7,5 +7,14 @@ export const classic = [
     meta: {
       title: '下雪啦'
     }
+  },
+  {
+    path: '/galaxy',
+    name: 'GalAxy',
+    // 设置按需加载
+    component: () => import('@/views/classic/galaxy/index.vue'),
+    meta: {
+      title: '银河'
+    }
   }
 ]

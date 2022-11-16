@@ -47,7 +47,7 @@ export class CreateWorld {
     this.camera.position.set(0, 5, 20) // 默认没有参数 需要设置参数
 
     // 封装一个生成雪花方法
-    function snowflake(texture: string, size = 0.3) {
+    const snowflake = (texture: string, size = 0.3) => {
       // 创建贴图材质加载器
       const textureLoader = new THREE.TextureLoader()
 
