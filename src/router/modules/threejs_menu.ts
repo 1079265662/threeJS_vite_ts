@@ -61,5 +61,14 @@ export const threejs_menu = [
     meta: {
       title: '点材质'
     }
+  },
+  {
+    path: '/raycaster',
+    name: 'RayCaster',
+    // 设置按需加载
+    component: () => import('@/views/threejs_menu/raycaster/index.vue'),
+    meta: {
+      title: '光线投射'
+    }
   }
 ]
