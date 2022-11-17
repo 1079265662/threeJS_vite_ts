@@ -36,11 +36,6 @@ export class CreateWorld {
     30
   )
 
-  // 添加音频
-  listener = new THREE.AudioListener()
-  // 创建一个全局 audio 源
-  sound = new THREE.Audio(this.listener)
-
   // 创建场景
   createScene() {
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
@@ -114,16 +109,6 @@ export class CreateWorld {
     const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
     this.scene.add(light)
 
-    // 加载一个 sound 并将其设置为 Audio 对象的缓冲区
-    const audioLoader = new THREE.AudioLoader()
-    audioLoader.load(audio, (buffer) => {
-      this.sound.setBuffer(buffer)
-      this.sound.setLoop(true)
-      this.sound.setVolume(0.5)
-    })
-    // 给相机添加音源
-    this.camera.add(this.listener)
-
     // // 创建一个辅助线
     // const axesHelper = new THREE.AxesHelper(20)
     // this.scene.add(axesHelper)
@@ -160,7 +145,7 @@ export class CreateWorld {
     }
     // 执行创建更新动画的方法
     render()
-
+    this.createAudio()
     // 实现画面变化 更新渲染的内容
     window.addEventListener('resize', () => {
       // 解构window对象
@@ -176,12 +161,32 @@ export class CreateWorld {
     })
   }
 
+  // 添加音频
+  listener = new THREE.AudioListener()
+  // 创建一个全局 audio 源
+  sound = new THREE.Audio(this.listener)
+
+  // 创建音频
+  createAudio() {
+    // 加载一个 sound 并将其设置为 Audio 对象的缓冲区
+    const audioLoader = new THREE.AudioLoader()
+    audioLoader.load(audio, (buffer) => {
+      this.sound.setBuffer(buffer)
+      this.sound.setLoop(true)
+      this.sound.setVolume(0.5)
+    })
+    // 给相机添加音源
+    this.camera.add(this.listener)
+  }
+
   // 销毁渲染内容
   dispose() {
     // 清除渲染器
     this.renderer.dispose()
     // 清除轨道控制器
     this.controls.dispose()
+    // 暂停音乐
+    this.sound.stop()
     // 清除动画
     cancelAnimationFrame(this.animationId)
   }
