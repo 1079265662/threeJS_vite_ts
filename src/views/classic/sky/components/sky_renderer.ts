@@ -185,9 +185,13 @@ export class CreateWorld {
     this.renderer.dispose()
     // 清除轨道控制器
     this.controls.dispose()
-    // 暂停音乐
-    this.sound.stop()
-    // 清除动画
+    // 清除动画id
     cancelAnimationFrame(this.animationId)
+
+    // 判断是否有音乐
+    if (this.sound.isPlaying) {
+      // 暂停音乐
+      this.sound.stop()
+    }
   }
 }
