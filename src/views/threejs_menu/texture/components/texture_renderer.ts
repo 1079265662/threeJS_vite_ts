@@ -96,13 +96,18 @@ function getScene<T extends domElement>(nameCanvas: T) {
     // 设置金属贴图
     metalnessMap: textureMetalness,
     // 导入法线贴图
-    normalMap: textureNormal
+    normalMap: textureNormal,
+    // 设置两面可见
+    side: THREE.DoubleSide
   })
 
   // 创建一个网格模型 放入创建的几何体和其自身材质
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial) // Mesh(几何体, 纹理材质)
   // 设置环境遮挡贴图第二组uv坐标 (就是把第一组uv坐标的值赋值给第二组uv坐标)
-  cube.geometry.setAttribute('uv2', new THREE.Float32BufferAttribute(cube.geometry.attributes.uv.array, 2))
+  cube.geometry.setAttribute(
+    'uv2',
+    new THREE.Float32BufferAttribute(cube.geometry.attributes.uv.array, 2)
+  )
 
   // 将几何体添加到场景中
   scene.add(cube)

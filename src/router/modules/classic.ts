@@ -16,5 +16,14 @@ export const classic = [
     meta: {
       title: '银河'
     }
+  },
+  {
+    path: '/scroll',
+    name: 'ScrOll',
+    // 设置按需加载
+    component: () => import('@/views/classic/scroll/index.vue'),
+    meta: {
+      title: '滚动效果'
+    }
   }
 ]
