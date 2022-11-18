@@ -1,48 +1,18 @@
-// 导入three.js
-import type { Group } from 'three'
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// 导入gsap
+import { gsap } from 'gsap'
+//  导入属性
+import { Global } from './global'
 
-export class CreateWorld {
-  // 绘制canvas的Dom
-  canvas!: any
-  // 轨道控制器
-  controls!: OrbitControls
-  // 设置动画id
-  animationId!: number
-
+export class CreateWorld extends Global {
   constructor(canvas: any) {
+    super()
     // 接收传入的画布Dom元素
     this.canvas = canvas
   }
 
-  // 创建渲染器
-  renderer = new THREE.WebGLRenderer({
-    antialias: true, // 开启锯齿
-    alpha: true // 开启透明
-  })
-  // 设置场景
-  scene = new THREE.Scene()
-  // 设置相机
-  camera = new THREE.PerspectiveCamera(
-    // 视觉角度
-    75,
-    // 相机纵横比 取整个屏幕 宽 / 高
-    window.innerWidth / window.innerHeight,
-    // 相机的进截面 (近距离不可见范围)
-    0.1,
-    // 远截面 (远距离不可见范围)
-    1000
-  )
-  // 创建一个组
-  cubeGroup1 = new THREE.Group()
-  // 创建一个组
-  cubeGroup2 = new THREE.Group()
-  // 创建一个组
-  cubeGroup3 = new THREE.Group()
-  // 设置下一个组的位置
-  nextPosition = 40
   // 创建场景
   createScene = () => {
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
@@ -63,9 +33,19 @@ export class CreateWorld {
     // 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
     this.canvas.appendChild(this.renderer.domElement)
 
-    this.createCube(0, this.cubeGroup1)
-    this.createCube(-this.nextPosition, this.cubeGroup2)
-    this.createCube(-this.nextPosition * 2, this.cubeGroup3)
+    this.createCube({
+      group: this.cubeGroup1
+    })
+    this.createCube({
+      y: -this.nextPosition,
+      x: this.nextOffset,
+      group: this.cubeGroup2
+    })
+    this.createCube({
+      y: -this.nextPosition * 2,
+      x: -this.nextOffset,
+      group: this.cubeGroup3
+    })
 
     this.render()
 
@@ -73,16 +53,18 @@ export class CreateWorld {
 
     this.onWindowResize()
 
-    // this.onScroll()
+    this.onScroll()
   }
 
   // 生成1000个立方体
-  createCube = (far = 0, group: Group) => {
+  createCube = (obj: any) => {
+    const { x = 0, y = 0, z = 0, group } = obj
     // 创建一个立方体
     const geometry = new THREE.BoxGeometry(1, 1, 1) // new THREE.BoxGeometry(宽, 高, 深)
     // 创建一个材质
     const material = new THREE.MeshBasicMaterial({
       color: '#358b71',
+      transparent: true,
       wireframe: true
     })
 
@@ -98,7 +80,7 @@ export class CreateWorld {
         }
       }
     }
-    group.position.set(0, far, 0)
+    group.position.set(x, y, z)
     // 把网格添加到场景中
     this.scene.add(group)
   }
@@ -112,18 +94,17 @@ export class CreateWorld {
     this.controls.dispose()
   }
 
-  clock = new THREE.Clock()
   render = () => {
     this.cubeGroup1.rotation.x = this.clock.getElapsedTime()
-    this.cubeGroup1.rotation.y = this.clock.getElapsedTime()
 
     this.cubeGroup2.rotation.x = -this.clock.getElapsedTime()
     this.cubeGroup2.rotation.y = -this.clock.getElapsedTime()
-    this.cubeGroup2.position.x = Math.sin(this.clock.getElapsedTime()) // 通过时间来改变位置 产生动画效果 通过Math.sin()来实现正弦函数 产生周期性的变化 数值为-1~1之间
+    // this.cubeGroup2.position.x = Math.sin(this.clock.getElapsedTime()) // 通过时间来改变位置 产生动画效果 通过Math.sin()来实现正弦函数 产生周期性的变化 数值为-1~1之间
 
     // this.cubeGroup3.position.x = Math.sin(this.clock.getElapsedTime()) * 10
     this.cubeGroup3.position.z = Math.sin(this.clock.getElapsedTime()) * 25
     // this.cubeGroup3.position. = Math.sin(this.clock.getElapsedTime() * 2)
+
     // 设置阻尼感必须在动画中调用.update()
     // this.controls.update()
     // 移动相机
@@ -136,13 +117,30 @@ export class CreateWorld {
     this.animationId = requestAnimationFrame(this.render)
   }
 
-  // // 监听滚动
-  // onScroll = () => {
-  //   // 滚动监听
-  //   window.addEventListener('scroll', () => {
-  //     // console.log(Math.floor(window.scrollY / window.innerHeight))
-  //   })
-  // }
+  // 监听滚动
+  onScroll = () => {
+    // 滚动监听
+    window.addEventListener('scroll', () => {
+      const scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
+
+      if (scroll !== this.scrollPosition) {
+        this.scrollPosition = scroll
+        console.log(`当前页${this.scrollPosition}`)
+
+        // 设置物体动画
+        gsap.to(this.cubeGroup[scroll].position, {
+          x: 0,
+          duration: 0.5
+        })
+
+        // // 设置页面元素动画
+        gsap.to(`.index${scroll}`, {
+          rotate: '-=360',
+          duration: 0.5
+        })
+      }
+    })
+  }
 
   // 尺寸变化时调整渲染器大小
   onWindowResize = () => {
