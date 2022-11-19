@@ -53,7 +53,7 @@ export class CreateWorld extends Global {
 
     this.onWindowResize()
 
-    this.onScroll()
+    this.watchAddEventListener()
   }
 
   // 生成1000个立方体
@@ -123,41 +123,43 @@ export class CreateWorld extends Global {
     this.animationId = requestAnimationFrame(this.render)
   }
 
-  // 监听
-  onScroll = () => {
-    // 监听鼠标移动
-    window.addEventListener('mousemove', (item) => {
-      this.mouse.x = (item.clientX / window.innerWidth) * 2 - 1
-      // this.mouse.y = item.clientY / window.innerHeight - 0.5
-
-      // 设置页面元素移动
-      gsap.to(`.title${this.scroll}`, {
-        translateX: -this.mouse.x * 100
-      })
+  watchMousemove = (item: MouseEvent) => {
+    this.mouse.x = (item.clientX / window.innerWidth) * 2 - 1
+    // this.mouse.y = item.clientY / window.innerHeight - 0.5
+    // 设置页面元素移动
+    gsap.to(`.title${this.scroll}`, {
+      translateX: -this.mouse.x * 100
     })
+  }
+  watchScroll = () => {
+    this.scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
+
+    if (this.scroll !== this.scrollPosition) {
+      // 赋值当前页数
+      this.scrollPosition = this.scroll
+      console.log(`当前页${this.scrollPosition}`)
+
+      // 设置物体动画
+      gsap.to(this.cubeGroup[this.scroll].position, {
+        x: 0,
+        duration: 0.5
+      })
+
+      // 设置页面元素动画
+      gsap.to(`.index${this.scroll}`, {
+        rotate: '-=360',
+        duration: 0.5
+      })
+    }
+  }
+
+  // 监听
+  watchAddEventListener = () => {
+    // 监听鼠标移动
+    this.element.addEventListener('mousemove', this.watchMousemove)
 
     // 滚动监听
-    window.addEventListener('scroll', () => {
-      this.scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
-
-      if (this.scroll !== this.scrollPosition) {
-        // 赋值当前页数
-        this.scrollPosition = this.scroll
-        console.log(`当前页${this.scrollPosition}`)
-
-        // 设置物体动画
-        gsap.to(this.cubeGroup[this.scroll].position, {
-          x: 0,
-          duration: 0.5
-        })
-
-        // 设置页面元素动画
-        gsap.to(`.index${this.scroll}`, {
-          rotate: '-=360',
-          duration: 0.5
-        })
-      }
-    })
+    window.addEventListener('scroll', this.watchScroll)
   }
 
   // 尺寸变化时调整渲染器大小
@@ -184,6 +186,9 @@ export class CreateWorld extends Global {
     this.renderer.dispose()
     // 清除轨道控制器
     this.controls.dispose()
+    // 销毁监听
+    window.removeEventListener('mousemove', this.watchMousemove)
+    window.removeEventListener('scroll', this.watchScroll)
     // 清除动画
     cancelAnimationFrame(this.animationId)
   }

@@ -40,7 +40,10 @@ export class Global {
   cubeGroup = [this.cubeGroup1, this.cubeGroup2, this.cubeGroup3]
 
   // 绘制canvas的Dom
-  canvas!: HTMLElement | Document
+  canvas!: HTMLElement | Document | Element
+
+  // 监听页面的Dom
+  element = document.querySelector('.canvas-background') as HTMLElement
 
   // 轨道控制器
   controls!: OrbitControls
