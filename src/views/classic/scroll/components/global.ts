@@ -33,6 +33,9 @@ export class Global {
   // 创建一个组
   cubeGroup3 = new THREE.Group()
 
+  // 创建二维向量
+  mouse = new THREE.Vector2()
+
   // 设置组的集合
   cubeGroup = [this.cubeGroup1, this.cubeGroup2, this.cubeGroup3]
 
@@ -53,4 +56,7 @@ export class Global {
 
   // 设置当前滚动的位置
   scrollPosition = 0
+
+  // 当前滚动页数
+  scroll = 0
 }

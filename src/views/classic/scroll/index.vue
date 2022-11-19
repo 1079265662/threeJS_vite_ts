@@ -1,14 +1,14 @@
 <template>
   <div class="canvas-background">
-    <div class="title">
+    <div class="title title0">
       <div class="index0">Ray投射光线1</div>
       <div>基于光线投射Raycaster</div>
     </div>
-    <div class="title">
+    <div class="title title1">
       <div class="index1">Ray投射光线2</div>
       <div>基于光线投射Raycaster</div>
     </div>
-    <div class="title">
+    <div class="title title2">
       <div class="index2">Ray投射光线3</div>
       <div>基于光线投射Raycaster</div>
     </div>
@@ -53,6 +53,7 @@ export default {
     left: 0;
   }
   .title {
+    // transform: rotateX('angle');
     display: flex;
     flex-direction: column;
     position: relative;
@@ -66,5 +67,9 @@ export default {
   // .index1 {
   //   transform: rotate(30deg);
   // }
+  /* ::-webkit-scrollbar {
+  display: none;
+} */
 }
 </style>
+<style></style>

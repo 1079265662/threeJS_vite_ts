@@ -95,6 +95,8 @@ export class CreateWorld extends Global {
   }
 
   render = () => {
+    const clockDelta = this.clock.getDelta()
+
     this.cubeGroup1.rotation.x = this.clock.getElapsedTime()
 
     this.cubeGroup2.rotation.x = -this.clock.getElapsedTime()
@@ -107,6 +109,10 @@ export class CreateWorld extends Global {
 
     // 设置阻尼感必须在动画中调用.update()
     // this.controls.update()
+    // 根据鼠标的位置来改变相机的位置
+    this.camera.position.x +=
+      (this.mouse.x * 10 - this.camera.position.x) * clockDelta
+
     // 移动相机
     this.camera.position.y =
       -(window.scrollY / window.innerHeight) * this.nextPosition // 当前滚动的距离 / 屏幕高度 * 物体间距 下滚动所以是-y 让相机沿着-y轴移动
@@ -117,24 +123,36 @@ export class CreateWorld extends Global {
     this.animationId = requestAnimationFrame(this.render)
   }
 
-  // 监听滚动
+  // 监听
   onScroll = () => {
+    // 监听鼠标移动
+    window.addEventListener('mousemove', (item) => {
+      this.mouse.x = (item.clientX / window.innerWidth) * 2 - 1
+      // this.mouse.y = item.clientY / window.innerHeight - 0.5
+
+      // 设置页面元素移动
+      gsap.to(`.title${this.scroll}`, {
+        translateX: -this.mouse.x * 100
+      })
+    })
+
     // 滚动监听
     window.addEventListener('scroll', () => {
-      const scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
+      this.scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
 
-      if (scroll !== this.scrollPosition) {
-        this.scrollPosition = scroll
+      if (this.scroll !== this.scrollPosition) {
+        // 赋值当前页数
+        this.scrollPosition = this.scroll
         console.log(`当前页${this.scrollPosition}`)
 
         // 设置物体动画
-        gsap.to(this.cubeGroup[scroll].position, {
+        gsap.to(this.cubeGroup[this.scroll].position, {
           x: 0,
           duration: 0.5
         })
 
-        // // 设置页面元素动画
-        gsap.to(`.index${scroll}`, {
+        // 设置页面元素动画
+        gsap.to(`.index${this.scroll}`, {
           rotate: '-=360',
           duration: 0.5
         })

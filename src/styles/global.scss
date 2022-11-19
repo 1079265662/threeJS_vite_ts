@@ -21,3 +21,19 @@ body {
 .dg.ac {
   z-index: $zIndex !important;
 }
+
+/************** 滚动条 **************/
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  background-color: #647ea0;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 5px;
+  background-color: #647ea0;
+}
