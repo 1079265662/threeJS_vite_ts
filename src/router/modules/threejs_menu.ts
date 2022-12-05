@@ -70,5 +70,14 @@ export const threejs_menu = [
     meta: {
       title: '光线投射'
     }
+  },
+  {
+    path: '/physics',
+    name: 'PhySics',
+    // 设置按需加载
+    component: () => import('@/views/threejs_menu/physics/index.vue'),
+    meta: {
+      title: '物理'
+    }
   }
 ]
