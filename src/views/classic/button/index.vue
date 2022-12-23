@@ -3,7 +3,7 @@
     <button>{{ text.replace(/\'/g, '') }}</button>
     <div class="image-box" @mouseenter="viewHover" @mouseleave="viewLeave">
       <div class="view-image" />
-      <div ref="viewImageAfter" x class="view-image-after" />
+      <div ref="viewImageAfter" class="view-image-after" />
     </div>
   </div>
 </template>
