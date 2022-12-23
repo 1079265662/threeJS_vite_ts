@@ -25,5 +25,14 @@ export const classic = [
     meta: {
       title: '滚动效果'
     }
+  },
+  {
+    path: '/button',
+    name: 'ButtOn',
+    // 设置按需加载
+    component: () => import('@/views/classic/button/index.vue'),
+    meta: {
+      title: '赛博风格'
+    }
   }
 ]

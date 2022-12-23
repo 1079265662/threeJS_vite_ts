@@ -132,6 +132,7 @@ export class CreateWorld extends Global {
     })
   }
   watchScroll = () => {
+    // 当前滚动的距离 / 屏幕高度 + 0.2 向上取整 0.2是为了让页面滚动到下一页的时候 有一点点的偏移量
     this.scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
 
     if (this.scroll !== this.scrollPosition) {
