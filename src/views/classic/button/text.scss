@@ -1,17 +1,16 @@
-$yellowColor: #ff3040;
+$redColor: #ff3040;
 $backGroundColor: #000;
 $borderColorr: #8ae66e;
-$backGroundSize: 1000px;
+
 .cyberpunk-text {
   position: relative;
   padding: 5px;
   font-size: 26px;
-  background: #ff3040;
+  background: $redColor;
   padding: 35px;
   padding-right: 10px;
   padding-left: 10px;
   padding-bottom: 30px;
-  // max-width: $backGroundSize;
   line-height: 1.2;
   clip-path: polygon(
     0px 25px,

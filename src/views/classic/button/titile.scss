@@ -1,7 +1,9 @@
+$redColor: #ff3040;
+
 .cyberpunk-title {
   position: relative;
   font-size: 28px;
-  color: #ff3040;
+  color: $redColor;
   width: 100%;
 }
 .cyberpunk-title:before {

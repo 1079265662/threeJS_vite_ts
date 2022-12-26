@@ -127,7 +127,7 @@ button::after {
   // 取消按钮默认点击时的阴影
   outline: none;
   // 设置一个渐变的背景并且进行旋转
-  background: linear-gradient(45deg, transparent 5%, #ff013c 5%);
+  background: linear-gradient(45deg, transparent 5%, #ff3040 5%);
   // 设置右侧阴影
   box-shadow: 6px 0px 0px 0px #00e6f6;
 }
@@ -144,7 +144,7 @@ button::after {
     transparent 3%,
     #00e6f6 3%,
     5%,
-    #ff013c 5%
+    #ff3040 5%
   );
   // 设置字体阴影 上下黄色 左右蓝色
   text-shadow: -3px -3px 0px #f8f005, 3px 3px 0px #00e6f6;
