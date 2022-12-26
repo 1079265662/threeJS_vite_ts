@@ -1,12 +1,17 @@
 // 要把字体设置的大一点否则阴影效果不是很好
-$bigSize: 100px;
-
+$bigSize: 120px;
+@font-face {
+  font-family: "Teko-Light";
+  src: url("https://jinyanlong-1305883696.cos.ap-hongkong.myqcloud.com/font_family/Teko-Light.ttf");
+}
 .flux {
+  font-family: Teko-Light;
   font-size: $bigSize;
   text-shadow: 0 0 3vw #179e05;
   animation: flux 2s linear infinite;
 }
 .neon {
+  font-family: Teko-Light;
   font-size: $bigSize;
   text-shadow: 0 0 3vw #f4bd0a;
   animation: neon 2s ease-in-out infinite;
