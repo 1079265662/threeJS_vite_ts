@@ -21,7 +21,9 @@
         <div ref="viewImageAfter" class="view-image-after" />
       </div>
       <!-- 赛博按钮 -->
-      <button>{{ text.replace(/\'/g, '') }}</button>
+      <a href="https://www.cyberpunk.net/hk/zh-cn/" target="_blank">
+        <button>{{ text.replace(/\'/g, '') }}</button>
+      </a>
     </div>
   </div>
 </template>
@@ -30,7 +32,7 @@
 import { ref } from 'vue'
 
 // 想让伪类选择器content的内容通过v-bind绑定 就需要 "''" 包裹
-const text = ref("'赛博朋克'")
+const text = ref("'赛博朋克2077'")
 // 获取需要剪裁的元素
 const viewImageAfter = ref()
 // 图片的地址
