@@ -8,13 +8,13 @@ $bigSize: 120px;
   font-family: Teko-Light;
   font-size: $bigSize;
   text-shadow: 0 0 3vw #179e05;
-  animation: flux 2s linear infinite;
+  animation: flux 2s steps(2, end) infinite; // 卡住的效果
 }
 .neon {
   font-family: Teko-Light;
   font-size: $bigSize;
   text-shadow: 0 0 3vw #f4bd0a;
-  animation: neon 2s ease-in-out infinite;
+  animation: neon 2s ease-in-out infinite; // 闪烁的效果
 }
 
 // 霓虹效果的动画 通过文字阴影实现

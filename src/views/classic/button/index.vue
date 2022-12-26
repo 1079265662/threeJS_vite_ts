@@ -13,8 +13,14 @@
       <div ref="viewImageAfter" class="view-image-after" />
     </div>
     <!-- 霓虹灯效果 -->
-    <div class="neon">CYBER</div>
-    <div class="flux">PUNK</div>
+    <div>
+      <span class="neon">CYBER</span>
+      <span class="flux">PUNK</span>
+    </div>
+    <div>
+      <span class="neon">Merry&nbsp;</span>
+      <span class="flux">Christmas</span>
+    </div>
   </div>
 </template>
 
