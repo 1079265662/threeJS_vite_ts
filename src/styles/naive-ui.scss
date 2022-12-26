@@ -11,3 +11,6 @@ $textColor: #fff;
 .n-layout-scroll-container {
   background-color: $backGroundColor;
 }
+.n-layout .n-layout-scroll-container {
+  overflow: hidden;
+}

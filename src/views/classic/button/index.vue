@@ -2,7 +2,7 @@
   <div class="cyberpunk-box">
     <!-- 赛博按钮 -->
     <button>{{ text.replace(/\'/g, '') }}</button>
-    <!-- 赛博文字块 -->
+    <!-- 赛博文标题-->
     <div class="cyberpunk-text glitched">
       请求失败
       <span class="cyberpunk-underline">_</span>
@@ -12,6 +12,9 @@
       <div class="view-image" />
       <div ref="viewImageAfter" class="view-image-after" />
     </div>
+    <!-- 霓虹灯效果 -->
+    <div class="neon">CYBER</div>
+    <div class="flux">PUNK</div>
   </div>
 </template>
 
@@ -48,6 +51,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import './titile.scss';
+@import './light.scss';
 // 设置动画剪裁参数
 $slice-0: inset(50% 50% 50% 50%); // 还原不切割
 $slice-1: inset(80% -6px 0 0);

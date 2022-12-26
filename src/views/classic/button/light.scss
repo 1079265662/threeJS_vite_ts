@@ -1,0 +1,41 @@
+// 要把字体设置的大一点否则阴影效果不是很好
+$bigSize: 100px;
+
+.flux {
+  font-size: $bigSize;
+  text-shadow: 0 0 3vw #179e05;
+  animation: flux 2s linear infinite;
+}
+.neon {
+  font-size: $bigSize;
+  text-shadow: 0 0 3vw #f4bd0a;
+  animation: neon 2s ease-in-out infinite;
+}
+
+// 霓虹效果的动画 通过文字阴影实现
+@keyframes neon {
+  0%,
+  100% {
+    text-shadow: 0 0 1vw #fa1c16, 0 0 3vw #fa1c16, 0 0 10vw #fa1c16, 0 0 10vw #fa1c16, 0 0 0.4vw #fed128,
+      0.5vw 0.5vw 0.1vw #806914;
+    color: #fffc00;
+  }
+  50% {
+    text-shadow: 0 0 0.5vw #800e0b, 0 0 1.5vw #800e0b, 0 0 5vw #800e0b, 0 0 5vw #800e0b, 0 0 0.2vw #800e0b,
+      0.5vw 0.5vw 0.1vw #40340a;
+    color: #806914;
+  }
+}
+@keyframes flux {
+  0%,
+  100% {
+    text-shadow: 0 0 1vw #10ff4c, 0 0 3vw #1041ff, 0 0 10vw #1041ff, 0 0 10vw #1041ff, 0 0 0.4vw #8bfdfe,
+      0.5vw 0.5vw 0.1vw #147280;
+    color: #03c03c;
+  }
+  50% {
+    text-shadow: 0 0 0.5vw #024218, 0 0 1.5vw #024713, 0 0 5vw #023812, 0 0 5vw #012707, 0 0 0.2vw #022201,
+      0.5vw 0.5vw 0.1vw #011a06;
+    color: #179e05;
+  }
+}
