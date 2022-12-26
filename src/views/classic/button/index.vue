@@ -1,25 +1,27 @@
 <template>
   <div class="cyberpunk-box">
-    <!-- 赛博按钮 -->
-    <button>{{ text.replace(/\'/g, '') }}</button>
-    <!-- 赛博文标题-->
-    <div class="cyberpunk-text glitched">
-      请求失败
-      <span class="cyberpunk-underline">_</span>
-    </div>
-    <!-- 赛博图片 -->
-    <div class="image-box" @mouseenter="viewHover" @mouseleave="viewLeave">
-      <div class="view-image" />
-      <div ref="viewImageAfter" class="view-image-after" />
-    </div>
-    <!-- 霓虹灯效果 -->
-    <div>
-      <span class="neon">CYBER</span>
-      <span class="flux">PUNK</span>
-    </div>
-    <div>
-      <span class="neon">Merry&nbsp;</span>
-      <span class="flux">Christmas</span>
+    <div class="cyberpunk-main">
+      <!-- 赛博文标题-->
+      <div class="cyberpunk-title glitched">
+        标题请求失败
+        <span class="cyberpunk-underline">_</span>
+      </div>
+      <!-- 霓虹灯效果 -->
+      <div>
+        <span class="neon">CYBER</span>
+        <span class="flux">PUNK</span>
+      </div>
+      <!-- 不规则致幻文本 -->
+      <p class="cyberpunk-text dotted">
+        经典的赛博朋克角色是边缘且性格疏远的独行者。他们生活在社会群体的边缘，一个弥漫反乌托邦氛围的未来：日常生活受到急剧改变的科技影响，普及的计算机化信息笼罩全球，以及侵入性的人体改造。
+      </p>
+      <!-- 赛博图片 -->
+      <div class="image-box" @mouseenter="viewHover" @mouseleave="viewLeave">
+        <div class="view-image" />
+        <div ref="viewImageAfter" class="view-image-after" />
+      </div>
+      <!-- 赛博按钮 -->
+      <button>{{ text.replace(/\'/g, '') }}</button>
     </div>
   </div>
 </template>
@@ -58,6 +60,7 @@ export default {
 <style lang="scss" scoped>
 @import './titile.scss';
 @import './light.scss';
+@import './text.scss';
 // 设置动画剪裁参数
 $slice-0: inset(50% 50% 50% 50%); // 还原不切割
 $slice-1: inset(80% -6px 0 0);
@@ -69,10 +72,17 @@ $slice-5: inset(80% -6px 5% 0);
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  gap: 50px;
   width: 100%;
   background-color: #f2f31f;
+  .cyberpunk-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    height: 100%;
+    width: 1000px;
+  }
 }
 
 // 图片的样式
@@ -95,8 +105,8 @@ $slice-5: inset(80% -6px 5% 0);
 }
 .view-image-after-animation {
   // 设置动画 1s 2帧(步长)
-  animation: 1.5s buttonFrames infinite alternate steps(2, end);
-  // animation-timing-function: steps(2, end);
+  animation: 1.5s buttonFrames infinite alternate steps(2, start);
+  // animation-timing-function: steps(2, start);
 }
 
 // 按钮的样式
@@ -144,8 +154,8 @@ button::after {
 }
 button:hover::after {
   // 设置动画 1s 2帧(步长)
-  animation: 1s buttonFrames steps(2, end);
-  // animation-timing-function: steps(2, end);
+  animation: 1s buttonFrames steps(2, start);
+  // animation-timing-function: steps(2, start);
 }
 // 定义切割动画
 @keyframes buttonFrames {

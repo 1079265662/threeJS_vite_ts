@@ -1,11 +1,10 @@
-.cyberpunk-text {
+.cyberpunk-title {
   position: relative;
   font-size: 28px;
   color: #ff3040;
-  width: 50vw;
-  min-width: 600px;
+  width: 100%;
 }
-.cyberpunk-text:before {
+.cyberpunk-title:before {
   content: "";
   display: block;
   position: absolute;
@@ -16,23 +15,23 @@
   background-color: #000;
   clip-path: polygon(0px 0px, 85px 0px, 90px 5px, 100% 5px, 100% 6px, 85px 6px, 80px 10px, 0px 10px);
 }
-.cyberpunk-text.glitched {
+.cyberpunk-title.glitched {
   animation-name: glitched;
   animation-duration: calc(0.9s * 1.4);
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  animation-timing-function: steps(2, end), cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  animation-timing-function: steps(2, start), cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
-.cyberpunk-text.glitched:before {
+.cyberpunk-title.glitched:before {
   animation-name: beforeglitched;
   animation-duration: calc(0.9s * 2);
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  animation-timing-function: steps(2, end), cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  animation-timing-function: steps(2, start), cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 .cyberpunk-underline {
-  animation: 1s underline infinite steps(2, end), cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  animation: 1s underline infinite steps(2, start), cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
 
 // 下划线动画

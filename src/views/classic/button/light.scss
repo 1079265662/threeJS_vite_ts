@@ -4,11 +4,12 @@ $bigSize: 120px;
   font-family: "Teko-Light";
   src: url("https://jinyanlong-1305883696.cos.ap-hongkong.myqcloud.com/font_family/Teko-Light.ttf");
 }
+
 .flux {
   font-family: Teko-Light;
   font-size: $bigSize;
   text-shadow: 0 0 3vw #179e05;
-  animation: flux 2s steps(2, end) infinite; // 卡住的效果
+  animation: flux 2s steps(2, start) infinite; // 卡住的效果
 }
 .neon {
   font-family: Teko-Light;
