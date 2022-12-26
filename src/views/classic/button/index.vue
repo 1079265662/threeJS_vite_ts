@@ -1,6 +1,13 @@
 <template>
   <div class="cyberpunk-box">
+    <!-- 赛博按钮 -->
     <button>{{ text.replace(/\'/g, '') }}</button>
+    <!-- 赛博文字块 -->
+    <div class="cyberpunk-text glitched">
+      请求失败
+      <span class="cyberpunk-underline">_</span>
+    </div>
+    <!-- 赛博图片 -->
     <div class="image-box" @mouseenter="viewHover" @mouseleave="viewLeave">
       <div class="view-image" />
       <div ref="viewImageAfter" class="view-image-after" />
@@ -40,6 +47,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import './titile.scss';
 // 设置动画剪裁参数
 $slice-0: inset(50% 50% 50% 50%); // 还原不切割
 $slice-1: inset(80% -6px 0 0);
