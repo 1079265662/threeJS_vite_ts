@@ -1,11 +1,17 @@
 // 导入three.js
 import * as THREE from 'three'
-// 导入conoon.js
-import * as CANNON from 'cannon-es'
+// 导入物理世界
+import { CreateConnon } from './cannon_world'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-export class CreateWorld {
+export class CreateWorld extends CreateConnon {
+  constructor(canvas: HTMLElement) {
+    super()
+    // 接收传入的画布Dom元素
+    this.canvas = canvas
+  }
+
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
   // 轨道控制器
@@ -37,17 +43,6 @@ export class CreateWorld {
   // 创建需要物理的模型
   pMesh!: THREE.Mesh
   sphereMesh!: THREE.Mesh
-
-  // 创建物理引擎模型
-  sphereBody!: CANNON.Body
-
-  // 创建物理世界
-  world = new CANNON.World()
-
-  constructor(canvas: any) {
-    // 接收传入的画布Dom元素
-    this.canvas = canvas
-  }
 
   // 创建场景
   createScene = () => {
@@ -106,63 +101,37 @@ export class CreateWorld {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
+
+    // 创建物理效果
     this.createPhysics()
+
     this.render()
+
     this.onAddEventListener()
   }
 
-  // 创建物理效果
-  createPhysics = () => {
-    // 设置重力方向 (x, y, z)
-    this.world.gravity.set(0, -9.82, 0) // 重力加速度 m/s²
-    // 设置物理小球
-    const sphereShape = new CANNON.Sphere(1) // 半径为1的球体
-    // 设置物理小球材质
-    const sphereMaterial = new CANNON.Material() // 默认物理材质
-    // 设置物理小球的刚体
-    this.sphereBody = new CANNON.Body({
-      mass: 1, // 质量
-      position: new CANNON.Vec3(0, 0, 0), // 位置
-      shape: sphereShape, // 形状
-      material: sphereMaterial // 材质
-    })
-    // 将物理小球添加到物理世界中
-    this.world.addBody(this.sphereBody)
-
-    // 设置物理平面
-    const planeShape = new CANNON.Plane() // 平面
-    // 设置物理平面材质
-    const planeMaterial = new CANNON.Material() // 默认物理材质
-    // 设置物理平面的刚体
-    const planeBody = new CANNON.Body({
-      mass: 0, // 质量
-      position: new CANNON.Vec3(0, -5, 0), // 位置
-      quaternion: new CANNON.Quaternion().setFromAxisAngle(
-        new CANNON.Vec3(1, 0, 0), // 设置旋转轴 (x, y, z) x轴旋转
-        -Math.PI / 2 // 旋转-90度
-      ), // 旋转90度
-      shape: planeShape, // 形状
-      material: planeMaterial // 材质
-    })
-    // 将物理平面添加到物理世界中
-    this.world.addBody(planeBody)
-  }
-
-  // 渲染
-  render = () => {
-    // console.log(this.animationId)
+  // 渲染绑定物理引擎
+  renderCannon = () => {
+    // 获取当前时间
     const deltaTime = this.clock.getDelta()
     // 设置物理世界的时间步长
     this.world.step(1 / 60, deltaTime) // 1/60秒更新一次物理世界 60hz刷新率
     // const { x, y, z } = this.sphereBody.position
-    // 把物体绑定物理引擎
+    // 把物体绑定物理引擎 把物理引擎的xyz坐标赋值给three.js物体
     this.sphereMesh.position.set(...this.sphereBody.position.toArray()) // 绑定物理引擎toArray()转换为数组cannon-es自带的方法
+  }
+
+  // 渲染
+  render = () => {
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)
     // 使用动画更新的回调API实现持续更新动画的效果
     this.animationId = requestAnimationFrame(this.render)
+
+    // 绑定物理世界
+    this.renderCannon()
   }
 
   // 尺寸变化时调整渲染器大小

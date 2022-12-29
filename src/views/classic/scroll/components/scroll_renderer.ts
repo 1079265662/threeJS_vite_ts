@@ -7,7 +7,7 @@ import { gsap } from 'gsap'
 import { Global } from './global'
 
 export class CreateWorld extends Global {
-  constructor(canvas: any) {
+  constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
     this.canvas = canvas
@@ -123,6 +123,7 @@ export class CreateWorld extends Global {
     this.animationId = requestAnimationFrame(this.render)
   }
 
+  // 进行镜像移动(相反方向)
   watchMousemove = (item: MouseEvent) => {
     this.mouse.x = (item.clientX / window.innerWidth) * 2 - 1
     // this.mouse.y = item.clientY / window.innerHeight - 0.5
@@ -131,6 +132,8 @@ export class CreateWorld extends Global {
       translateX: -this.mouse.x * 100
     })
   }
+
+  // 进行页面滚动
   watchScroll = () => {
     // 当前滚动的距离 / 屏幕高度 + 0.2 向上取整 0.2是为了让页面滚动到下一页的时候 有一点点的偏移量
     this.scroll = Math.floor(window.scrollY / window.innerHeight + 0.2)
