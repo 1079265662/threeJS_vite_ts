@@ -27,10 +27,10 @@ export const classic = [
     }
   },
   {
-    path: '/button',
-    name: 'ButtOn',
+    path: '/cyberpunk',
+    name: 'CyberPunk',
     // 设置按需加载
-    component: () => import('@/views/classic/button/index.vue'),
+    component: () => import('@/views/classic/cyberpunk/index.vue'),
     meta: {
       title: '赛博风格'
     }

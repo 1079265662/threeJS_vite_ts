@@ -56,7 +56,7 @@ const viewLeave = () => {
 
 <script lang="ts">
 export default {
-  name: 'ButtOn'
+  name: 'CyberPunk'
 }
 </script>
 <style lang="scss" scoped>
