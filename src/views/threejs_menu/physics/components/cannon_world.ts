@@ -2,27 +2,27 @@
 import * as CANNON from 'cannon-es'
 
 export class CreateConnon {
-  // 1. 创建物理引擎模型和物理世界
+  // 创建物理世界 并且设置重力属性
+  world = new CANNON.World({ gravity: new CANNON.Vec3(0, -9.8, 0) }) // 重力加速度 g=9.8m/s^2 向下跌落y轴取反
   // 创建物理引擎模型
   sphereBody!: CANNON.Body
-  // 创建物理世界
-  world = new CANNON.World()
 
   // 创建物理世界
   createPhysics = () => {
     // 设置重力方向 (x, y, z)
-    this.world.gravity.set(0, -9.8, 0) // 重力加速度 g=9.8m/s^2 向下跌落y轴取反
+    // this.world.gravity.set(0, -9.8, 0) // 重力加速度 g=9.8m/s^2 向下跌落y轴取反
 
     // 设置物理小球
     const sphereShape = new CANNON.Sphere(1) // 半径为1的球体
     // 设置物理小球材质
     const sphereMaterial = new CANNON.Material() // 默认物理材质
+
     // 设置物理小球的刚体
     this.sphereBody = new CANNON.Body({
-      mass: 10, // 质量
-      position: new CANNON.Vec3(0, 10, 0), // 位置
-      shape: sphereShape, // 形状
-      material: sphereMaterial // 材质
+      shape: sphereShape, // 物理形状绑定
+      material: sphereMaterial, // 物理材质绑定
+      mass: 1, // 设置物理小球的质量(默认为0，不受重力影响)
+      position: new CANNON.Vec3(0, 15, 0) // 设置物理小球的位置
     })
 
     // 设置物理平面

@@ -34,5 +34,14 @@ export const classic = [
     meta: {
       title: '赛博风格'
     }
+  },
+  {
+    path: '/iphone',
+    name: 'IPhone',
+    // 设置按需加载
+    component: () => import('@/views/classic/iphone/index.vue'),
+    meta: {
+      title: '苹果手机'
+    }
   }
 ]

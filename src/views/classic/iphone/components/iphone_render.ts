@@ -1,14 +1,12 @@
 // 导入three.js
 import * as THREE from 'three'
-// 导入物理世界
-import { CreateConnon } from './cannon_world'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { getAssetsFile } from '@/utils/getAssetsFile'
 
-// 继承物理世界, 创建three.js内容的3D物理世界
-export class CreateWorld extends CreateConnon {
+export class CreateWorld {
   constructor(canvas: HTMLElement) {
-    super()
     // 接收传入的画布Dom元素
     this.canvas = canvas
   }
@@ -24,6 +22,7 @@ export class CreateWorld extends CreateConnon {
   renderer = new THREE.WebGLRenderer({
     antialias: true // 开启锯齿
   })
+
   // 设置场景
   scene = new THREE.Scene()
   // 设置相机
@@ -38,54 +37,52 @@ export class CreateWorld extends CreateConnon {
     1000
   )
 
-  // 创建时钟
-  clock = new THREE.Clock()
-
-  // 创建需要物理的模型
-  pMesh!: THREE.Mesh
-  sphereMesh!: THREE.Mesh
-
   // 创建场景
   createScene = () => {
+    const model = new THREE.Group() //声明一个组对象，用来添加加载成功的三维场景
+    const loader = new GLTFLoader() //创建一个GLTF加载器
+    loader
+      .loadAsync(
+        'https://jinyanlong-1305883696.cos.ap-hongkong.myqcloud.com/gltf/iphone-12.glb'
+      )
+      .then((gltf) => {
+        console.log(gltf)
+        //加载成功后，将场景添加到组对象中
+        model.add(gltf.scene)
+        //将组对象添加到场景中
+        this.scene.add(model)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+
+    // 设置一个cube加载器
+    const envMapLoader = new THREE.CubeTextureLoader()
+    // 加载环境贴图
+    const envMapT = envMapLoader.load([
+      getAssetsFile('environmentMaps/0/px.jpg'),
+      getAssetsFile('environmentMaps/0/nx.jpg'),
+      getAssetsFile('environmentMaps/0/py.jpg'),
+      getAssetsFile('environmentMaps/0/ny.jpg'),
+      getAssetsFile('environmentMaps/0/pz.jpg'),
+      getAssetsFile('environmentMaps/0/nz.jpg')
+    ])
+    // 添加环境贴图
+    this.scene.background = envMapT
+
+    // 修改渲染器编码格式
+    // this.renderer.outputEncoding = THREE.sRGBEncoding
+
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(0, 2, 20) // 默认没有参数 需要设置参数
-    // 把相机添加到场景中
-    this.scene.add(this.camera)
-
-    // 声明一个标准材质
-    const material = new THREE.MeshStandardMaterial({
-      color: '#cbe0e0'
-    })
-    // 声明一个球体
-    const sphere = new THREE.SphereGeometry(1, 20, 20)
-    // 创建网格模型
-    this.sphereMesh = new THREE.Mesh(sphere, material)
-    // 设置阴影
-    this.sphereMesh.castShadow = true
-    // 添加到场景
-    this.scene.add(this.sphereMesh)
-
-    // 声明一个平面
-    const plane = new THREE.PlaneGeometry(20, 20)
-    // 声明一个标准材质
-    const pmaterial = new THREE.MeshStandardMaterial()
-    // 创建网格模型
-    this.pMesh = new THREE.Mesh(plane, pmaterial)
-    // 设置平面的位置
-    this.pMesh.position.set(0, -5, 0)
-    // 设置平面的旋转
-    this.pMesh.rotation.x = -Math.PI / 2 // 旋转90度
-    this.pMesh.receiveShadow = true
-    // 添加到场景
-    this.scene.add(this.pMesh)
+    this.camera.position.set(0, 5, 10) // 默认没有参数 需要设置参数
 
     // 平行光
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-    directionalLight.castShadow = true
-    this.scene.add(directionalLight)
+    // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    // directionalLight.position.set(8, 3, 4)
+    // this.scene.add(directionalLight)
 
     // 环境光
-    const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
+    const light = new THREE.AmbientLight(0xffffff, 1) // soft white light
     this.scene.add(light)
 
     // 创建一个辅助线
@@ -94,7 +91,6 @@ export class CreateWorld extends CreateConnon {
 
     // 设置渲染器(画布)的大小 通过setSize()设置
     this.renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
-    this.renderer.shadowMap.enabled = true
     // 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
     this.canvas.appendChild(this.renderer.domElement)
 
@@ -103,35 +99,18 @@ export class CreateWorld extends CreateConnon {
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
 
-    // 创建物理效果
-    this.createPhysics()
-
     this.render()
-
     this.onAddEventListener()
   }
 
-  // 渲染需要物体物理的three.js物体
-  renderCannon = () => {
-    // 获取动画的时间间隔(每帧的间隔)
-    const deltaTime = this.clock.getDelta()
-    // 更新物理引擎世界里的物体
-    this.world.step(1 / 60, deltaTime) // 1/60秒更新一次物理世界60hz刷新率, deltaTime是时间间隔(更精准)
-    // 把物体绑定物理引擎 把物理引擎的位置赋值给物体
-    this.sphereMesh.position.set(...this.sphereBody.position.toArray()) // 绑定物理引擎toArray()转换为数组cannon-es自带的方法
-  }
-
-  // 渲染
   render = () => {
+    // console.log(this.animationId)
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)
     // 使用动画更新的回调API实现持续更新动画的效果
     this.animationId = requestAnimationFrame(this.render)
-
-    // 绑定物理世界
-    this.renderCannon()
   }
 
   // 尺寸变化时调整渲染器大小
