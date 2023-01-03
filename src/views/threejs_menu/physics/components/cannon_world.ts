@@ -1,11 +1,15 @@
 // 导入conoon.js
 import * as CANNON from 'cannon-es'
-
+// 导入音频
+// import ballAudio from '@/assets/ball/ball_music.mp3'
 export class CreateConnon {
   // 创建物理世界 并且设置重力属性
   world = new CANNON.World({ gravity: new CANNON.Vec3(0, -9.8, 0) }) // 重力加速度 g=9.8m/s^2 向下跌落y轴取反
   // 创建物理引擎模型
   sphereBody!: CANNON.Body
+
+  // 创建球体跌落的音频
+  audio = new Audio('/src/assets/ball/ball_music.mp3')
 
   // 创建物理世界
   createPhysics = () => {
@@ -45,5 +49,19 @@ export class CreateConnon {
     this.world.addBody(this.sphereBody)
     // 将物理平面添加到物理世界中
     this.world.addBody(planeBody)
+    // 监听球体落地
+    this.onSphereBody()
+  }
+
+  // 监听球体刚体落地
+  onSphereBody = () => {
+    // 给球体刚体绑定碰撞事件
+    this.sphereBody.addEventListener('collide', (e: CANNON.Body | any) => {
+      console.log(e.contact.getImpactVelocityAlongNormal())
+      // 获取物体冲击强度 大于5强度时播放音频
+      if (e.contact.getImpactVelocityAlongNormal() > 5) {
+        this.audio.play()
+      }
+    })
   }
 }
