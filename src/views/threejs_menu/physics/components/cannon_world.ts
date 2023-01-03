@@ -1,7 +1,7 @@
 // 导入conoon.js
 import * as CANNON from 'cannon-es'
 // 导入音频
-// import ballAudio from '@/assets/ball/ball_music.mp3'
+import ballAudio from '@/assets/ball/ball_music.mp3'
 export class CreateConnon {
   // 创建物理世界 并且设置重力属性
   world = new CANNON.World({ gravity: new CANNON.Vec3(0, -9.8, 0) }) // 重力加速度 g=9.8m/s^2 向下跌落y轴取反
@@ -9,7 +9,7 @@ export class CreateConnon {
   sphereBody!: CANNON.Body
 
   // 创建球体跌落的音频
-  audio = new Audio('/src/assets/ball/ball_music.mp3')
+  audio = new Audio(ballAudio)
 
   // 创建物理世界
   createPhysics = () => {
