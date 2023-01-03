@@ -27,15 +27,6 @@ export const classic = [
     }
   },
   {
-    path: '/cyberpunk',
-    name: 'CyberPunk',
-    // 设置按需加载
-    component: () => import('@/views/classic/cyberpunk/index.vue'),
-    meta: {
-      title: '赛博风格'
-    }
-  },
-  {
     path: '/iphone',
     name: 'IPhone',
     // 设置按需加载
