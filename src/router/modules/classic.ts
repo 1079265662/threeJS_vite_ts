@@ -27,12 +27,21 @@ export const classic = [
     }
   },
   {
-    path: '/iphone',
-    name: 'IPhone',
+    path: '/cubephysics',
+    name: 'CubePhysics',
     // 设置按需加载
-    component: () => import('@/views/classic/iphone/index.vue'),
+    component: () => import('@/views/classic/cube_physics/index.vue'),
     meta: {
-      title: '苹果手机'
+      title: '物理生成'
     }
   }
+  // {
+  //   path: '/iphone',
+  //   name: 'IPhone',
+  //   // 设置按需加载
+  //   component: () => import('@/views/classic/iphone/index.vue'),
+  //   meta: {
+  //     title: '苹果手机'
+  //   }
+  // }
 ]

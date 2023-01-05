@@ -1,9 +1,10 @@
 // 导入three.js
 import * as THREE from 'three'
 // 导入物理世界
-import { CreateConnon } from './cannon_world'
+import { CreateConnon } from './cube_physics'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import type * as CANNON from 'cannon-es'
 
 // 继承物理世界, 创建three.js内容的3D物理世界
 export class CreateWorld extends CreateConnon {
@@ -45,28 +46,20 @@ export class CreateWorld extends CreateConnon {
   pMesh!: THREE.Mesh
   sphereMesh!: THREE.Mesh
 
+  // 创建的物体包含物理
+  BoxPhysics: { mesh: THREE.Mesh; body: CANNON.Body }[] = []
+
   // 创建场景
   createScene = () => {
+    console.log([...this.vec3Number])
+
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(0, 2, 20) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
-    // 声明一个标准材质
-    const material = new THREE.MeshStandardMaterial({
-      color: '#cbe0e0'
-    })
-    // 声明一个球体
-    const sphere = new THREE.SphereGeometry(1, 20, 20)
-    // 创建网格模型
-    this.sphereMesh = new THREE.Mesh(sphere, material)
-    // 设置阴影
-    this.sphereMesh.castShadow = true
-    // 添加到场景
-    this.scene.add(this.sphereMesh)
-
     // 声明一个平面
-    const plane = new THREE.PlaneGeometry(20, 20)
+    const plane = new THREE.PlaneGeometry(50, 50)
     // 声明一个标准材质
     const pmaterial = new THREE.MeshStandardMaterial()
     // 创建网格模型
@@ -75,13 +68,20 @@ export class CreateWorld extends CreateConnon {
     this.pMesh.position.set(0, -5, 0)
     // 设置平面的旋转
     this.pMesh.rotation.x = -Math.PI / 2 // 旋转90度
+    // 设置平面的阴影
     this.pMesh.receiveShadow = true
     // 添加到场景
     this.scene.add(this.pMesh)
 
     // 平行光
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    const directionalLight = new THREE.SpotLight(0xffffff, 0.8)
+    // 设置光源的位置
+    directionalLight.position.set(0, 10, 0)
+    // 设置光源的阴影
     directionalLight.castShadow = true
+    // 设置阴影的质量
+    directionalLight.shadow.mapSize.set(2048, 2048)
+    // 把光源添加到相机中
     this.scene.add(directionalLight)
 
     // 环境光
@@ -95,6 +95,7 @@ export class CreateWorld extends CreateConnon {
     // 设置渲染器(画布)的大小 通过setSize()设置
     this.renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
     this.renderer.shadowMap.enabled = true
+
     // 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
     this.canvas.appendChild(this.renderer.domElement)
 
@@ -103,12 +104,46 @@ export class CreateWorld extends CreateConnon {
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
 
-    // 创建物理效果
+    // 创建立方体物理效果
+    this.createBoxPhysics()
+
+    // 创建物理效果世界
     this.createPhysics()
 
     this.render()
 
     this.onAddEventListener()
+  }
+
+  // 创建立方体
+  createBox = () => {
+    // 声明一个标准材质
+    const material = new THREE.MeshStandardMaterial({
+      color: Math.random() * 0xffffff // 设置随机颜色
+    })
+    // 声明一个立方体
+    const sphere = new THREE.BoxGeometry(
+      this.vec3Number[0] * 2,
+      this.vec3Number[1] * 2,
+      this.vec3Number[2] * 2
+    )
+    // 创建网格模型
+    this.sphereMesh = new THREE.Mesh(sphere, material)
+    // 设置阴影
+    this.sphereMesh.castShadow = true
+    // 添加到场景
+    this.scene.add(this.sphereMesh)
+  }
+
+  // 设置一个创建物理方块的方法
+  createBoxPhysics = () => {
+    // 创建一个立方体
+    this.createBox()
+    this.createSphereBody()
+    this.BoxPhysics.push({
+      mesh: this.sphereMesh,
+      body: this.sphereBody
+    })
   }
 
   // 渲染需要物体物理的three.js物体
@@ -118,9 +153,14 @@ export class CreateWorld extends CreateConnon {
     // 更新物理引擎世界里的物体
     this.world.step(1 / 60, deltaTime) // 1/60秒更新一次物理世界60hz刷新率, deltaTime是时间间隔(更精准)
     // 把物体绑定物理引擎 把物理引擎的位置赋值给物体
-    this.sphereMesh.position.set(...this.sphereBody.position.toArray()) // 绑定物理引擎toArray()转换为数组cannon-es自带的方法
-    // 把物理引擎的旋转赋值给物体
-    this.sphereMesh.quaternion.set(...this.sphereBody.quaternion.toArray()) // 绑定物理引擎toArray()转换为数组cannon-es自带的方法
+    this.BoxPhysics.forEach((element) => {
+      // 通过循环把物理引擎的位置和旋转赋值给物体
+      element.mesh.position.set(...element.body.position.toArray())
+      element.mesh.quaternion.set(...element.body.quaternion.toArray())
+    })
+    // this.sphereMesh.position.set(...this.sphereBody.position.toArray()) // 绑定物理引擎toArray()转换为数组cannon-es自带的方法
+    // // 把物理引擎的旋转赋值给物体
+    // this.sphereMesh.quaternion.set(...this.sphereBody.quaternion.toArray()) // 绑定物理引擎toArray()转换为数组cannon-es自带的方法
   }
 
   // 渲染
@@ -164,6 +204,8 @@ export class CreateWorld extends CreateConnon {
     this.controls.dispose()
     // 销毁监听
     window.removeEventListener('resize', this.onWindowResize)
+    // 销毁点击
+    // window.removeEventListener('click', this.onAddEclick)
     // 清除动画
     cancelAnimationFrame(this.animationId)
   }
