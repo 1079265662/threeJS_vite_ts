@@ -79,5 +79,14 @@ export const threejs_menu = [
     meta: {
       title: '物理'
     }
+  },
+  {
+    path: '/shader',
+    name: 'ShaDer',
+    // 设置按需加载
+    component: () => import('@/views/threejs_menu/shader/index.vue'),
+    meta: {
+      title: '着色器'
+    }
   }
 ]
