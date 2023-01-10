@@ -2,7 +2,9 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
+// 导入glsl
+import planeFragmentShader from '../glsl/fragmentShader.glsl'
+import planeVertexShader from '../glsl/vertexShader.glsl'
 export class CreateWorld {
   constructor(canvas: HTMLElement) {
     // 接收传入的画布Dom元素
@@ -48,17 +50,9 @@ export class CreateWorld {
     const shader = new THREE.ShaderMaterial({
       // 通过glsl程序实现
       // 顶点着色器 需要设置坐标转换
-      vertexShader: `
-        void main(){
-          gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4( position, 1.0 );;
-        }
-      `,
+      vertexShader: planeVertexShader,
       // 片元着色器
-      fragmentShader: `
-        void main(){
-          gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }
-      `
+      fragmentShader: planeFragmentShader
     })
 
     // 创建网格模型
