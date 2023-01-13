@@ -2,7 +2,7 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-// 导入glsl
+// 引入glsl
 import planeFragmentShader from '../glsl/fragmentShader.glsl'
 import planeVertexShader from '../glsl/vertexShader.glsl'
 export class CreateWorld {
