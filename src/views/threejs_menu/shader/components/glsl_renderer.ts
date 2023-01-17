@@ -43,11 +43,13 @@ export class CreateWorld {
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
+    console.log(this.scene)
+
     // 声明一个面
     const plane = new THREE.PlaneGeometry(1, 1)
 
     // 声明一个着色器材质
-    const shader = new THREE.ShaderMaterial({
+    const rawShader = new THREE.RawShaderMaterial({
       // 通过glsl程序实现
       // 顶点着色器 需要设置坐标转换
       vertexShader: planeVertexShader,
@@ -56,7 +58,7 @@ export class CreateWorld {
     })
 
     // 创建网格模型
-    const mesh = new THREE.Mesh(plane, shader)
+    const mesh = new THREE.Mesh(plane, rawShader)
     // 添加到场景
     this.scene.add(mesh)
 
