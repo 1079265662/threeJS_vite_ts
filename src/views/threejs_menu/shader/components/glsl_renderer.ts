@@ -5,6 +5,9 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // 引入glsl
 import planeFragmentShader from '../glsl/fragmentShader.glsl'
 import planeVertexShader from '../glsl/vertexShader.glsl'
+// 引入贴图
+import usaTexture from '@/assets/material/usa.png'
+
 export class CreateWorld {
   constructor(canvas: HTMLElement) {
     // 接收传入的画布Dom元素
@@ -35,6 +38,11 @@ export class CreateWorld {
     // 远截面 (远距离不可见范围)
     1000
   )
+  // 创建three.js的时钟
+  clock = new THREE.Clock()
+
+  // 原始着色器变量
+  rawShader!: THREE.RawShaderMaterial
 
   // 创建场景
   createScene = () => {
@@ -43,22 +51,34 @@ export class CreateWorld {
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
-    console.log(this.scene)
+    // 加载贴图
+    const usaTextureLoader = new THREE.TextureLoader().load(usaTexture)
 
     // 声明一个面
-    const plane = new THREE.PlaneGeometry(1, 1)
+    const plane = new THREE.PlaneGeometry(3, 2, 32, 32)
 
     // 声明一个着色器材质
-    const rawShader = new THREE.RawShaderMaterial({
+    this.rawShader = new THREE.RawShaderMaterial({
       // 通过glsl程序实现
       // 顶点着色器 需要设置坐标转换
       vertexShader: planeVertexShader,
       // 片元着色器
-      fragmentShader: planeFragmentShader
+      fragmentShader: planeFragmentShader,
+      // 开启线性
+      // wireframe: true,
+      // 设置双面
+      side: THREE.DoubleSide,
+      // 给着色器传递uniforms顶点参数
+      uniforms: {
+        time: { value: 0 },
+        uTexture: {
+          value: usaTextureLoader
+        }
+      }
     })
-
+    console.log(this.rawShader)
     // 创建网格模型
-    const mesh = new THREE.Mesh(plane, rawShader)
+    const mesh = new THREE.Mesh(plane, this.rawShader)
     // 添加到场景
     this.scene.add(mesh)
 
@@ -91,6 +111,10 @@ export class CreateWorld {
 
   render = () => {
     // console.log(this.animationId)
+    // console.log(this.clock.getElapsedTime())
+    // 设置着色器中的时间变量, 传递给着色器
+    this.rawShader.uniforms.time.value = this.clock.getElapsedTime()
+    //
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
     // 使用渲染器,通过相机将场景渲染出来
