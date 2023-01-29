@@ -86,7 +86,16 @@ export const threejs_menu = [
     // 设置按需加载
     component: () => import('@/views/threejs_menu/shader/index.vue'),
     meta: {
-      title: '着色器'
+      title: '国旗着色器'
+    }
+  },
+  {
+    path: '/shaderother',
+    name: 'ShaDerOther',
+    // 设置按需加载
+    component: () => import('@/views/threejs_menu/shaderother/index.vue'),
+    meta: {
+      title: '着色器形状'
     }
   }
 ]
