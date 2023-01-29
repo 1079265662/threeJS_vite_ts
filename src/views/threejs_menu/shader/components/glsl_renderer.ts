@@ -7,6 +7,11 @@ import planeFragmentShader from '../glsl/fragmentShader.glsl'
 import planeVertexShader from '../glsl/vertexShader.glsl'
 // 引入贴图
 import usaTexture from '@/assets/material/usa.png'
+// 导入加载方法
+// import { loading } from '@/utils/loading'
+// 导入Vue响应式
+import { ref } from 'vue'
+const loadingNumber = ref(0)
 
 export class CreateWorld {
   constructor(canvas: HTMLElement) {
@@ -52,7 +57,9 @@ export class CreateWorld {
     this.scene.add(this.camera)
 
     // 加载贴图
-    const usaTextureLoader = new THREE.TextureLoader().load(usaTexture)
+    const usaTextureLoader = new THREE.TextureLoader().load(usaTexture, () => {
+      loadingNumber.value = 100
+    })
 
     // 声明一个面
     const plane = new THREE.PlaneGeometry(3, 2, 32, 32)
@@ -76,7 +83,6 @@ export class CreateWorld {
         }
       }
     })
-    console.log(this.rawShader)
     // 创建网格模型
     const mesh = new THREE.Mesh(plane, this.rawShader)
     // 添加到场景
@@ -153,5 +159,7 @@ export class CreateWorld {
     window.removeEventListener('resize', this.onWindowResize)
     // 清除动画
     cancelAnimationFrame(this.animationId)
+    loadingNumber.value = 0
   }
 }
+export { loadingNumber }

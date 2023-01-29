@@ -1,13 +1,14 @@
 <template>
   <div>
     <div ref="stateDom" />
+    <LoaDing :loadingNumber="loadingNumber" />
   </div>
 </template>
 <script setup lang="ts">
 // 导入Vue3的API
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 //导入绘制和销毁
-import { CreateWorld } from './components/glsl_renderer'
+import { CreateWorld, loadingNumber } from './components/glsl_renderer'
 
 // 获取Dom
 const stateDom = ref()
