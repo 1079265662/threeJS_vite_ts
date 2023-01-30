@@ -2,6 +2,9 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// 引入glsl
+import planeVertexShader from '../glsl/vertexShader.glsl'
+import planeFragmentShader from '../glsl/fragmentShader.glsl'
 
 export class CreateWorld {
   constructor(canvas: HTMLElement) {
@@ -42,13 +45,22 @@ export class CreateWorld {
     this.scene.add(this.camera)
 
     // 声明一个球体
-    const sphere = new THREE.SphereGeometry(1, 20, 20)
+    const sphere = new THREE.PlaneGeometry(5, 5, 32, 32)
 
     // 声明一个标准材质
-    const mmaterial = new THREE.MeshStandardMaterial()
+    const mmaterial = new THREE.RawShaderMaterial({
+      // 设置双面显示
+      side: THREE.DoubleSide,
+      // 顶点着色器 需要设置坐标转换
+      vertexShader: planeVertexShader,
+      // 片元着色器
+      fragmentShader: planeFragmentShader
+    })
 
     // 创建网格模型
     const mesh = new THREE.Mesh(sphere, mmaterial)
+    console.log(mmaterial)
+
     // 添加到场景
     this.scene.add(mesh)
 

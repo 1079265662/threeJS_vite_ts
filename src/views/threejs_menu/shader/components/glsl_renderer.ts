@@ -73,7 +73,7 @@ export class CreateWorld {
       fragmentShader: planeFragmentShader,
       // 开启线性
       // wireframe: true,
-      // 设置双面
+      // 设置双面显示
       side: THREE.DoubleSide,
       // 给着色器传递uniforms顶点参数
       uniforms: {
