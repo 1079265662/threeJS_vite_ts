@@ -151,14 +151,19 @@ export class CreateWorld {
 
   // 销毁渲染内容
   dispose = () => {
-    // 清除渲染器
-    this.renderer.dispose()
+    // 清除场景
+    this.scene.clear()
     // 清除轨道控制器
     this.controls.dispose()
-    // 销毁监听
-    window.removeEventListener('resize', this.onWindowResize)
+    // 清除渲染器
+    this.renderer.dispose()
+    // 释放内存
+    // this.renderer.forceContextLoss()
     // 清除动画
     cancelAnimationFrame(this.animationId)
+    // 销毁监听
+    window.removeEventListener('resize', this.onWindowResize)
+
     loadingNumber.value = 0
   }
 }

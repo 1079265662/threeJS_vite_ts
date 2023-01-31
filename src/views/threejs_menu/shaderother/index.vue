@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="stateDom" />
+    <div class="black" ref="stateDom" />
   </div>
 </template>
 <script setup lang="ts">
