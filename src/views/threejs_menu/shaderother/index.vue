@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="black" ref="stateDom" />
+    <div class="canvas-background" ref="stateDom" />
   </div>
 </template>
 <script setup lang="ts">

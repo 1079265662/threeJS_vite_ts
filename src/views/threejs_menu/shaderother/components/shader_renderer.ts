@@ -85,12 +85,17 @@ export class CreateWorld extends createView {
   }
 
   render = () => {
-    // console.log(this.camera.position)
+    const clockDelta = this.clock.getDelta()
+    const clockTime = this.clock.getElapsedTime()
 
-    this.mmaterial.uniforms.time.value = this.clock.getElapsedTime()
-    // console.log(this.animationId)
+    this.mmaterial.uniforms.time.value = clockTime
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
+
+    // 根据鼠标的位置来改变相机的位置
+    this.camera.position.x +=
+      (this.mouse.x * 0.3 - this.camera.position.x) * clockDelta
+
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)
     // 使用动画更新的回调API实现持续更新动画的效果
@@ -146,6 +151,7 @@ export class CreateWorld extends createView {
     // this.renderer.forceContextLoss()
     // 清除动画
     cancelAnimationFrame(this.animationId)
+    window.removeEventListener('mousemove', this.mouseMove)
     // 销毁监听
     window.removeEventListener('resize', this.onWindowResize)
   }
