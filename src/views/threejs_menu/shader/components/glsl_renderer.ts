@@ -1,3 +1,7 @@
+/**
+ * 执行渲染的操作
+ */
+
 // 导入three.js
 import * as THREE from 'three'
 // 导入轨道控制器
@@ -7,8 +11,7 @@ import planeFragmentShader from '../glsl/fragmentShader.glsl'
 import planeVertexShader from '../glsl/vertexShader.glsl'
 // 引入贴图
 import usaTexture from '@/assets/material/usa.png'
-// 导入加载方法
-// import { loading } from '@/utils/loading'
+
 // 导入Vue响应式
 import { ref } from 'vue'
 const loadingNumber = ref(0)

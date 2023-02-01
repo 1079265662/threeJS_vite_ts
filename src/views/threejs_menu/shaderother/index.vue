@@ -19,6 +19,7 @@ onMounted(() => {
   Three = new CreateWorld(stateDom.value)
   // 传递页面Dom 绘制three.js
   Three.createScene()
+  console.log(Three)
 })
 
 onBeforeUnmount(() => {
