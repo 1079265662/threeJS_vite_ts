@@ -85,14 +85,17 @@ export class CreateWorld extends createView {
   }
 
   render = () => {
+    // 获得上次调用的clock时间间隙
     const clockDelta = this.clock.getDelta()
+    // 获得动画执行时间
     const clockTime = this.clock.getElapsedTime()
 
+    // 赋值给uniforms动画执行时间
     this.mmaterial.uniforms.time.value = clockTime
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
 
-    // 根据鼠标的位置来改变相机的位置
+    // 根据鼠标的位置来改变相机的位置  x轴移动 往反方向移动*3是加大偏移量 *clockDelta是为了让动画更加平滑随着动画帧数的推移
     this.camera.position.x +=
       (this.mouse.x * 0.3 - this.camera.position.x) * clockDelta
 
@@ -120,23 +123,6 @@ export class CreateWorld extends createView {
   onAddEventListener = () => {
     // 实现画面变化 更新渲染的内容
     window.addEventListener('resize', this.onWindowResize)
-  }
-
-  /**
-   * 计算相机 fov 的函数
-   * @param d : 在相机前方 d 距离
-   * @param w : 想要看到最大正方形区域边长为 w
-   * @param r : 屏幕宽高比
-   */
-  // 自适应相机
-  calcFov = (d: number, w: number, r: number) => {
-    let f = 0
-    let vertical = w
-    if (r < 1) {
-      vertical = vertical / r
-    }
-    f = Math.atan(vertical / d / 2) * 2 * (180 / Math.PI)
-    return f
   }
 
   // 销毁渲染内容
