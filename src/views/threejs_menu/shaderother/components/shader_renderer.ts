@@ -92,14 +92,14 @@ export class CreateWorld extends createView {
     // 获得动画执行时间
     const clockTime = this.clock.getElapsedTime()
 
+    // 根据鼠标的位置来改变相机的位置  x轴移动 往反方向移动*3是加大偏移量 *clockDelta是为了让动画更加平滑随着动画帧数的推移
+    this.camera.position.x +=
+      (this.mouse.x * 0.3 - this.camera.position.x) * clockDelta
+
     // 赋值给uniforms动画执行时间
     this.mmaterial.uniforms.time.value = clockTime
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
-
-    // 根据鼠标的位置来改变相机的位置  x轴移动 往反方向移动*3是加大偏移量 *clockDelta是为了让动画更加平滑随着动画帧数的推移
-    this.camera.position.x +=
-      (this.mouse.x * 0.3 - this.camera.position.x) * clockDelta
 
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)

@@ -26,16 +26,19 @@ export class createView extends Type {
       z: 0.6,
       duration: 3,
       ease: 'power2.out',
-      // 完成后执行监听鼠标哦
+      // 完成后执行监听鼠标
       onComplete: () => {
-        this.element.addEventListener('mousemove', this.mouseMove)
+        this.mouseMoveStart()
       }
     })
-    // 移动相机
-    // this.camera.position.set(0.0, -4.5, 0.6) // 默认没有参数 需要设置参数
   }
 
-  // 鼠标移动效果
+  // 开始鼠标移动监听
+  mouseMoveStart = () => {
+    this.element.addEventListener('mousemove', this.mouseMove)
+  }
+
+  // 鼠标移动监听效果
   mouseMove = (item: MouseEvent) => {
     // 获得鼠标的位置 -1 ~ 1
     this.mouse.x = (item.clientX / window.innerWidth) * 2 - 1 // -1 ~ 1

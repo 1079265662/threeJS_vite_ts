@@ -32,4 +32,7 @@ export class Type {
     // 远截面 (远距离不可见范围)
     1000
   )
+
+  // 创建时钟
+  clock = new THREE.Clock()
 }
