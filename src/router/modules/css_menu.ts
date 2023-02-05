@@ -34,5 +34,14 @@ export const css_menu = [
     meta: {
       title: '一颗爱心'
     }
+  },
+  {
+    path: '/water',
+    name: 'WatEr',
+    // 首页无需按需加载
+    component: () => import('@/views/css_menu/water/index.vue'),
+    meta: {
+      title: '水波效果'
+    }
   }
 ]

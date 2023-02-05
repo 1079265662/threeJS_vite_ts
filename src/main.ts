@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
+// 导入自定义指令
+import { water } from './directives'
 // 导入清除默认样式css
 import 'reset-css'
 // 导入Naive UI全局样式
@@ -22,9 +24,12 @@ const ret = {
   }
 }
 
-const app = createApp(App)
+export const app = createApp(App)
 app.component('LoaDing', loading)
 app.use(createPinia())
 app.use(router)
 app.use(ret)
 app.mount('#app')
+
+// 调用自定义指令
+water(app)
