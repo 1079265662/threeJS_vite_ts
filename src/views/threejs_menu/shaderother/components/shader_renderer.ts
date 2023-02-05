@@ -39,8 +39,10 @@ export class CreateWorld extends createView {
     // 声明一个球体
     const sphere = new THREE.PlaneGeometry(8, 8, 32, 32)
 
-    // 声明一个标准材质
+    // 声明一个着色器材质
     this.mmaterial = new THREE.RawShaderMaterial({
+      // 设置透明
+      transparent: true,
       // 设置双面显示
       side: THREE.DoubleSide,
       // 顶点着色器 需要设置坐标转换

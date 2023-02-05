@@ -67,6 +67,6 @@ void main() {
   float colorY = step(0.8, mod(vUv.y * 10.0 + time, 1.0)) * step(0.2, mod(vUv.x * 10.0, 1.0));
   float colorXY = colorX + colorY;
   // 可以作为筛选设置透明度, 因为setp()函数返回0或1
-  gl_FragColor = vec4(vUv, 1.0, colorXY);
+  gl_FragColor = vec4(vUv, 1, step(0.1, colorXY));
 
 }
