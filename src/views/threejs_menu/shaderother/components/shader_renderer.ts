@@ -41,7 +41,7 @@ export class CreateWorld extends createView {
 
     // 声明一个着色器材质
     this.mmaterial = new THREE.RawShaderMaterial({
-      // 设置透明
+      // 设置透明设置, 默认Material使用带有 RGB 的渲染目标格式。需要设置RGBA带有透明的渲染目标格式
       transparent: true,
       // 设置双面显示
       side: THREE.DoubleSide,
