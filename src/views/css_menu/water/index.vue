@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <div v-focus class="ripple-effect">Button</div>
+  <div class="button-out">
+    <div class="ripple-water-global" />
+    <div v-focus class="button-water">Button</div>
   </div>
 </template>
 <script lang="ts" setup></script>
@@ -10,21 +11,20 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.ripple-effect {
-  position: absolute;
-  background-color: white;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  animation: scale 0.5s ease-out;
-}
-
-/* 水波涟漪逐渐放大并慢慢消失 */
-@keyframes scale {
-  to {
-    transform: translate(-50%, -50%) scale(3);
-    opacity: 0;
+.button-out {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .button-water {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    border: 2px solid #95e3cc;
+    background-color: #13295a;
+    user-select: none;
   }
 }
 </style>
