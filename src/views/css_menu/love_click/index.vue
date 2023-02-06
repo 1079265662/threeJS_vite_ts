@@ -1,8 +1,10 @@
 <template>
-  <div
-    :class="['loveBox', 'loveRed', loveState ? 'loveBoxAdm' : '']"
-    @click="loveThis"
-  />
+  <div class="out-love">
+    <div
+      :class="['loveBox', 'loveRed', loveState ? 'loveBoxAdm' : '']"
+      @click="loveThis"
+    />
+  </div>
 </template>
 <script lang="ts" setup>
 import { reactive, toRefs } from 'vue'
@@ -32,6 +34,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.out-love {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
 // 设置爱心小盒子
 .loveBox {
   height: 100%;

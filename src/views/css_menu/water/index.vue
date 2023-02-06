@@ -1,13 +1,13 @@
 <template>
   <div class="button-out">
-    <div v-focus class="button-water">Button</div>
-    <div v-focus>
+    <div v-waterClick class="button-water">Button</div>
+    <!-- <div v-focus>
       <img
         width="600"
         height="350"
         src="https://jinyanlong-1305883696.cos.ap-hongkong.myqcloud.com/202302061553712.jpeg"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 <script lang="ts" setup></script>
@@ -28,7 +28,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: 200px;
     height: 50px;
     border: 2px solid #95e3cc;
     background-color: #13295a;

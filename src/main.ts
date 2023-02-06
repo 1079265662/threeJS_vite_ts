@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 // 导入自定义指令
-import { water } from './directives'
+import { waterClick } from './directives'
 // 导入清除默认样式css
 import 'reset-css'
 // 导入Naive UI全局样式
@@ -31,5 +31,24 @@ app.use(router)
 app.use(ret)
 app.mount('#app')
 
-// 调用自定义指令
-water(app)
+// 给对象声明一个接口, 规定遍历的时候key为string类型, value为any类型
+interface EachKey {
+  [key: string]: any
+}
+
+// 批量注册自定义指令, 绑定接口属性
+const directives: EachKey = {
+  waterClick
+}
+
+// 批量注册自定义指令, 绑定接口规定的类型
+for (const key in directives) {
+  // 这个时候自定义指令的名称为v-key的名称
+  app.directive(key, directives[key])
+}
+
+// Object.keys把对象的key转换为数组,然后进行数组遍历, 注册自定义指令
+// Object.keys(directives).forEach((key) => {
+// 这个时候自定义指令的名称为v-key的名称
+//   app.directive(key, directives[key]) // 注册自定义指令
+// })
