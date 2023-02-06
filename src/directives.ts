@@ -32,8 +32,6 @@ export const water = (app: any) => {
           const x = localX - radius
           const y = localY - radius
 
-          console.log(x, y, centerX, centerY, size)
-
           return { x, y, centerX, centerY, size }
         }
 
