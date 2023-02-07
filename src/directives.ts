@@ -1,7 +1,7 @@
 export const waterClick = {
   mounted(el: HTMLElement) {
     el.addEventListener('mousedown', (event) => {
-      // 计算出水波的样式
+      // 计算出水波的参数
       const computeRippleStyles = (el: HTMLElement, event: MouseEvent) => {
         const { top, left } = el.getBoundingClientRect()
         const { clientWidth, clientHeight } = el
@@ -29,7 +29,6 @@ export const waterClick = {
 
       // 创建水波
       const createRipple = () => {
-        // const container = this
         const { x, y, centerX, centerY, size } = computeRippleStyles(el, event)
         const ripple = document.createElement('div')
         ripple.classList.add('ripple-water-global')
@@ -78,6 +77,7 @@ export const waterClick = {
         }, delay)
       }
 
+      // 鼠标按下后, 执行水波
       createRipple()
     })
   }

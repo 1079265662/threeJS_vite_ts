@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+// 导入App.vue
 import App from './App.vue'
 import router from './router'
 // 导入自定义指令
