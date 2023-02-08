@@ -8,6 +8,11 @@ uniform float time;
 // 设置变量
 float color;
 
+// 伪随机方法
+float random(vec2 st) {
+  return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
 void main() {
 
   // 利用uv实现渐变效果, 从左到右
@@ -60,13 +65,31 @@ void main() {
   // color = abs(vUv.x - 0.5);
   // gl_FragColor = vec4(color, color, color, 1.0);
 
-  // 设置一个箭头效果
-  // 设置x轴
-  float colorX = step(0.8, mod(vUv.x * 10.0 + time, 1.0)) * step(0.2, mod(vUv.y * 10.0 + time, 1.0));
-  // 设置y轴
-  float colorY = step(0.8, mod(vUv.y * 10.0 + time, 1.0)) * step(0.2, mod(vUv.x * 10.0, 1.0));
-  float colorXY = colorX + colorY;
-  // 可以作为筛选设置透明度, 因为setp()函数返回0或1
-  gl_FragColor = vec4(vUv, 1, step(0.1, colorXY));
+  // 利用绝对值abs()取最小值min()实现渐变效果
+  // float color = min(abs(vUv.x - 0.5), abs(vUv.y - 0.5));
+  // gl_FragColor = vec4(color, color, color, 1.0);
 
+  // 取最大值
+  // float color = 0.5 - max(abs(vUv.x - 0.5), abs(vUv.y - 0.5));
+  // gl_FragColor = vec4(color, color, color, 1.0);
+
+  // 补偿和最大值效果
+  // float color = 1.0 - step(0.2, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
+  // gl_FragColor = vec4(color, color, color, 1.0);
+
+  // 向下取整, 获得x轴条纹
+  // float color = floor(vUv.x * 10.0) / 10.0;
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 向下取整, XY轴条纹, 两者相乘
+  // float color = floor(vUv.x * 10.0) / 10.0 * floor(vUv.y * 10.0) / 10.0;
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 向上取整, XY轴条纹, 两者相乘
+  // float color = ceil(vUv.x * 10.0) / 10.0 * ceil(vUv.y * 10.0) / 10.0;
+
+// 随机数
+  // 随机数
+  float color = random(vUv + time);
+  gl_FragColor = vec4(color, color, color, 1);
 }

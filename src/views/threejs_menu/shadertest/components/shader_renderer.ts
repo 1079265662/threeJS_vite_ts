@@ -52,6 +52,7 @@ export class CreateWorld extends createdRender {
     const mesh = new THREE.Mesh(sphere, this.mmaterial)
     // console.log(mmaterial)
 
+    this.scene.background = new THREE.Color('#1e1b20')
     // 添加到场景
     this.scene.add(mesh)
 
@@ -73,7 +74,7 @@ export class CreateWorld extends createdRender {
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
     // 禁用轨道控制器
-    this.controls.enabled = false
+    // this.controls.enabled = false
 
     this.render()
     this.onAddEventListener()

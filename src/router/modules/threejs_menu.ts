@@ -95,7 +95,7 @@ export const threejs_menu = [
     // 设置按需加载
     component: () => import('@/views/threejs_menu/shadertest/index.vue'),
     meta: {
-      title: '国旗着色器'
+      title: '着色器学习'
     }
   }
 ]
