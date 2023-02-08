@@ -90,12 +90,12 @@ export const threejs_menu = [
     }
   },
   {
-    path: '/shaderother',
-    name: 'ShaDerOther',
+    path: '/shadertest',
+    name: 'ShaDerTest',
     // 设置按需加载
-    component: () => import('@/views/threejs_menu/shaderother/index.vue'),
+    component: () => import('@/views/threejs_menu/shadertest/index.vue'),
     meta: {
-      title: '着色器形状'
+      title: '国旗着色器'
     }
   }
 ]

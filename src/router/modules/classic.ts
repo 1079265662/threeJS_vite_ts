@@ -34,6 +34,15 @@ export const classic = [
     meta: {
       title: '物理生成'
     }
+  },
+  {
+    path: '/shaderother',
+    name: 'ShaDerOther',
+    // 设置按需加载
+    component: () => import('@/views/threejs_menu/shaderother/index.vue'),
+    meta: {
+      title: '着色器地板'
+    }
   }
   // {
   //   path: '/iphone',
