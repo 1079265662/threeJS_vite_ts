@@ -1,12 +1,11 @@
 // 设置精度
 precision mediump float;
 
-// 接收公共值
+// 接收three.js公共值
 varying vec2 vUv;
-uniform float time;
 
-// 设置变量
-float color;
+// 接收three.js传递的值(时间)
+uniform float time;
 
 // 伪随机方法
 float random(vec2 st) {
@@ -69,7 +68,7 @@ void main() {
   // float color = min(abs(vUv.x - 0.5), abs(vUv.y - 0.5));
   // gl_FragColor = vec4(color, color, color, 1.0);
 
-  // 取最大值
+  // max()取最大值
   // float color = 0.5 - max(abs(vUv.x - 0.5), abs(vUv.y - 0.5));
   // gl_FragColor = vec4(color, color, color, 1.0);
 
@@ -77,19 +76,32 @@ void main() {
   // float color = 1.0 - step(0.2, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
   // gl_FragColor = vec4(color, color, color, 1.0);
 
-  // 向下取整, 获得x轴条纹
+  // float()向下取整, 获得x轴条纹
   // float color = floor(vUv.x * 10.0) / 10.0;
   // gl_FragColor = vec4(color, color, color, 1);
 
-  // 向下取整, XY轴条纹, 两者相乘
+  // float()向下取整, XY轴条纹, 两者相乘
   // float color = floor(vUv.x * 10.0) / 10.0 * floor(vUv.y * 10.0) / 10.0;
   // gl_FragColor = vec4(color, color, color, 1);
 
-  // 向上取整, XY轴条纹, 两者相乘
+  // ceil()向上取整, XY轴条纹, 两者相乘
   // float color = ceil(vUv.x * 10.0) / 10.0 * ceil(vUv.y * 10.0) / 10.0;
 
-// 随机数
   // 随机数
-  float color = random(vUv + time);
+  // float color = random(vUv + time);
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 随机打乱黑色白色
+  // float color = ceil(vUv.x * 10.0) / 10.0 * ceil(vUv.y * 10.0) / 10.0;
+  // color = random(vec2(color, color));
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // length()计算长度实现随着半径渐变效果
+  // 二维向量vec2(), 那么其长度为两个值相加后的长度(不支持Vec3和Vec4)
+  // float color = length(vUv);
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 通过distance()计算vec2两个向量的距离
+  float color = 1.0 - distance(vUv, vec2(0.5, 0.5));
   gl_FragColor = vec4(color, color, color, 1);
 }
