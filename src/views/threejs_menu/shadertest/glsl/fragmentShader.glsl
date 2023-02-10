@@ -102,6 +102,18 @@ void main() {
   // gl_FragColor = vec4(color, color, color, 1);
 
   // 通过distance()计算vec2两个向量的距离
-  float color = 1.0 - distance(vUv, vec2(0.5, 0.5));
-  gl_FragColor = vec4(color, color, color, 1);
+  // float color = distance(vUv, vec2(0.5, 0.5));
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 通过distance()计算vec2两个向量的距离,
+  // float color = distance(vUv, vec2(0.5, 0.5));
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 通过distance()计算vec2两个向量的距离, 一开始两点之间距离的值很小, 通过除法放大 0.15/0.1 = 1.5
+  // float color = 0.15 / distance(vUv, vec2(0.5, 0.5));
+  // gl_FragColor = vec4(color, color, color, 1);
+
+  // 把计算的值- 1.0, 实现外包围的黑色
+  float color = 0.05 / distance(vUv, vec2(0.5, 0.5));
+  gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
 }
