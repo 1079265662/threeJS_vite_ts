@@ -22,15 +22,23 @@ export class CreateWorld extends createdRender {
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
 
+  // 球体长宽
+
+  sphereNumber = {
+    width: 10,
+    height: 10
+  }
   // 创建场景
   createScene = () => {
+    const { width, height } = this.sphereNumber
+
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(0.0, 0, 10) // 默认没有参数 需要设置参数
+    this.camera.position.set(0.0, height / 2, 10) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
     // 声明一个球体
-    const sphere = new THREE.PlaneGeometry(8, 8, 32, 32)
+    const sphere = new THREE.PlaneGeometry(width, height, 32, 32)
 
     // 声明一个着色器材质
     this.mmaterial = new THREE.RawShaderMaterial({
@@ -52,9 +60,12 @@ export class CreateWorld extends createdRender {
     const mesh = new THREE.Mesh(sphere, this.mmaterial)
     // console.log(mmaterial)
 
+    mesh.position.set(0, height / 2, 0)
+
     this.scene.background = new THREE.Color('#1e1b20')
     // 添加到场景
     this.scene.add(mesh)
+    this.scene.position.set(0, -height / 2, 0)
 
     // 环境光
     const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light

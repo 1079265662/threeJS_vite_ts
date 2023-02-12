@@ -92,7 +92,7 @@ void main() {
   // gl_FragColor = vec4(color, color, color, 1);
 
   // 随机打乱黑色白色
-  // float color = ceil(vUv.x * 10.0) / 10.0 * ceil(vUv.y * 10.0) / 10.0;
+  // float color = ceil(vUv.x * 10.0) / 10.0 * ceil(vUv.y * 10.0) / 10.0 + time / 1800000.0; // 除以1800000.0进行减速效果
   // color = random(vec2(color, color));
   // gl_FragColor = vec4(color, color, color, 1);
 
@@ -113,7 +113,16 @@ void main() {
   // float color = 0.15 / distance(vUv, vec2(0.5, 0.5));
   // gl_FragColor = vec4(color, color, color, 1);
 
-  // 把计算的值- 1.0, 实现外包围的黑色
-  float color = 0.05 / distance(vUv, vec2(0.5, 0.5));
+  // 实现一个小太阳效果. 把计算的值- 1.0, 实现外包围的黑色, 在给其设置透明度, 隐藏黑色外包
+  // float color = 0.05 / distance(vUv, vec2(0.5, 0.5));
+  // gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
+
+  // 对上面生成的效果进行y轴的偏移, 对y轴进行偏移 
+  // float color = 0.05 / distance(vec2(vUv.x, (vUv.y - 0.5) * 5.0), vec2(0.5, 0.5));
+  // gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
+
+ // 实现一个交叉的星星
+  float color = 0.05 / distance(vec2(vUv.x, (vUv.y - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
+  color += 0.05 / distance(vec2(vUv.y, (vUv.x - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
   gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
 }
