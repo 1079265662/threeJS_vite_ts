@@ -82,6 +82,7 @@ export class CreateWorld {
       uniforms: {
         time: { value: 0 },
         uTexture: {
+          // 传递贴图
           value: usaTextureLoader
         }
       }

@@ -5,6 +5,7 @@ precision mediump float;
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
+uniform float time;
 
 // 传入three.js顶点关联的变量
 attribute vec3 position;
@@ -19,6 +20,7 @@ void main() {
 
   // 顶点坐标
   vec4 modelPostion = modelMatrix * vec4(position, 1.0);
+  modelPostion.z = sin((modelPostion.x + time) * 3.0) * 0.15;
 
   // 计算顶点位置
   gl_Position = projectionMatrix * viewMatrix * modelPostion;

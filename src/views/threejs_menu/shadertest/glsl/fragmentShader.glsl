@@ -4,12 +4,26 @@ precision mediump float;
 // 接收three.js公共值
 varying vec2 vUv;
 
-// 接收three.js传递的值(时间)
+// 接收three.js传递的值
+// 渲染执行的时长
 uniform float time;
 
 // 伪随机方法
+/*
+* st: vec2二维向量的参数
+*/
 float random(vec2 st) {
   return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+//旋转函数
+/**
+* uv: 顶点坐标
+* rotation: 旋转角度
+* mid: 旋转中心
+*/
+vec2 rotate(vec2 uv, float rotation, vec2 mid) {
+  return vec2(cos(rotation) * (uv.x - mid.x) + sin(rotation) * (uv.y - mid.y) + mid.x, cos(rotation) * (uv.y - mid.y) - sin(rotation) * (uv.x - mid.x) + mid.y);
 }
 
 void main() {
@@ -121,8 +135,16 @@ void main() {
   // float color = 0.05 / distance(vec2(vUv.x, (vUv.y - 0.5) * 5.0), vec2(0.5, 0.5));
   // gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
 
- // 实现一个交叉的星星
-  float color = 0.05 / distance(vec2(vUv.x, (vUv.y - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
-  color += 0.05 / distance(vec2(vUv.y, (vUv.x - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
+  // 实现一个交叉的星星
+  // float color = 0.05 / distance(vec2(vUv.x, (vUv.y - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
+  // color += 0.05 / distance(vec2(vUv.y, (vUv.x - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
+  // gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
+
+  // 通过旋转函数实现星星的旋转效果, 传入time参数(渲染执行的时长), 让其一致旋转
+  vec2 rotateColor = rotate(vUv, time, vec2(0.5));
+
+  float color = 0.05 / distance(vec2(rotateColor.x, (rotateColor.y - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
+  color += 0.05 / distance(vec2(rotateColor.y, (rotateColor.x - 0.5) * 5.0 + 0.5), vec2(0.5, 0.5));
+
   gl_FragColor = vec4(color, color, color, color); // 透明度也设置为color,隐藏黑色外包
 }
