@@ -20,7 +20,7 @@ void main() {
 
   // 顶点坐标
   vec4 modelPostion = modelMatrix * vec4(position, 1.0);
-  modelPostion.z = sin((modelPostion.x + time) * 3.0) * 0.15;
+  // modelPostion.z = sin((modelPostion.x + time) * 3.0) * 0.15;
 
   // 计算顶点位置
   gl_Position = projectionMatrix * viewMatrix * modelPostion;
