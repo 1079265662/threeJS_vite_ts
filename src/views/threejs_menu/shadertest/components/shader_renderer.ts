@@ -3,7 +3,7 @@
  */
 
 // 导入渲染的公共属性
-import { createdRender } from '@/glsltype/createdrender'
+import { CreatedRender } from '@/glsltype/createdrender'
 // 导入three.js
 import * as THREE from 'three'
 // 导入轨道控制器
@@ -12,7 +12,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import planeVertexShader from '../glsl/vertexShader.glsl'
 import planeFragmentShader from '../glsl/fragmentShader.glsl'
 
-export class CreateWorld extends createdRender {
+export class CreateWorld extends CreatedRender {
   constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
@@ -23,7 +23,6 @@ export class CreateWorld extends createdRender {
   canvas!: HTMLElement | Document | Element
 
   // 球体长宽
-
   sphereNumber = {
     width: 10,
     height: 10
@@ -87,7 +86,26 @@ export class CreateWorld extends createdRender {
     // 禁用轨道控制器
     // this.controls.enabled = false
 
+    // 渲染方法
     this.render()
+    // 添加监听画布大小变化
     this.onAddEventListener()
+  }
+
+  // 渲染动画
+  render = () => {
+    // 获得动画执行时间
+    const clockTime = this.clock.getElapsedTime()
+
+    // 赋值给uniforms动画执行时间
+    this.mmaterial.uniforms.time.value = clockTime
+
+    // 设置阻尼感必须在动画中调用.update()
+    this.controls.update()
+
+    // 使用渲染器,通过相机将场景渲染出来
+    this.renderer.render(this.scene, this.camera) // render(场景, 相机)
+    // 使用动画更新的回调API实现持续更新动画的效果
+    this.animationId = requestAnimationFrame(this.render)
   }
 }

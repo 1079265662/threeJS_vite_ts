@@ -1,21 +1,10 @@
+/**
+ * three.js渲染的公共方法类
+ */
+// 导入公共类
 import { Type } from './type'
-export class createdRender extends Type {
-  // 渲染动画
-  render = () => {
-    // 获得动画执行时间
-    const clockTime = this.clock.getElapsedTime()
 
-    // 赋值给uniforms动画执行时间
-    this.mmaterial.uniforms.time.value = clockTime
-    // 设置阻尼感必须在动画中调用.update()
-    this.controls.update()
-
-    // 使用渲染器,通过相机将场景渲染出来
-    this.renderer.render(this.scene, this.camera) // render(场景, 相机)
-    // 使用动画更新的回调API实现持续更新动画的效果
-    this.animationId = requestAnimationFrame(this.render)
-  }
-
+export class CreatedRender extends Type {
   // 尺寸变化时调整渲染器大小
   onWindowResize = () => {
     // 解构window对象

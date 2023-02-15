@@ -180,9 +180,9 @@ void main() {
   // gl_FragColor = vec4(color, color, color, color);
 
   //! 水波效果
-  // vec2 waveUv = vec2(vUv.x + sin(vUv.y * 25.0 + (time * 5.0)) * 0.1, vUv.y + sin(vUv.x * 25.0 + (time * 5.0)) * 0.1);
-  // float color = 1.0 - step(0.01, abs(distance(waveUv, vec2(0.5, 0.5)) - 0.25));
-  // gl_FragColor = vec4(color, color, color, color);
+  vec2 waveUv = vec2(vUv.x + sin(vUv.y * 25.0 + (time * 5.0)) * 0.1, vUv.y + sin(vUv.x * 25.0 + (time * 5.0)) * 0.1);
+  float color = 1.0 - step(0.01, abs(distance(waveUv, vec2(0.5, 0.5)) - 0.25));
+  gl_FragColor = vec4(color, color, color, color);
 
   //! 通过随机数, 实现一个跳跃粒子环
   // vec2 waveUv = vec2(vUv.x, vUv.y + sin(vUv.x * (random(vUv) * 5.0) + (time * 2.0)) * 0.1);
@@ -211,7 +211,7 @@ void main() {
   // gl_FragColor = vec4(color, color, color, alpha);
 
   //! 万花筒效果
-  float angle = atan(vUv.x - 0.5, vUv.y - 0.5) / PI; // PI半圈的效果, 2PI是一个圈
-  float color = mod(angle * 5.0 + time, 1.0); // 0 ~ 1
-  gl_FragColor = vec4(color, color, color, color);
+  // float angle = atan(vUv.x - 0.5, vUv.y - 0.5) / PI; // PI半圈的效果, 2PI是一个圈
+  // float color = mod(angle * 5.0 + time, 1.0); // 0 ~ 1
+  // gl_FragColor = vec4(color, color, color, color);
 }
