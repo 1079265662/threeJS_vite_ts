@@ -27,6 +27,8 @@ export default defineConfig({
       }
     }
   },
+  // 静态资源
+  assetsInclude: ['**/*.gltf', '**/*.glb'],
   // 导入插件
   plugins: [
     vue(),

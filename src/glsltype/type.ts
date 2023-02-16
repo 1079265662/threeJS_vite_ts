@@ -17,7 +17,8 @@ export class Type {
 
   // 创建渲染器
   renderer = new THREE.WebGLRenderer({
-    // antialias: true // 关掉锯齿
+    antialias: true, // 关掉锯齿
+    alpha: true // 设置背景透明
   })
   // 设置场景
   scene = new THREE.Scene()

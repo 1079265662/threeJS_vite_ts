@@ -4,6 +4,10 @@ import { CreatedRender } from '@/glsltype/createdrender'
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// 导入外包加载器
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// 导入手机模型gltf
+import huawei from '@/assets/iphone/huaweiB.glb'
 
 export class CreatedCanvas extends CreatedRender {
   constructor(canvas: HTMLElement) {
@@ -14,35 +18,46 @@ export class CreatedCanvas extends CreatedRender {
 
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
+  // 加载的手机模型
+  iphone!: THREE.Group
 
-  // 球体长宽
-  sphereNumber = {
-    radius: 2
+  loader = new GLTFLoader()
+
+  // 加载手机模型
+  loadIphone = () => {
+    this.loader.loadAsync(huawei).then((gltf) => {
+      // 加载完成后赋值模型场景
+      this.iphone = gltf.scene
+      // 添加到场景
+      this.scene.add(this.iphone)
+    })
   }
 
   // 创建场景
   createScene = () => {
-    const { radius } = this.sphereNumber
-
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(0, 5, 20) // 默认没有参数 需要设置参数
+    this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
-    // 声明一个球体
-    const sphere = new THREE.SphereGeometry(radius, 32, 32)
+    this.loadIphone()
 
     // 创建网格模型
-    const mesh = new THREE.Mesh(sphere, this.mmaterial)
-    // 添加到场景
-    this.scene.add(mesh)
+    // const mesh = new THREE.Mesh(this.iphone , this.mmaterial)
+
+    // 创建平行光
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+    directionalLight.position.set(400, 200, 300)
+    this.scene.add(directionalLight)
 
     // 环境光
     const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
+    light.position.set(200, 300, 100)
+    // light.color.set(new THREE.Color('#ff3040'))
     this.scene.add(light)
 
     // 创建一个辅助线
-    const axesHelper = new THREE.AxesHelper(20)
+    const axesHelper = new THREE.AxesHelper(250)
     this.scene.add(axesHelper)
 
     // 设置渲染器(画布)的大小 通过setSize()设置
@@ -51,11 +66,16 @@ export class CreatedCanvas extends CreatedRender {
     this.canvas.appendChild(this.renderer.domElement)
 
     // 创建创建一个轨道控制器 实现交互渲染
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement) // new OrbitControls(相机, 渲染器Dom元素)
+    // new OrbitControls(相机, 渲染器Dom元素)
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
     // 禁用轨道控制器
     // this.controls.enabled = false
+
+    // 添加渲染抗锯齿
+    // this.renderer.alpha = true
+    // console.log(this.renderer)
 
     // 渲染方法
     this.render()

@@ -61,7 +61,7 @@ export class CreateWorld extends CreatedRender {
 
     mesh.position.set(0, height / 2, 0)
 
-    this.scene.background = new THREE.Color('#1e1b20')
+    // this.scene.background = new THREE.Color('#1e1b20')
     // 添加到场景
     this.scene.add(mesh)
     this.scene.position.set(0, -height / 2, 0)

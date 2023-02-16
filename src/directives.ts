@@ -32,24 +32,23 @@ export const waterClick = {
         const { x, y, centerX, centerY, size } = computeRippleStyles(el, event)
         const ripple = document.createElement('div')
         ripple.classList.add('ripple-water-global')
-        ripple.style.opacity = `0`
+        ripple.style.opacity = '0'
         ripple.style.transform = `translate(${x}px, ${y}px) scale3d(.3, .3, .3)`
         ripple.style.width = `${size}px`
         ripple.style.height = `${size}px`
-        // 记录水波的创建时间
-        ripple.dataset.createdAt = String(performance.now())
+        ripple.dataset.createdAt = performance.now() + ''
 
         const { position } = window.getComputedStyle(el)
-
         el.style.overflow = 'hidden'
-        position === 'static' && (el.style.position = 'relative')
-
+        if (position === 'static') {
+          el.style.position = 'relative'
+        }
         el.appendChild(ripple)
 
         window.setTimeout(() => {
           ripple.style.transform = `translate(${centerX}px, ${centerY}px) scale3d(1, 1, 1)`
-          ripple.style.opacity = `.25`
-        })
+          ripple.style.opacity = '.25'
+        }, 0)
 
         //执行完毕后移除水波
         removeRipple()
