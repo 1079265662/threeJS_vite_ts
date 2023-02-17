@@ -23,14 +23,14 @@ export class CreatedCanvas extends CreatedRender {
 
   loader = new GLTFLoader()
 
-  // 加载手机模型
-  loadIphone = () => {
-    this.loader.loadAsync(huawei).then((gltf) => {
-      // 加载完成后赋值模型场景
-      this.iphone = gltf.scene
-      // 添加到场景
-      this.scene.add(this.iphone)
-    })
+  // 加载手机模型的操作
+  loadIphone = async () => {
+    // 异步获得加载的模型
+    const ret = await this.loader.loadAsync(huawei)
+    // 赋值模型
+    this.iphone = ret.scene
+    // 添加场景中去
+    this.scene.add(this.iphone)
   }
 
   // 创建场景
@@ -40,10 +40,8 @@ export class CreatedCanvas extends CreatedRender {
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
+    // 加载手机模型
     this.loadIphone()
-
-    // 创建网格模型
-    // const mesh = new THREE.Mesh(this.iphone , this.mmaterial)
 
     // 创建平行光
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
