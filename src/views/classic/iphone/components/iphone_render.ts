@@ -2,12 +2,16 @@
 import { CreatedRender } from '@/glsltype/createdrender'
 // 导入three.js
 import * as THREE from 'three'
+// 导入网格的类型
+import type { Mesh } from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // 导入外包加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入手机模型gltf
 import huawei from '@/assets/iphone/huaweiB.glb'
+// 静态资源引入方法
+import { getAssetsFile } from '@/utils/getAssetsFile'
 
 export class CreatedCanvas extends CreatedRender {
   constructor(canvas: HTMLElement) {
@@ -21,7 +25,10 @@ export class CreatedCanvas extends CreatedRender {
   // 加载的手机模型
   iphone!: THREE.Group
 
+  // 创建glTF加载器
   loader = new GLTFLoader()
+  // 创建纹理加载器
+  textureLoader = new THREE.TextureLoader()
 
   // 加载手机模型的操作
   loadIphone = async () => {
@@ -31,6 +38,26 @@ export class CreatedCanvas extends CreatedRender {
     this.iphone = ret.scene
     // 添加场景中去
     this.scene.add(this.iphone)
+    // 添加环境贴图
+    const iphoneMap = this.iphone.getObjectByName('手机')
+
+    const map = this.textureLoader.load(getAssetsFile('iphone/basecolor.png'))
+    map.flipY = false
+    ;(iphoneMap as Mesh).material = new THREE.MeshStandardMaterial({
+      // 设置透明度
+      transparent: true,
+      // 设置颜色贴图
+      map,
+
+      // 设置金属度
+      metalnessMap: this.textureLoader.load(
+        getAssetsFile('iphone/metallic.png')
+      ),
+      // 设置光滑度
+      roughnessMap: this.textureLoader.load(
+        getAssetsFile('iphone/roughness.png')
+      )
+    })
   }
 
   // 创建场景

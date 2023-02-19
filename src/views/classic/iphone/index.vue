@@ -6,7 +6,7 @@
 <script setup lang="ts">
 // 导入Vue3的API
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-//导入绘制和销毁
+// 导入实例
 import { CreatedCanvas } from './components/iphone_render'
 
 // 获取Dom

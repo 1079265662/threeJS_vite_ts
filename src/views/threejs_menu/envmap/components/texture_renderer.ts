@@ -2,6 +2,7 @@
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+// 静态资源引入方法
 import { getAssetsFile } from '@/utils/getAssetsFile'
 interface domElement {
   appendChild: Document['appendChild']
