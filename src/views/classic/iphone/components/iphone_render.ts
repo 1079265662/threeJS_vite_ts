@@ -38,6 +38,33 @@ export class CreatedCanvas extends CreatedRender {
     const map = await this.textureLoader.loadAsync(
       getAssetsFile('iphone/basecolor.png')
     )
+    // 取消贴图的反转
+    map.flipY = false
+
+    // 导入金属度贴图
+    const metalnessMap = await this.textureLoader.loadAsync(
+      getAssetsFile('iphone/metallic.png')
+    )
+    metalnessMap.flipY = false
+
+    // 导入光滑度贴图
+    const roughnessMap = await this.textureLoader.loadAsync(
+      getAssetsFile('iphone/roughness.png')
+    )
+    roughnessMap.flipY = false
+
+    // 导入法线贴图
+    const normalMap = await this.textureLoader.loadAsync(
+      getAssetsFile('iphone/normal.png')
+    )
+    normalMap.flipY = false
+
+    // 导入透明度贴图
+    const alphaMap = await this.textureLoader.loadAsync(
+      getAssetsFile('iphone/opacity.png')
+    )
+    alphaMap.flipY = false
+
     // 异步获得加载的模型
     const ret = await this.loader.loadAsync(huawei)
 
@@ -45,26 +72,27 @@ export class CreatedCanvas extends CreatedRender {
     this.iphone = ret.scene
     // 添加场景中去
     this.scene.add(this.iphone)
+    // console.log(ret)
+
+    // 查看模型大小
+    this.getBoxSize(this.iphone)
+
     // 添加环境贴图
     const iphoneMap = this.iphone.getObjectByName('手机')
-
-    // 取消贴图的反转
-    map.flipY = false
-    //
+    // 设置材质
     ;(iphoneMap as Mesh).material = new THREE.MeshStandardMaterial({
       // 设置透明度
       transparent: true,
       // 设置颜色贴图
       map,
-
       // 设置金属度
-      metalnessMap: this.textureLoader.load(
-        getAssetsFile('iphone/metallic.png')
-      ),
+      metalnessMap,
       // 设置光滑度
-      roughnessMap: this.textureLoader.load(
-        getAssetsFile('iphone/roughness.png')
-      )
+      roughnessMap,
+      // 设置法线贴图
+      normalMap,
+      // 设置透明度贴图
+      alphaMap
     })
   }
 
@@ -72,6 +100,7 @@ export class CreatedCanvas extends CreatedRender {
   createScene = () => {
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数
+    this.camera.fov = 45 // 设置相机的视野
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
@@ -79,9 +108,14 @@ export class CreatedCanvas extends CreatedRender {
     this.loadIphone()
 
     // 创建平行光
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
     directionalLight.position.set(400, 200, 300)
     this.scene.add(directionalLight)
+
+    // 创建平行光
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1)
+    directionalLight2.position.set(400, 200, -300)
+    this.scene.add(directionalLight2)
 
     // 环境光
     const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light

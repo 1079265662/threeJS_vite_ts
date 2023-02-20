@@ -3,8 +3,21 @@
  */
 // 导入公共类
 import { Type } from './type'
+// 导入three.js
+import * as THREE from 'three'
 
 export class CreatedRender extends Type {
+  // 通过三维空间包围盒计算物体的大小
+  getBoxSize = (object: THREE.Object3D) => {
+    // 创建一个包围盒
+    const box = new THREE.Box3()
+    // 设置包围盒的大小
+    box.setFromObject(object)
+    // 获取包围盒的大小
+    const boxSize = box.getSize(new THREE.Vector3())
+
+    console.log(`当前物体的大小(包围盒)`, boxSize)
+  }
   // 尺寸变化时调整渲染器大小
   onWindowResize = () => {
     // 解构window对象

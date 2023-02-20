@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ loadingNumber }}
     <div ref="stateDom" />
     <LoaDing :loadingNumber="loadingNumber" />
   </div>
@@ -22,8 +21,6 @@ onMounted(() => {
   // 创建three.js实例, 传递页面Dom
   Three = new CreatedCanvas(stateDom.value)
   Three.createScene()
-
-  // loadingNumber.value = Three.loadingNumber
 })
 
 onBeforeUnmount(() => {
