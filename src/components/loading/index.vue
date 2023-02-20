@@ -2,7 +2,12 @@
   <transition name="fade">
     <div id="loading-mask" v-if="visible">
       <div class="loadingLine">
-        <n-progress style="max-width: 300px" :percentage="loadingNumberFixed" :indicator-placement="'inside'" processing />
+        <n-progress
+          style="max-width: 300px"
+          :percentage="loadingNumberFixed"
+          :indicator-placement="'inside'"
+          processing
+        />
       </div>
       <!-- <div class="container">
         <div class="support">
@@ -40,7 +45,9 @@ const props = defineProps({
 })
 
 // 计算属性 取消小数点 不是整数会报错
-const loadingNumberFixed = computed(() => Number(props.loadingNumber.toFixed(0)))
+const loadingNumberFixed = computed(() =>
+  Number(props.loadingNumber.toFixed(0))
+)
 
 // 监听加载
 watch(

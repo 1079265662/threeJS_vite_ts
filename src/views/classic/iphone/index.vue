@@ -1,6 +1,8 @@
 <template>
   <div>
+    {{ loadingNumber }}
     <div ref="stateDom" />
+    <LoaDing :loadingNumber="loadingNumber" />
   </div>
 </template>
 <script setup lang="ts">
@@ -8,6 +10,8 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 // 导入实例
 import { CreatedCanvas } from './components/iphone_render'
+// 导入加载的进度
+import { loadingNumber } from '@/utils/loading'
 
 // 获取Dom
 const stateDom = ref()
@@ -15,10 +19,11 @@ const stateDom = ref()
 let Three: any = null
 
 onMounted(() => {
-  // 创建three.js实例
+  // 创建three.js实例, 传递页面Dom
   Three = new CreatedCanvas(stateDom.value)
-  // 传递页面Dom 绘制three.js
   Three.createScene()
+
+  // loadingNumber.value = Three.loadingNumber
 })
 
 onBeforeUnmount(() => {

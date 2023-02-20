@@ -12,6 +12,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import huawei from '@/assets/iphone/huaweiB.glb'
 // 静态资源引入方法
 import { getAssetsFile } from '@/utils/getAssetsFile'
+// 导入加载
+import { loadTexture } from '@/utils/loading'
 
 export class CreatedCanvas extends CreatedRender {
   constructor(canvas: HTMLElement) {
@@ -26,14 +28,19 @@ export class CreatedCanvas extends CreatedRender {
   iphone!: THREE.Group
 
   // 创建glTF加载器
-  loader = new GLTFLoader()
+  loader = new GLTFLoader(loadTexture())
   // 创建纹理加载器
   textureLoader = new THREE.TextureLoader()
 
   // 加载手机模型的操作
   loadIphone = async () => {
+    // 导入色彩贴图
+    const map = await this.textureLoader.loadAsync(
+      getAssetsFile('iphone/basecolor.png')
+    )
     // 异步获得加载的模型
     const ret = await this.loader.loadAsync(huawei)
+
     // 赋值模型
     this.iphone = ret.scene
     // 添加场景中去
@@ -41,8 +48,9 @@ export class CreatedCanvas extends CreatedRender {
     // 添加环境贴图
     const iphoneMap = this.iphone.getObjectByName('手机')
 
-    const map = this.textureLoader.load(getAssetsFile('iphone/basecolor.png'))
+    // 取消贴图的反转
     map.flipY = false
+    //
     ;(iphoneMap as Mesh).material = new THREE.MeshStandardMaterial({
       // 设置透明度
       transparent: true,
