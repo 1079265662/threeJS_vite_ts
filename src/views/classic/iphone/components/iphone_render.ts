@@ -25,7 +25,7 @@ export class CreatedCanvas extends CreatedUtils {
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
   // 加载的手机模型
-  iphone = new THREE.Object3D()
+  iphone = new THREE.Group()
   // 旋转启动
   rotateGo = false
 
@@ -37,7 +37,7 @@ export class CreatedCanvas extends CreatedUtils {
   envMapLoader = new THREE.CubeTextureLoader()
 
   // 加载手机模型的操作
-  loadIphone = async () => {
+  loadIphone = async (envMap: THREE.CubeTexture) => {
     // 异步获得加载的模型
     const gltf = await this.loader.loadAsync(huawei)
     // 赋值模型
@@ -76,19 +76,6 @@ export class CreatedCanvas extends CreatedUtils {
     )
     alphaMap.flipY = false
 
-    // 加载环境贴图
-    const envMap = await this.envMapLoader.loadAsync([
-      getAssetsFile('envMap/px.jpg'),
-      getAssetsFile('envMap/nx.jpg'),
-      getAssetsFile('envMap/py.jpg'),
-      getAssetsFile('envMap/ny.jpg'),
-      getAssetsFile('envMap/pz.jpg'),
-      getAssetsFile('envMap/nz.jpg')
-    ] as any)
-    // envMap.flipY = false
-    // 添加场景添加背景
-    this.scene.background = envMap
-
     // 添加场景中去
     this.scene.add(this.iphone)
 
@@ -97,6 +84,7 @@ export class CreatedCanvas extends CreatedUtils {
 
     // 添加环境贴图
     const iphoneMap = this.iphone.getObjectByName('手机')
+
     // 设置材质
     ;(iphoneMap as Mesh).material = new THREE.MeshStandardMaterial({
       // 设置透明度
@@ -104,7 +92,7 @@ export class CreatedCanvas extends CreatedUtils {
       // 设置金属度
       metalness: 1,
       // 设置光滑度
-      roughness: 0,
+      roughness: 0.5,
       // 设置颜色贴图
       map,
       // 设置金属度
@@ -120,12 +108,32 @@ export class CreatedCanvas extends CreatedUtils {
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 1
     })
+    // this.iphoneMaterial.material.envMap = envMap
+  }
+
+  // 加载环境贴图
+  loadEnvMap = async () => {
+    // 加载环境贴图
+    const envMap = await this.envMapLoader.loadAsync([
+      getAssetsFile('envMap/px.jpg'),
+      getAssetsFile('envMap/nx.jpg'),
+      getAssetsFile('envMap/py.jpg'),
+      getAssetsFile('envMap/ny.jpg'),
+      getAssetsFile('envMap/pz.jpg'),
+      getAssetsFile('envMap/nz.jpg')
+    ] as any)
+    // envMap.flipY = false
+    // 添加场景添加背景
+    this.scene.background = envMap
+
+    // 加载手机模型
+    this.loadIphone(envMap)
   }
 
   // 创建场景
   createScene = () => {
-    // 加载手机模型
-    this.loadIphone()
+    // 加载环境贴图
+    this.loadEnvMap()
 
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数
