@@ -25,7 +25,7 @@ export class CreatedCanvas extends CreatedUtils {
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
   // 加载的手机模型
-  iphone!: THREE.Group
+  iphone = new THREE.Object3D()
   // 旋转启动
   rotateGo = false
 
@@ -38,6 +38,13 @@ export class CreatedCanvas extends CreatedUtils {
 
   // 加载手机模型的操作
   loadIphone = async () => {
+    // 异步获得加载的模型
+    const gltf = await this.loader.loadAsync(huawei)
+    // 赋值模型
+    this.iphone = gltf.scene
+    // 加载完成后进行旋转
+    this.rotateGo = true
+
     // 导入色彩贴图
     const map = await this.textureLoader.loadAsync(
       getAssetsFile('iphone/basecolor.png')
@@ -69,9 +76,6 @@ export class CreatedCanvas extends CreatedUtils {
     )
     alphaMap.flipY = false
 
-    // 异步获得加载的模型
-    const gltf = await this.loader.loadAsync(huawei)
-
     // 加载环境贴图
     const envMap = await this.envMapLoader.loadAsync([
       getAssetsFile('envMap/px.jpg'),
@@ -81,12 +85,10 @@ export class CreatedCanvas extends CreatedUtils {
       getAssetsFile('envMap/pz.jpg'),
       getAssetsFile('envMap/nz.jpg')
     ] as any)
-    envMap.flipY = false
+    // envMap.flipY = false
     // 添加场景添加背景
     this.scene.background = envMap
 
-    // 赋值模型
-    this.iphone = gltf.scene
     // 添加场景中去
     this.scene.add(this.iphone)
 
@@ -118,20 +120,17 @@ export class CreatedCanvas extends CreatedUtils {
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 1
     })
-
-    // 加载完成后进行旋转
-    this.rotateGo = true
   }
 
   // 创建场景
   createScene = () => {
+    // 加载手机模型
+    this.loadIphone()
+
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
-
-    // 加载手机模型
-    this.loadIphone()
 
     // 创建平行光
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
@@ -172,14 +171,14 @@ export class CreatedCanvas extends CreatedUtils {
 
     // 渲染方法
     this.render()
+    // 监听操作页面尺寸改变
+    this.onAddEventListenerMousemove()
     // 开启物体的旋转
-    this.onAddEventListener()
-    // 监听操作
     this.onAddEventListener()
   }
 
   // 监听窗口变化
-  onAddEventListener = () => {
+  onAddEventListenerMousemove = () => {
     window.addEventListener('mousemove', this.stopRotate)
   }
 
@@ -188,7 +187,6 @@ export class CreatedCanvas extends CreatedUtils {
     const { clientX, clientY } = item
     // 创建二维向量 用于记录鼠标的位置
     const mouse = new THREE.Vector2()
-    console.log(123)
 
     // mousemove 鼠标移动事件 还可以替换其他时间click等
     // 将鼠标点击位置的屏幕坐标转换成three.js中的标准设备坐标
@@ -219,9 +217,9 @@ export class CreatedCanvas extends CreatedUtils {
     // 获得动画执行时间
     // const clockTime = this.clock.getElapsedTime()
 
-    // 加载成功后进行旋转操作
-    if (this.iphone && this.rotateGo) {
-      this.iphone.rotateY(0.01)
+    // 加载成功后进行旋转操作, 判断是否需要旋转操作
+    if (this.rotateGo) {
+      this.iphone.rotateY(0.005)
     }
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
