@@ -1,5 +1,5 @@
-// 导入公共方法类
-import { CreatedRender } from '@/glsltype/createdrender'
+// 导入工具方法类
+import { CreatedUtils } from '@/glsltype/utils_renderer'
 // 导入three.js
 import * as THREE from 'three'
 // 导入网格的类型
@@ -15,7 +15,7 @@ import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入加载
 import { loadTexture } from '@/utils/loading'
 
-export class CreatedCanvas extends CreatedRender {
+export class CreatedCanvas extends CreatedUtils {
   constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
@@ -26,11 +26,15 @@ export class CreatedCanvas extends CreatedRender {
   canvas!: HTMLElement | Document | Element
   // 加载的手机模型
   iphone!: THREE.Group
+  // 旋转启动
+  rotateGo = false
 
   // 创建glTF加载器
   loader = new GLTFLoader(loadTexture())
   // 创建纹理加载器
   textureLoader = new THREE.TextureLoader()
+  // 设置一个环境贴图加载器
+  envMapLoader = new THREE.CubeTextureLoader()
 
   // 加载手机模型的操作
   loadIphone = async () => {
@@ -66,13 +70,25 @@ export class CreatedCanvas extends CreatedRender {
     alphaMap.flipY = false
 
     // 异步获得加载的模型
-    const ret = await this.loader.loadAsync(huawei)
+    const gltf = await this.loader.loadAsync(huawei)
+
+    // 加载环境贴图
+    const envMap = await this.envMapLoader.loadAsync([
+      getAssetsFile('envMap/px.jpg'),
+      getAssetsFile('envMap/nx.jpg'),
+      getAssetsFile('envMap/py.jpg'),
+      getAssetsFile('envMap/ny.jpg'),
+      getAssetsFile('envMap/pz.jpg'),
+      getAssetsFile('envMap/nz.jpg')
+    ] as any)
+    envMap.flipY = false
+    // 添加场景添加背景
+    this.scene.background = envMap
 
     // 赋值模型
-    this.iphone = ret.scene
+    this.iphone = gltf.scene
     // 添加场景中去
     this.scene.add(this.iphone)
-    // console.log(ret)
 
     // 查看模型大小
     this.getBoxSize(this.iphone)
@@ -83,6 +99,10 @@ export class CreatedCanvas extends CreatedRender {
     ;(iphoneMap as Mesh).material = new THREE.MeshStandardMaterial({
       // 设置透明度
       transparent: true,
+      // 设置金属度
+      metalness: 1,
+      // 设置光滑度
+      roughness: 0,
       // 设置颜色贴图
       map,
       // 设置金属度
@@ -92,15 +112,21 @@ export class CreatedCanvas extends CreatedRender {
       // 设置法线贴图
       normalMap,
       // 设置透明度贴图
-      alphaMap
+      alphaMap,
+      // 设置环境贴图
+      envMap,
+      // 设置环境贴图的强度, 默认是1
+      envMapIntensity: 1
     })
+
+    // 加载完成后进行旋转
+    this.rotateGo = true
   }
 
   // 创建场景
   createScene = () => {
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数
-    this.camera.fov = 45 // 设置相机的视野
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
@@ -109,13 +135,14 @@ export class CreatedCanvas extends CreatedRender {
 
     // 创建平行光
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight.position.set(400, 200, 300)
+    directionalLight.position.set(200, 100, 300)
     this.scene.add(directionalLight)
-
+    // this.setLightHelper(directionalLight)
     // 创建平行光
     const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight2.position.set(400, 200, -300)
+    directionalLight2.position.set(-200, -100, -300)
     this.scene.add(directionalLight2)
+    // this.setLightHelper(directionalLight2)
 
     // 环境光
     const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
@@ -123,9 +150,8 @@ export class CreatedCanvas extends CreatedRender {
     // light.color.set(new THREE.Color('#ff3040'))
     this.scene.add(light)
 
-    // 创建一个辅助线
-    const axesHelper = new THREE.AxesHelper(250)
-    this.scene.add(axesHelper)
+    // 创建辅助线
+    // this.addaxesHelper(100)
 
     // 设置渲染器(画布)的大小 通过setSize()设置
     this.renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
@@ -146,8 +172,46 @@ export class CreatedCanvas extends CreatedRender {
 
     // 渲染方法
     this.render()
-    // 添加监听画布大小变化
+    // 开启物体的旋转
     this.onAddEventListener()
+    // 监听操作
+    this.onAddEventListener()
+  }
+
+  // 监听窗口变化
+  onAddEventListener = () => {
+    window.addEventListener('mousemove', this.stopRotate)
+  }
+
+  // 通过光线投射, 暂停物体的旋转
+  stopRotate = (item: MouseEvent) => {
+    const { clientX, clientY } = item
+    // 创建二维向量 用于记录鼠标的位置
+    const mouse = new THREE.Vector2()
+    console.log(123)
+
+    // mousemove 鼠标移动事件 还可以替换其他时间click等
+    // 将鼠标点击位置的屏幕坐标转换成three.js中的标准设备坐标
+    mouse.x = (clientX / window.innerWidth) * 2 - 1 // X轴坐标 2个单位 -1到1
+    mouse.y = -((clientY / window.innerHeight) * 2 - 1) // Y轴坐标 2个单位 -1到1 这里需要反转一下 因为在JS/CSS坐标中Y轴是反的
+
+    // 创建一个光线投射器
+    const raycaster = new THREE.Raycaster()
+    // 设置光线投射器的射线 通过setFromCamera()设置 传入鼠标的位置和相机
+    raycaster.setFromCamera(mouse, this.camera)
+
+    // 获取所有的立方体 intersectObjects()传入需要检测的物体
+    const cube = raycaster.intersectObjects(this.scene.children) // 会返回所有与射线相交的多个对象的数组
+
+    // 判断是否移动到手机上
+    cube[0]?.object.name === '手机'
+      ? (this.rotateGo = false)
+      : (this.rotateGo = true)
+  }
+
+  // 销毁监听
+  onRemoveEventListener = () => {
+    window.removeEventListener('mousemove', this.stopRotate)
   }
 
   // 渲染动画
@@ -155,9 +219,12 @@ export class CreatedCanvas extends CreatedRender {
     // 获得动画执行时间
     // const clockTime = this.clock.getElapsedTime()
 
+    // 加载成功后进行旋转操作
+    if (this.iphone && this.rotateGo) {
+      this.iphone.rotateY(0.01)
+    }
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
-
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)
     // 使用动画更新的回调API实现持续更新动画的效果

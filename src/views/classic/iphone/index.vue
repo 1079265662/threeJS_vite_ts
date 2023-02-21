@@ -26,6 +26,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   // 销毁three.js实例
   Three.dispose()
+  Three.onRemoveEventListener()
 })
 </script>
 
