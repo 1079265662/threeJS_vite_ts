@@ -14,6 +14,7 @@ import huawei from '@/assets/iphone/huaweiB.glb'
 import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入加载
 import { loadTexture } from '@/utils/loading'
+// import { watch } from 'vue'
 
 export class CreatedCanvas extends CreatedUtils {
   constructor(canvas: HTMLElement) {
@@ -24,6 +25,8 @@ export class CreatedCanvas extends CreatedUtils {
 
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
+  // 环境贴图参数
+  envMap!: THREE.CubeTexture
   // 加载的手机模型
   iphone = new THREE.Group()
   // 旋转启动
@@ -114,7 +117,7 @@ export class CreatedCanvas extends CreatedUtils {
   // 加载环境贴图
   loadEnvMap = async () => {
     // 加载环境贴图
-    const envMap = await this.envMapLoader.loadAsync([
+    this.envMap = await this.envMapLoader.loadAsync([
       getAssetsFile('envMap/px.jpg'),
       getAssetsFile('envMap/nx.jpg'),
       getAssetsFile('envMap/py.jpg'),
@@ -122,12 +125,13 @@ export class CreatedCanvas extends CreatedUtils {
       getAssetsFile('envMap/pz.jpg'),
       getAssetsFile('envMap/nz.jpg')
     ] as any)
-    // envMap.flipY = false
-    // 添加场景添加背景
-    this.scene.background = envMap
 
     // 加载手机模型
-    this.loadIphone(envMap)
+    this.loadIphone(this.envMap)
+
+    // envMap.flipY = false
+    // 添加场景添加背景
+    this.scene.background = this.envMap
   }
 
   // 创建场景

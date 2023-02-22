@@ -38,6 +38,29 @@ export function loadTexture(
   return manager
 }
 
+// /**
+//  * @description: 假的加载管理器
+//  * @returns {}
+//  */
+// export function loadFalse(loadingIng = false) {
+//   const i = setInterval(() => {
+//     // 加载完成清除定时器
+//     if (loadingIng) {
+//       clearInterval(i)
+//       loadingNumber.value = 100
+
+//       setTimeout(() => {
+//         loadingNumber.value = 0
+//       }, 50)
+//     } else {
+//       // 不能能超过100
+//       if (loadingNumber.value >= 99) return
+//       loadingNumber.value++
+//     }
+//     console.log(loadingNumber.value)
+//   }, 50)
+// }
+
 /**
  * @description: 声明加载管理器
  * @returns {any}

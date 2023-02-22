@@ -53,7 +53,7 @@ const loadingNumberFixed = computed(() =>
 watch(
   () => props.loadingNumber,
   (newVal: number) => {
-    if (newVal >= 100) {
+    if (newVal === 100) {
       visible.value = false
     }
   }
