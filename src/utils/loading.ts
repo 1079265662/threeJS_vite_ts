@@ -38,28 +38,27 @@ export function loadTexture(
   return manager
 }
 
-// /**
-//  * @description: 假的加载管理器
-//  * @returns {}
-//  */
-// export function loadFalse(loadingIng = false) {
-//   const i = setInterval(() => {
-//     // 加载完成清除定时器
-//     if (loadingIng) {
-//       clearInterval(i)
-//       loadingNumber.value = 100
-
-//       setTimeout(() => {
-//         loadingNumber.value = 0
-//       }, 50)
-//     } else {
-//       // 不能能超过100
-//       if (loadingNumber.value >= 99) return
-//       loadingNumber.value++
-//     }
-//     console.log(loadingNumber.value)
-//   }, 50)
-// }
+/**
+ * @description: 假的加载管理器
+ * @returns {}
+ */
+export function loadFalse(loadingIng = false) {
+  const i = setInterval(() => {
+    // 加载完成清除定时器
+    if (loadingIng) {
+      loadingNumber.value = 100
+      // 加载完成后清除定时器
+      clearInterval(i)
+    } else {
+      // 0到3之间随机数
+      const random = Math.floor(Math.random() * 2 + 0)
+      // 不能能超过98, 到98就卡住
+      if (loadingNumber.value >= 98) return
+      // 每次加1
+      loadingNumber.value += random
+    }
+  }, 50)
+}
 
 /**
  * @description: 声明加载管理器
