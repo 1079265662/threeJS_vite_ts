@@ -15,8 +15,6 @@ import { loadFalse } from '@/utils/loading'
 import { CreatedUtils } from '@/glsltype/utils_renderer'
 
 export class LoaderIphone extends CreatedUtils {
-  // 环境贴图参数
-  envMap!: THREE.CubeTexture
   iphoneMap!: THREE.Mesh
 
   // 加载的手机模型
@@ -30,12 +28,8 @@ export class LoaderIphone extends CreatedUtils {
   // 设置一个环境贴图加载器
   envMapLoader = new THREE.CubeTextureLoader()
 
-  // getIphone = async () => {
-
-  // }
-
   // 加载手机模型的操作
-  loadIphone = async (envMap: THREE.CubeTexture) => {
+  loadIphone = async () => {
     // 开始加载
     loadFalse()
 
@@ -67,7 +61,7 @@ export class LoaderIphone extends CreatedUtils {
     )
 
     // 导入透明度贴图
-    const alphaMapTexture = await this.textureLoader.loadAsync(
+    const alphaMapTexture = this.textureLoader.loadAsync(
       getAssetsFile('iphone/opacity.png')
     )
 
@@ -76,14 +70,25 @@ export class LoaderIphone extends CreatedUtils {
       getAssetsFile('iphone/normal.png')
     )
 
+    // 加载环境贴图
+    const envMapTexture = this.envMapLoader.loadAsync([
+      getAssetsFile('envMap/px.jpg'),
+      getAssetsFile('envMap/nx.jpg'),
+      getAssetsFile('envMap/py.jpg'),
+      getAssetsFile('envMap/ny.jpg'),
+      getAssetsFile('envMap/pz.jpg'),
+      getAssetsFile('envMap/nz.jpg')
+    ] as any)
+
     // 请求贴图数据
-    const [map, metalnessMap, roughnessMap, alphaMap, normalMap] =
+    const [map, metalnessMap, roughnessMap, alphaMap, normalMap, envMap] =
       await Promise.all([
         mapTexture,
         metalnessMapTexture,
         roughnessMapTexture,
         alphaMapTexture,
-        normalMapTexture
+        normalMapTexture,
+        envMapTexture
       ])
 
     // 取消贴图的反转
@@ -119,27 +124,15 @@ export class LoaderIphone extends CreatedUtils {
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 0.8
     })
+    // 添加场景添加背景
+    this.scene.background = envMap
 
     loadFalse(true)
   }
 
-  // 加载环境贴图
-  loadEnvMap = async () => {
-    // 加载环境贴图
-    this.envMap = await this.envMapLoader.loadAsync([
-      getAssetsFile('envMap/px.jpg'),
-      getAssetsFile('envMap/nx.jpg'),
-      getAssetsFile('envMap/py.jpg'),
-      getAssetsFile('envMap/ny.jpg'),
-      getAssetsFile('envMap/pz.jpg'),
-      getAssetsFile('envMap/nz.jpg')
-    ] as any)
-
-    // 加载手机模型
-    this.loadIphone(this.envMap)
-
-    // envMap.flipY = false
-    // 添加场景添加背景
-    this.scene.background = this.envMap
-  }
+  // // 加载方法
+  // loadEnvMap = async () => {
+  //   // 加载手机模型
+  //   this.loadIphone()
+  // }
 }
