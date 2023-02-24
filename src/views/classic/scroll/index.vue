@@ -37,7 +37,7 @@ onBeforeUnmount(() => {
   // 销毁three.js实例
   Three.dispose()
   // 销毁新增的监听器
-  Three.onRemoveEventListener()
+  // Three.onRemoveEventListener()
 })
 </script>
 <script lang="ts">

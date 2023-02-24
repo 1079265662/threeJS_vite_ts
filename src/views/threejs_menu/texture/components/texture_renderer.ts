@@ -106,7 +106,10 @@ function getScene<T extends domElement>(nameCanvas: T) {
   // 设置环境遮挡贴图第二组uv坐标 (就是把第一组uv坐标的值赋值给第二组uv坐标)
   cube.geometry.setAttribute(
     'uv2',
-    new THREE.Float32BufferAttribute(cube.geometry.attributes.uv.array, 2)
+    new THREE.Float32BufferAttribute(
+      (cube.geometry.attributes.uv as THREE.BufferAttribute).array,
+      2
+    )
   )
 
   // 将几何体添加到场景中
