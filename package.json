@@ -10,13 +10,13 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@types/three": "^0.144.0",
+    "@types/three": "^0.149.0",
     "cannon-es": "^0.20.0",
     "dat.gui": "^0.7.9",
     "gsap": "^3.11.3",
     "pinia": "^2.0.30",
     "reset-css": "^5.0.1",
-    "three": "^0.143.0",
+    "three": "^0.150.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

@@ -19,8 +19,7 @@ export class CreatedCanvas extends LoaderIphone {
 
   // 创建场景
   createScene = () => {
-    // 加载环境贴图
-    this.loadIphone()
+    this.loadEnvMap()
 
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数

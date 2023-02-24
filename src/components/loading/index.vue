@@ -50,12 +50,18 @@ const loadingNumberFixed = computed(() =>
 )
 
 // 监听加载
+
 watch(
   () => props.loadingNumber,
-  (newVal: number) => {
-    if (newVal === 100) {
+  (newD, oleD) => {
+    if (newD === 100) {
       visible.value = false
+    } else {
+      visible.value = true
     }
+  },
+  {
+    immediate: true
   }
 )
 </script>

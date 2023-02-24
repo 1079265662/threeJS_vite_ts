@@ -43,6 +43,7 @@ export function loadTexture(
  * @returns {}
  */
 export function loadFalse(loadingIng = false) {
+  loadingNumber.value = 0
   const i = setInterval(() => {
     // 加载完成清除定时器
     if (loadingIng) {

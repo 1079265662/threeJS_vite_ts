@@ -38,10 +38,8 @@ export class LoaderIphone extends CreatedUtils {
 
     // 赋值模型
     this.iphone = gltf.scene
-    // 添加场景中去
-    this.scene.add(this.iphone)
     // 查看模型大小
-    this.getBoxSize(this.iphone)
+    // this.getBoxSize(this.iphone)
     // 加载完成后进行旋转
     this.rotateGo = true
 
@@ -124,15 +122,18 @@ export class LoaderIphone extends CreatedUtils {
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 0.8
     })
+    // 添加场景中去
+    this.scene.add(this.iphone)
     // 添加场景添加背景
     this.scene.background = envMap
 
+    // 加载完成
     loadFalse(true)
   }
 
-  // // 加载方法
-  // loadEnvMap = async () => {
-  //   // 加载手机模型
-  //   this.loadIphone()
-  // }
+  // 加载方法
+  loadEnvMap = async () => {
+    // 加载手机模型
+    this.loadIphone()
+  }
 }
