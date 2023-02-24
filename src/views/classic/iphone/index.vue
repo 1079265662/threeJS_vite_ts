@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="stateDom" />
-    <LoaDing :loadingNumber="loadingNumber" />
+    <!-- <LoaDing :loadingNumber="loadingNumber" /> -->
   </div>
 </template>
 <script setup lang="ts">

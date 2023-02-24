@@ -22,7 +22,7 @@ export class CreatedCanvas extends LoaderIphone {
     this.loadEnvMap()
 
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(100, 50, 200) // 默认没有参数 需要设置参数
+    this.camera.position.set(0, 0, 200) // 默认没有参数 需要设置参数
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
@@ -44,7 +44,7 @@ export class CreatedCanvas extends LoaderIphone {
     this.scene.add(light)
 
     // 创建辅助线
-    // this.addaxesHelper(100)
+    this.addaxesHelper(100)
 
     // 设置渲染器(画布)的大小 通过setSize()设置
     this.renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
@@ -55,13 +55,13 @@ export class CreatedCanvas extends LoaderIphone {
     // new OrbitControls(相机, 渲染器Dom元素)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
-    this.controls.enableDamping = true
-    // 禁用轨道控制器
-    // this.controls.enabled = false
 
-    // 添加渲染抗锯齿
-    // this.renderer.alpha = true
-    // console.log(this.renderer)
+    this.controls.enableDamping = true
+
+    // 设置控制器的最大距离
+    this.controls.maxDistance = 500
+    // 设置控制器的最小距离
+    this.controls.minDistance = 10
 
     // 渲染方法
     this.render()

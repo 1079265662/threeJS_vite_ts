@@ -10,7 +10,9 @@ import type { Mesh } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入加载
 import { loadFalse } from '@/utils/loading'
-
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
+import { Line2 } from 'three/examples/jsm/lines/Line2.js'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js'
 // 导入工具方法类
 import { CreatedUtils } from '@/glsltype/utils_renderer'
 
@@ -124,16 +126,58 @@ export class LoaderIphone extends CreatedUtils {
     })
     // 添加场景中去
     this.scene.add(this.iphone)
-    // 添加场景添加背景
-    this.scene.background = envMap
 
     // 加载完成
     loadFalse(true)
   }
 
-  // 加载方法
+  // 绘制一个半圆线
+  drawHalfCircle = () => {
+    // 声明一个几何对象
+    const linGeometry = new THREE.BufferGeometry()
+
+    // 设置一个圆的半径(three.js的单位)
+    const radius = 60
+
+    // 通过椭圆曲线（弧线）绘制一个半圆, 默认是逆时针绘制
+    // 绘制一个缺口的半圆
+    // 360° - 45° = 315°
+    const curve = new THREE.EllipseCurve(
+      0, // 中心的X坐标，默认值为0。
+      0, // 中心的Y坐标，默认值为0
+      radius, // X轴向上椭圆的半径，默认值为1
+      radius, // Y轴向上椭圆的半径，默认值为1
+      Math.PI / 4, //  以弧度来表示，从正X轴算起曲线开始的角度，默认值为0
+      Math.PI * 2, // 以弧度来表示，从正X轴算起曲线终止的角度，默认值为2 x Math.PI。
+      false, // 椭圆是否按照顺时针方向来绘制，默认值为false。 true为顺时针，false为逆时针
+      Math.PI / 1.8 //  以弧度表示，椭圆从X轴正方向逆时针的旋转角度（可选），默认值为0。按照设置的顺时针或逆时针方向旋转
+    )
+
+    // 提取绘制的弧线
+    linGeometry.setFromPoints(curve.getPoints(50))
+
+    // 设置基础线条材质
+    const material = new THREE.LineBasicMaterial({
+      color: '#ffffff'
+    })
+
+    // 设置线条对象
+    const line = new THREE.Line(linGeometry, material)
+
+    // 设置线条的位置
+    line.position.set(0, -170 / 2, 0)
+    line.rotateX(Math.PI / 2)
+
+    // 添加到场景中
+    this.scene.add(line)
+  }
+
+  // 模型相关的操作
   loadEnvMap = async () => {
     // 加载手机模型
     this.loadIphone()
+    this.drawHalfCircle()
+    // 添加场景添加背景
+    this.scene.background = new THREE.Color('#757575')
   }
 }
