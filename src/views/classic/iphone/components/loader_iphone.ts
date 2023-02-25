@@ -6,29 +6,35 @@ import { getAssetsFile } from '@/utils/getAssetsFile'
 import * as THREE from 'three'
 // 导入网格的类型
 import type { Mesh } from 'three'
-// 导入外包加载器
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入加载
 import { loadFalse } from '@/utils/loading'
-import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial.js'
-import { Line2 } from 'three/examples/jsm/lines/Line2.js'
-import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry.js'
 // 导入工具方法类
 import { CreatedUtils } from '@/glsltype/utils_renderer'
+// 导入外包加载器
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// 导入字体加载器
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+// 导入字体
+import helvetiker from 'three/examples/fonts/optimer_bold.typeface.json?url'
 
 export class LoaderIphone extends CreatedUtils {
   iphoneMap!: THREE.Mesh
 
-  // 加载的手机模型
+  // 手机模型组
   iphone = new THREE.Group()
-  // 旋转启动
-  rotateGo = false
+  // 线和数字介绍的组
+  lineAndNumber = new THREE.Group()
   // 创建glTF加载器
   loader = new GLTFLoader()
   // 创建纹理加载器
   textureLoader = new THREE.TextureLoader()
   // 设置一个环境贴图加载器
   envMapLoader = new THREE.CubeTextureLoader()
+
+  // 旋转启动
+  rotateGo = false
+  // 设置圆的半径
+  radius = 60
 
   // 加载手机模型的操作
   loadIphone = async () => {
@@ -136,17 +142,14 @@ export class LoaderIphone extends CreatedUtils {
     // 声明一个几何对象
     const linGeometry = new THREE.BufferGeometry()
 
-    // 设置一个圆的半径(three.js的单位)
-    const radius = 60
-
     // 通过椭圆曲线（弧线）绘制一个半圆, 默认是逆时针绘制
     // 绘制一个缺口的半圆
     // 360° - 45° = 315°
     const curve = new THREE.EllipseCurve(
       0, // 中心的X坐标，默认值为0。
       0, // 中心的Y坐标，默认值为0
-      radius, // X轴向上椭圆的半径，默认值为1
-      radius, // Y轴向上椭圆的半径，默认值为1
+      this.radius, // X轴向上椭圆的半径，默认值为1
+      this.radius, // Y轴向上椭圆的半径，默认值为1
       Math.PI / 4, //  以弧度来表示，从正X轴算起曲线开始的角度，默认值为0
       Math.PI * 2, // 以弧度来表示，从正X轴算起曲线终止的角度，默认值为2 x Math.PI。
       false, // 椭圆是否按照顺时针方向来绘制，默认值为false。 true为顺时针，false为逆时针
@@ -165,11 +168,44 @@ export class LoaderIphone extends CreatedUtils {
     const line = new THREE.Line(linGeometry, material)
 
     // 设置线条的位置
-    line.position.set(0, -170 / 2, 0)
+    // line.position.set(0, -170 / 2, 0)
     line.rotateX(Math.PI / 2)
 
+    // 添加到组中
+    this.lineAndNumber.add(line)
+    // 修改组的位置
+    this.lineAndNumber.position.set(0, -170 / 2, 0)
     // 添加到场景中
-    this.scene.add(line)
+    this.scene.add(this.lineAndNumber)
+  }
+
+  // 添加数字介绍
+  digital = async () => {
+    // 声明字体加载器
+    const fontLoader = new FontLoader()
+
+    // 加载常规字体
+    const font = await fontLoader.loadAsync(helvetiker)
+    // 设置文字几何体
+    const fontView = font.generateShapes('720°', 10) // generateShapes(文字: string, 大小: number)
+
+    // 生成文字几何体
+    const textGeometry = new THREE.ShapeGeometry(fontView)
+
+    // 设置字体的材质朗伯材质
+    const material = new THREE.MeshLambertMaterial({
+      color: '#ffffff',
+      side: THREE.DoubleSide
+    })
+
+    // // 设置文字对象
+    const text = new THREE.Mesh(textGeometry, material)
+
+    // 设置文字的位置
+    text.position.set(-40, 0, 40)
+    text.rotateY(-Math.PI / 5)
+
+    this.lineAndNumber.add(text)
   }
 
   // 模型相关的操作
@@ -177,6 +213,7 @@ export class LoaderIphone extends CreatedUtils {
     // 加载手机模型
     this.loadIphone()
     this.drawHalfCircle()
+    this.digital()
     // 添加场景添加背景
     this.scene.background = new THREE.Color('#757575')
   }

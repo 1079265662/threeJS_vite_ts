@@ -54,6 +54,7 @@ export default defineConfig({
     })
   ],
   resolve: {
+    // 设置导入路径别名和默认路径
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
