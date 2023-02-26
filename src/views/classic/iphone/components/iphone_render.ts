@@ -61,7 +61,7 @@ export class CreatedCanvas extends LoaderIphone {
     // 设置控制器的最大距离
     this.controls.maxDistance = 500
     // 设置控制器的最小距离
-    this.controls.minDistance = 10
+    this.controls.minDistance = 100
 
     // 渲染方法
     this.render()
@@ -110,10 +110,13 @@ export class CreatedCanvas extends LoaderIphone {
   render = () => {
     // 获得动画执行时间
     // const clockTime = this.clock.getElapsedTime()
+    const rotateSpeed = 0.005
 
     // 加载成功后进行旋转操作, 判断是否需要旋转操作
     if (this.rotateGo) {
-      this.iphone.rotateY(0.005)
+      this.iphone.rotateY(rotateSpeed)
+      // 添加到组中
+      this.lineAndNumber.rotateY(rotateSpeed)
     }
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
