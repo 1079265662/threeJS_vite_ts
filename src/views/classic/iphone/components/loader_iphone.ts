@@ -12,10 +12,14 @@ import { loadFalse } from '@/utils/loading'
 import { CreatedUtils } from '@/glsltype/utils_renderer'
 // 导入外包加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-// 导入字体加载器
+
+// 导入json字体加载器
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
-// 导入字体
+// 导入three.js的json字体, url资源需要在后缀加上?url
 import helvetiker from 'three/examples/fonts/optimer_bold.typeface.json?url'
+
+// 导入字体几何体
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 
 export class LoaderIphone extends CreatedUtils {
   iphoneMap!: THREE.Mesh
@@ -198,13 +202,55 @@ export class LoaderIphone extends CreatedUtils {
       side: THREE.DoubleSide
     })
 
-    // // 设置文字对象
+    // 设置文字模型
     const text = new THREE.Mesh(textGeometry, material)
 
     // 设置文字的位置
     text.position.set(-40, 0, 40)
     text.rotateY(-Math.PI / 5)
 
+    // 添加到组中
+    this.lineAndNumber.add(text)
+  }
+
+  // 几何体文字
+  digitalCube = async () => {
+    // 声明字体加载器
+    const fontLoader = new FontLoader()
+
+    // 加载常规字体
+    const font = await fontLoader.loadAsync(helvetiker)
+    // 设置文字几何体
+    // const fontView = font.generateShapes('720°', 10) // generateShapes(文字: string, 大小: number)
+
+    // TextGeometry(文字: string, 参数: object)
+    const geometry = new TextGeometry('720°', {
+      font, //THREE.Font的实例。
+      size: 10, // 字体大小，默认值为100。
+      height: 2, // 挤出文本的厚度。默认值为50
+      curveSegments: 20, // Integer。（表示文本的）曲线上点的数量。默认值为12, 3D文字的曲线分 段数越大，圆弧越平滑(大字需要)。
+
+      // 斜角参数, 不开启斜角的话, 下面的参数都不起作用
+      bevelEnabled: false, // 是否开启斜角，默认为false, 设置为true时，下面的参数才有效
+      bevelThickness: 0, // 文本上斜角的深度，默认值为20
+      bevelSize: 0, // 斜角与原始文本轮廓之间的延伸距离。默认值为8。
+      bevelSegments: 3 // 斜角的分段数。默认值为3
+    })
+
+    // 设置字体的材质朗伯材质
+    const material = new THREE.MeshLambertMaterial({
+      color: '#ffffff',
+      side: THREE.DoubleSide
+    })
+
+    // 设置文字模型
+    const text = new THREE.Mesh(geometry, material)
+
+    // 设置文字的位置
+    text.position.set(-40, 0, 40)
+    text.rotateY(-Math.PI / 5)
+
+    // 添加到组中
     this.lineAndNumber.add(text)
   }
 
@@ -213,7 +259,11 @@ export class LoaderIphone extends CreatedUtils {
     // 加载手机模型
     this.loadIphone()
     this.drawHalfCircle()
-    this.digital()
+    // 普通字体
+    // this.digital()
+    // 几何字体
+    this.digitalCube()
+    // this.digitalTTF()
     // 添加场景添加背景
     this.scene.background = new THREE.Color('#757575')
   }
