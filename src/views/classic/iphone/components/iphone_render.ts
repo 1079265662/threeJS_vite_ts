@@ -5,9 +5,9 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 // 导入模型渲染操作
-import { LoaderIphone } from './loader_iphone'
+import { changeLoading } from './change_blur'
 
-export class CreatedCanvas extends LoaderIphone {
+export class CreatedCanvas extends changeLoading {
   constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素

@@ -1,8 +1,26 @@
 <template>
-  <div class="relative">
+  <div>
     <div ref="stateDom" />
     <!-- <LoaDing :loadingNumber="loadingNumber" /> -->
-    <div class="btn" />
+
+    <!-- 格式化 -->
+    <div
+      class="absolute left-2/4 bottom-5 flex -translate-x-2/4 gap-4 lg:bottom-14"
+    >
+      <div
+        @click="cilckColor()"
+        class="color from-purple-600 via-purple-500 to-rose-400"
+      />
+      <div @click="cilckColor()" class="color from-black to-gray-300" />
+      <div
+        @click="cilckColor()"
+        class="color from-red-600 via-red-500 to-gray-200"
+      />
+      <div
+        @click="cilckColor()"
+        class="color from-sky-500 via-sky-300 to-gray-100"
+      />
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -16,7 +34,18 @@ import { loadingNumber } from '@/utils/loading'
 // 获取Dom
 const stateDom = ref()
 // 储存three.js的实例
-let Three: any = null
+let Three: CreatedCanvas
+
+// 点击事件
+const cilckColor = () => {
+  Three.createGlassPanel()
+
+  const ret = Three.glassPanel
+
+  setTimeout(() => {
+    Three.clearGlassPanel()
+  }, 3000)
+}
 
 onMounted(() => {
   // 创建three.js实例, 传递页面Dom
@@ -37,8 +66,7 @@ export default {
 }
 </script>
 <style lang="postcss" scoped>
-.btn {
-  /** 设置postcss后识别@apply */
-  @apply absolute bottom-0 w-10 h-10 bg-red-300;
+.color {
+  @apply h-10 w-10 rounded-full bg-gradient-to-tr;
 }
 </style>

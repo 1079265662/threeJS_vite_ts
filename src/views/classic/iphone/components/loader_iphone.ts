@@ -1,28 +1,29 @@
-// 导入手机模型gltf
-import huawei from '@/assets/iphone/huaweiB.glb'
 // 静态资源引入方法
 import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入three.js
 import * as THREE from 'three'
-// 导入网格的类型
-import type { Mesh } from 'three'
 // 导入加载
 import { loadFalse } from '@/utils/loading'
 // 导入工具方法类
 import { CreatedUtils } from '@/glsltype/utils_renderer'
 // 导入外包加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-
 // 导入json字体加载器
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 // 导入three.js的json字体, url资源需要在后缀加上?url
 import helvetiker from 'three/examples/fonts/optimer_bold.typeface.json?url'
-
 // 导入字体几何体
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
+// 导入手机模型gltf
+import huawei from '@/assets/iphone/huaweiB.glb'
+
+// 导入网格的类型
+import type { Mesh } from 'three'
 
 export class LoaderIphone extends CreatedUtils {
   iphoneMap!: THREE.Mesh
+  // 储存手机的大小
+  iphoneSize!: THREE.Vector3
 
   // 手机模型组
   iphone = new THREE.Group()
@@ -50,8 +51,6 @@ export class LoaderIphone extends CreatedUtils {
 
     // 赋值模型
     this.iphone = gltf.scene
-    // 查看模型大小
-    // this.getBoxSize(this.iphone)
     // 加载完成后进行旋转
     this.rotateGo = true
 
@@ -112,7 +111,7 @@ export class LoaderIphone extends CreatedUtils {
     this.iphoneMap = this.iphone.getObjectByName('手机') as Mesh
 
     // 设置材质
-    this.iphoneMap.material = new THREE.MeshStandardMaterial({
+    this.iphoneMap.material = new THREE.MeshPhysicalMaterial({
       // 设置透明度
       transparent: true,
       // 设置金属度
@@ -136,6 +135,9 @@ export class LoaderIphone extends CreatedUtils {
     })
     // 添加场景中去
     this.scene.add(this.iphone)
+
+    // 获取手机的大小
+    this.iphoneSize = this.getBoxSize(this.iphoneMap)
 
     // 加载完成
     loadFalse(true)

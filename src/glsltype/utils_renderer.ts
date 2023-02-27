@@ -19,8 +19,9 @@ export class CreatedUtils extends CreatedRender {
     box.setFromObject(object)
     // 获取包围盒的大小
     const boxSize = box.getSize(new THREE.Vector3())
-
     console.log(`当前物体的大小(包围盒)`, boxSize)
+
+    return boxSize
   }
 
   /**
