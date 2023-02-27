@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="relative">
     <div ref="stateDom" />
     <!-- <LoaDing :loadingNumber="loadingNumber" /> -->
+    <div class="btn" />
   </div>
 </template>
 <script setup lang="ts">
@@ -35,4 +36,9 @@ export default {
   name: 'IPhone'
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="postcss" scoped>
+.btn {
+  /** 设置postcss后识别@apply */
+  @apply absolute bottom-0 w-10 h-10 bg-red-300;
+}
+</style>

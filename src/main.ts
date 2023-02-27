@@ -1,19 +1,21 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-// 导入App.vue
+// 引入App.vue
 import App from './App.vue'
 import router from './router'
-// 导入自定义指令
+// 引入自定义指令
 import { waterClick } from './directives'
-// 导入清除默认样式css
+// 引入清除默认样式css
 import 'reset-css'
-// 导入Naive UI全局样式
+// 引入Naive UI全局样式
 import './styles/naive-ui.scss'
-// 导入vue全局样式
+// 引入vue全局样式
 import './styles/global.scss'
-// 导入按钮配置
+// 引入Tailwind
+import './styles/tailwind.css'
+// 引入按钮配置
 import { button } from './settings'
-// 导入加载组件
+// 引入加载组件
 import loading from './components/loading/index.vue'
 
 // 创建Vue3要添加的原型链方法

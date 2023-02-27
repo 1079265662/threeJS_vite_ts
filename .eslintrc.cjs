@@ -3,6 +3,13 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
+  // 设置全局环境下未定义变量的处理方式
+  env: {
+    node: true,
+    browser: true,
+    commonjs: true,
+    amd: true
+  },
   extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
