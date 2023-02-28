@@ -60,7 +60,7 @@ export class changeLoading extends LoaderIphone {
 
       // 设置圆弧加载动画
       gsap.to(this.loadingGroup.children[i].position, {
-        y: 3,
+        y: 4,
         delay: i * 0.2,
         repeat: -1,
         yoyo: true
@@ -68,20 +68,21 @@ export class changeLoading extends LoaderIphone {
     }
 
     // 加载的设置位置
-    this.loadingGroup.position.set(-42.5, 0, 40)
-    this.loadingGroup.rotateY(-Math.PI / 5.6)
+    this.loadingGroup.position.set(-15, 0, 40)
+    // this.loadingGroup.rotateY(-Math.PI / 5.6)
     this.loadingGroup.name = '加载环'
 
-    // 添加到总组里
-    this.lineAndNumber.add(this.loadingGroup)
+    this.scene.add(this.loadingGroup)
   }
 
   // 修改手机贴图
   changeIphoneMap = async (mapName: string) => {
-    // 删除文字
-    this.lineAndNumber.remove(this.text)
+    this.clearDigitalText()
 
-    // 启动加载圆弧
+    // 添加几何体文字
+    this.digitalCube(mapName)
+
+    // 启动加载
     this.createArc()
 
     // 实现毛玻璃效果
@@ -99,15 +100,10 @@ export class changeLoading extends LoaderIphone {
     // 标记为需要更新
     this.iphoneMap.material.needsUpdate = true
 
-    // ;(this.iphoneMap.material as any).map = texture
-
-    // 取消文字加载
-    this.clearArcText()
     // 清除展示文字
     this.clearDigitalText()
-
-    // 添加几何体文字
-    this.digitalCube(mapName)
+    // 清除加载
+    this.clearArcText()
   }
 
   // 清除加载圆弧
@@ -118,10 +114,9 @@ export class changeLoading extends LoaderIphone {
 
   // 清除文字
   clearDigitalText = () => {
+    console.log(this.lineAndNumber)
     // 删除文字
     this.lineAndNumber.remove(this.text)
-    // 删除加载环
-    this.lineAndNumber.remove(this.loadingGroup)
   }
 
   // // 清除毛玻璃面板
