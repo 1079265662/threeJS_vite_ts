@@ -5,7 +5,7 @@
 
     <!-- 格式化 -->
     <div
-      class="absolute left-2/4 bottom-5 flex -translate-x-2/4 gap-4 lg:bottom-14"
+      class="absolute left-2/4 bottom-1 flex -translate-x-2/4 gap-4 lg:bottom-14"
     >
       <div
         @click="cilckColor('极光紫')"
