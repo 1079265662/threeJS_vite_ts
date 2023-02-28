@@ -4,7 +4,9 @@
     <LoaDing :loadingNumber="loadingNumber" />
 
     <!-- 格式化 -->
-    <div class="absolute right-8 bottom-20 flex flex-col gap-4">
+    <div
+      class="absolute right-8 bottom-32 flex flex-col gap-4 lg:right-1/2 lg:bottom-10 lg:translate-x-1/2 lg:flex-row"
+    >
       <div
         @click="cilckColor('极光紫')"
         class="color from-purple-600 via-purple-500 to-rose-400"
