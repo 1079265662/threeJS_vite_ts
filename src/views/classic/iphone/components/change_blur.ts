@@ -4,6 +4,8 @@ import { LoaderIphone } from './loader_iphone'
 import * as THREE from 'three'
 // 导入gsap
 import { gsap } from 'gsap'
+// 静态资源引入方法
+import { getAssetsFile } from '@/utils/getAssetsFile'
 /**
  * 切换加载的毛玻璃效果
  */
@@ -18,21 +20,21 @@ export class changeLoading extends LoaderIphone {
     // 清除文字
     this.clearDigitalText()
 
-    // 创建毛玻璃材质
-    const material = new THREE.MeshPhysicalMaterial({
-      side: THREE.DoubleSide,
-      specularColor: new THREE.Color('#ffffff'),
-      color: 0xffffff,
-      transmission: 0.9063505503810331,
-      opacity: 0.9713801862828112,
-      metalness: 0,
-      roughness: 0.45114309906858596,
-      ior: 1.52,
-      specularIntensity: 1
-    })
+    // // 创建毛玻璃材质
+    // const material = new THREE.MeshPhysicalMaterial({
+    //   side: THREE.DoubleSide,
+    //   specularColor: new THREE.Color('#ffffff'),
+    //   color: 0xffffff,
+    //   transmission: 0.9063505503810331,
+    //   opacity: 0.9713801862828112,
+    //   metalness: 0,
+    //   roughness: 0.45114309906858596,
+    //   ior: 1.52,
+    //   specularIntensity: 1
+    // })
 
-    // 设置材质
-    this.iphoneMap.material = material
+    // // 设置材质
+    // this.iphoneMap.material = material
   }
 
   //创建圆弧
@@ -85,7 +87,19 @@ export class changeLoading extends LoaderIphone {
     // 实现毛玻璃效果
     this.createGlassPanel()
 
-    await this.loadIphone(mapName)
+    // 导入色彩贴图
+    const texture = await this.textureLoader.loadAsync(
+      getAssetsFile(`iphone/map/${mapName}.png`)
+    )
+
+    texture.flipY = false
+
+    // 更新贴图
+    this.iphoneMap.material.map = texture
+    // 标记为需要更新
+    this.iphoneMap.material.needsUpdate = true
+
+    // ;(this.iphoneMap.material as any).map = texture
 
     // 取消文字加载
     this.clearArcText()
@@ -98,6 +112,14 @@ export class changeLoading extends LoaderIphone {
   clearArcText = () => {
     this.loadingGroup.clear()
     this.loadingGroup = new THREE.Group()
+  }
+
+  // 清除文字
+  clearDigitalText = () => {
+    // 删除文字
+    this.lineAndNumber.remove(this.text)
+    // 删除加载环
+    this.lineAndNumber.remove(this.loadingGroup)
   }
 
   // // 清除毛玻璃面板

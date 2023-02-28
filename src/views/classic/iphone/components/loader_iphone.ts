@@ -20,11 +20,8 @@ import huawei from '@/assets/iphone/huaweiB.glb'
 // 导入字体对应的颜色
 import { textMap } from '@/settings'
 
-// 导入网格的类型
-import type { Mesh } from 'three'
-
 export class LoaderIphone extends CreatedUtils {
-  iphoneMap!: THREE.Mesh
+  iphoneMap!: THREE.Mesh | any
   // 储存手机的大小
   iphoneSize!: THREE.Vector3
   // 文字
@@ -116,7 +113,7 @@ export class LoaderIphone extends CreatedUtils {
     normalMap.flipY = false
 
     // 查找贴图材质
-    this.iphoneMap = this.iphone.getObjectByName('手机') as Mesh
+    this.iphoneMap = this.iphone.getObjectByName('手机')
 
     // 设置材质
     this.iphoneMap.material = new THREE.MeshPhysicalMaterial({
@@ -141,6 +138,9 @@ export class LoaderIphone extends CreatedUtils {
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 0.8
     })
+
+    // 标记为需要更新
+    this.iphoneMap.material.needsUpdate = true
     // 添加场景中去
     this.scene.add(this.iphone)
   }
@@ -192,7 +192,6 @@ export class LoaderIphone extends CreatedUtils {
     //   this.lineAndNumber.add(this.text)
     //   return
     // }
-    this.text = new THREE.Mesh()
     // 加载json字体
     const font = await this.fontLoader.loadAsync(helvetiker)
 
@@ -235,12 +234,6 @@ export class LoaderIphone extends CreatedUtils {
   changePosition = () => {
     // 修改组的位置
     this.lineAndNumber.position.set(...this.positionChange)
-  }
-
-  // 清除文字
-  clearDigitalText = () => {
-    // 删除文字
-    this.lineAndNumber.remove(this.text)
   }
 
   // 模型相关的操作

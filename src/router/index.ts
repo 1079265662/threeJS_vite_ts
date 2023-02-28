@@ -11,14 +11,6 @@ import { css_menu } from './modules/css_menu'
 import { threejs_menu } from './modules/threejs_menu'
 import { classic } from './modules/classic'
 
-// 内部路由
-const routesInside = [
-  {
-    path: '/:catchAll(.*)',
-    redirect: '/iphone'
-  }
-]
-
 // 导出路由(菜单)
 const routesExport = [
   {
@@ -55,6 +47,14 @@ const routesExport = [
       title: 'CSS操练场'
     },
     children: [...css_menu]
+  }
+]
+
+// 内部路由
+const routesInside = [
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/iphone'
   }
 ]
 

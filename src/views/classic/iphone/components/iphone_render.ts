@@ -43,7 +43,7 @@ export class CreatedCanvas extends changeLoading {
     this.scene.add(light)
 
     // 创建辅助线
-    this.addaxesHelper(100)
+    // this.addaxesHelper(100)
 
     // 设置渲染器(画布)的大小 通过setSize()设置
     this.renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
