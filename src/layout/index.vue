@@ -44,7 +44,7 @@
 <script lang="ts" setup>
 // 导入naive
 // 导入路由菜单
-import { routes } from '@/router/index'
+import { routesExport } from '@/router/index'
 import { ref } from 'vue'
 // 导入操作路由方法
 import { useRouter, useRoute } from 'vue-router'
@@ -101,7 +101,7 @@ const getRouterList = (routerList: any[], routes: any[]) => {
 }
 
 // 处理路由菜单
-getRouterList(routerList.value, routes)
+getRouterList(routerList.value, routesExport)
 
 // 点击路由进行跳转
 const gotoRouter = (e: string) => {

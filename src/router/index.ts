@@ -10,7 +10,17 @@ const Layout = () => import('@/layout/index.vue')
 import { css_menu } from './modules/css_menu'
 import { threejs_menu } from './modules/threejs_menu'
 import { classic } from './modules/classic'
-const routes = [
+
+// 内部路由
+const routesInside = [
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/iphone'
+  }
+]
+
+// 导出路由(菜单)
+const routesExport = [
   {
     path: '/',
     component: Layout,
@@ -48,9 +58,12 @@ const routes = [
   }
 ]
 
+// 合并路由
+const routesAll = [...routesExport, ...routesInside]
+
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes
+  routes: routesAll
 })
 
 // 设置路由title
@@ -61,4 +74,4 @@ router.beforeEach((to, from, next) => {
 })
 
 export default router
-export { routes }
+export { routesExport }

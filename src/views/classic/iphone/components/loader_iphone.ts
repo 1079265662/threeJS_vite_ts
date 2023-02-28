@@ -192,7 +192,7 @@ export class LoaderIphone extends CreatedUtils {
     //   this.lineAndNumber.add(this.text)
     //   return
     // }
-
+    this.text = new THREE.Mesh()
     // 加载json字体
     const font = await this.fontLoader.loadAsync(helvetiker)
 
