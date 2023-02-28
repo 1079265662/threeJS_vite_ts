@@ -21,7 +21,7 @@ import huawei from '@/assets/iphone/huaweiB.glb'
 import { textMap } from '@/settings'
 
 export class LoaderIphone extends CreatedUtils {
-  iphoneMap!: THREE.Mesh | any
+  iphoneMap!: THREE.Mesh
   // 储存手机的大小
   iphoneSize!: THREE.Vector3
   // 文字
@@ -113,10 +113,10 @@ export class LoaderIphone extends CreatedUtils {
     normalMap.flipY = false
 
     // 查找贴图材质
-    this.iphoneMap = this.iphone.getObjectByName('手机')
+    this.iphoneMap = this.iphone.getObjectByName('手机') as THREE.Mesh
 
     // 设置材质
-    this.iphoneMap.material = new THREE.MeshPhysicalMaterial({
+    this.iphoneMap.material = new THREE.MeshStandardMaterial({
       // 设置透明度
       transparent: true,
       // 设置金属度
@@ -139,8 +139,6 @@ export class LoaderIphone extends CreatedUtils {
       envMapIntensity: 0.8
     })
 
-    // 标记为需要更新
-    this.iphoneMap.material.needsUpdate = true
     // 添加场景中去
     this.scene.add(this.iphone)
   }

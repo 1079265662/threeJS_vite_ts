@@ -109,7 +109,7 @@ export class CreatedCanvas extends changeLoading {
   render = () => {
     // 获得动画执行时间
     // const clockTime = this.clock.getElapsedTime()
-    const rotateSpeed = 0.005
+    const rotateSpeed = 0.003
 
     // 加载成功后进行旋转操作, 判断是否需要旋转操作
     if (this.rotateGo) {

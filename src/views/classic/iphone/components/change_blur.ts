@@ -94,10 +94,13 @@ export class changeLoading extends LoaderIphone {
 
     texture.flipY = false
 
-    // 更新贴图
-    this.iphoneMap.material.map = texture
+    const iphoneMapMaterial = this.iphoneMap
+      .material as THREE.MeshPhysicalMaterial
+
     // 标记为需要更新
-    this.iphoneMap.material.needsUpdate = true
+    iphoneMapMaterial.needsUpdate = true
+    // 更新贴图
+    iphoneMapMaterial.map = texture
 
     // 清除加载
     this.clearArcText()
