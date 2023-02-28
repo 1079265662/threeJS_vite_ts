@@ -24,6 +24,8 @@ export class LoaderIphone extends CreatedUtils {
   iphoneMap!: THREE.Mesh
   // 储存手机的大小
   iphoneSize!: THREE.Vector3
+  // 文字
+  text!: THREE.Mesh
 
   // 手机模型组
   iphone = new THREE.Group()
@@ -36,27 +38,31 @@ export class LoaderIphone extends CreatedUtils {
   // 设置一个环境贴图加载器
   envMapLoader = new THREE.CubeTextureLoader()
 
+  // 修改的位置
+  positionChange: [number, number, number] = [0, -170 / 2, 0]
   // 旋转启动
   rotateGo = false
   // 设置圆的半径
   radius = 60
 
-  // 加载手机模型的操作
-  loadIphone = async () => {
-    // 开始加载
-    loadFalse()
-
+  // 获取手机模型
+  getIphoneGltf = async () => {
     // 异步获得加载的模型
     const gltf = await this.loader.loadAsync(huawei)
-
     // 赋值模型
     this.iphone = gltf.scene
     // 加载完成后进行旋转
     this.rotateGo = true
+  }
+
+  // 加载手机模型的操作
+  loadIphone = async (mapName = '极光紫') => {
+    // 开始加载
+    loadFalse()
 
     // 导入色彩贴图
     const mapTexture = this.textureLoader.loadAsync(
-      getAssetsFile('iphone/basecolor.png')
+      getAssetsFile(`iphone/map/${mapName}.png`)
     )
 
     // 导入金属度贴图
@@ -173,27 +179,25 @@ export class LoaderIphone extends CreatedUtils {
     // 设置线条对象
     const line = new THREE.Line(linGeometry, material)
 
-    // 设置线条的位置
-    // line.position.set(0, -170 / 2, 0)
     line.rotateX(Math.PI / 2)
+    line.name = '圆线'
 
     // 添加到组中
     this.lineAndNumber.add(line)
-    // 修改组的位置
-    this.lineAndNumber.position.set(0, -170 / 2, 0)
+
     // 添加到场景中
     this.scene.add(this.lineAndNumber)
   }
 
   // 添加数字介绍
-  digital = async () => {
+  digital = async (textItem: string) => {
     // 声明字体加载器
     const fontLoader = new FontLoader()
 
     // 加载常规字体
     const font = await fontLoader.loadAsync(helvetiker)
     // 设置文字几何体
-    const fontView = font.generateShapes('720°', 10) // generateShapes(文字: string, 大小: number)
+    const fontView = font.generateShapes(textItem, 10) // generateShapes(文字: string, 大小: number)
 
     // 生成文字几何体
     const textGeometry = new THREE.ShapeGeometry(fontView)
@@ -205,18 +209,18 @@ export class LoaderIphone extends CreatedUtils {
     })
 
     // 设置文字模型
-    const text = new THREE.Mesh(textGeometry, material)
+    this.text = new THREE.Mesh(textGeometry, material)
 
     // 设置文字的位置
-    text.position.set(-40, 0, 40)
-    text.rotateY(-Math.PI / 5)
+    this.text.position.set(-40, 0, 40)
+    this.text.rotateY(-Math.PI / 5)
 
     // 添加到组中
-    this.lineAndNumber.add(text)
+    this.lineAndNumber.add(this.text)
   }
 
   // 几何体文字
-  digitalCube = async () => {
+  digitalCube = async (textItem: string) => {
     // 声明字体加载器
     const fontLoader = new FontLoader()
 
@@ -226,7 +230,7 @@ export class LoaderIphone extends CreatedUtils {
     // const fontView = font.generateShapes('720°', 10) // generateShapes(文字: string, 大小: number)
 
     // TextGeometry(文字: string, 参数: object)
-    const geometry = new TextGeometry('720°', {
+    const geometry = new TextGeometry(textItem, {
       font, //THREE.Font的实例。
       size: 10, // 字体大小，默认值为100。
       height: 2, // 挤出文本的厚度。默认值为50
@@ -246,27 +250,45 @@ export class LoaderIphone extends CreatedUtils {
     })
 
     // 设置文字模型
-    const text = new THREE.Mesh(geometry, material)
+    this.text = new THREE.Mesh(geometry, material)
 
     // 设置文字的位置
-    text.position.set(-40, 0, 40)
-    text.rotateY(-Math.PI / 5)
+    this.text.position.set(-39, 0, 40)
+    this.text.rotateY(-Math.PI / 5)
+    this.text.name = '文字'
 
     // 添加到组中
-    this.lineAndNumber.add(text)
+    this.lineAndNumber.add(this.text)
+  }
+
+  // 修改位置
+  changePosition = () => {
+    // 修改组的位置
+    this.lineAndNumber.position.set(...this.positionChange)
+  }
+
+  // 清除文字
+  clearDigital = () => {
+    // 删除文字
+    this.lineAndNumber.remove(this.text)
   }
 
   // 模型相关的操作
   loadEnvMap = async () => {
+    // 添加场景添加背景
+    this.scene.background = new THREE.Color('#757575')
+    // 加载模型
+    await this.getIphoneGltf()
+
     // 加载手机模型
     this.loadIphone()
+
     this.drawHalfCircle()
     // 普通字体
     // this.digital()
     // 几何字体
-    this.digitalCube()
-    // this.digitalTTF()
-    // 添加场景添加背景
-    this.scene.background = new THREE.Color('#757575')
+    this.digitalCube('720°')
+
+    this.changePosition()
   }
 }

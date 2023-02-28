@@ -8,16 +8,16 @@
       class="absolute left-2/4 bottom-5 flex -translate-x-2/4 gap-4 lg:bottom-14"
     >
       <div
-        @click="cilckColor()"
+        @click="cilckColor('极光紫')"
         class="color from-purple-600 via-purple-500 to-rose-400"
       />
-      <div @click="cilckColor()" class="color from-black to-gray-300" />
+      <div @click="cilckColor('幻夜黑')" class="color from-black to-gray-300" />
       <div
-        @click="cilckColor()"
+        @click="cilckColor('珊瑚红')"
         class="color from-red-600 via-red-500 to-gray-200"
       />
       <div
-        @click="cilckColor()"
+        @click="cilckColor('极光蓝')"
         class="color from-sky-500 via-sky-300 to-gray-100"
       />
     </div>
@@ -37,14 +37,8 @@ const stateDom = ref()
 let Three: CreatedCanvas
 
 // 点击事件
-const cilckColor = () => {
-  Three.createGlassPanel()
-
-  const ret = Three.glassPanel
-
-  setTimeout(() => {
-    Three.clearGlassPanel()
-  }, 3000)
+const cilckColor = (mapName: string) => {
+  Three.changeIphoneMap(mapName)
 }
 
 onMounted(() => {
