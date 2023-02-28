@@ -145,6 +145,8 @@ export class LoaderIphone extends CreatedUtils {
     // 获取手机的大小
     this.iphoneSize = this.getBoxSize(this.iphoneMap)
 
+    // 创建文字
+    this.digitalCube('720°')
     // 加载完成
     loadFalse(true)
   }

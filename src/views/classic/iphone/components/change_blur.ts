@@ -4,8 +4,6 @@ import { LoaderIphone } from './loader_iphone'
 import * as THREE from 'three'
 // 导入gsap
 import { gsap } from 'gsap'
-// 静态资源引入方法
-import { getAssetsFile } from '@/utils/getAssetsFile'
 /**
  * 切换加载的毛玻璃效果
  */
@@ -36,9 +34,6 @@ export class changeLoading extends LoaderIphone {
     // 设置材质
     this.iphoneMap.material = material
 
-    // 启动加载圆弧
-    this.createArc()
-
     // 修改文字
 
     // // 创建一个网格模型
@@ -55,7 +50,7 @@ export class changeLoading extends LoaderIphone {
   }
 
   //创建圆弧
-  createArc = () => {
+  createArc = async () => {
     // console.log(this.loadingGroup.name)
 
     if (this.loadingGroup.name === '加载环') return
@@ -97,16 +92,16 @@ export class changeLoading extends LoaderIphone {
 
   // 修改手机贴图
   changeIphoneMap = async (mapName: string) => {
+    // 启动加载圆弧
+    this.createArc()
+
     // 实现毛玻璃效果
     this.createGlassPanel()
 
-    this.loadIphone(mapName)
+    await this.loadIphone(mapName)
 
     // 取消加载
     this.clearArc()
-
-    // 创建文字
-    this.digitalCube('720°')
   }
 
   // 清除加载圆弧
