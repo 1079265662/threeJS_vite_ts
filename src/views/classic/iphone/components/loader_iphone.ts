@@ -251,17 +251,16 @@ export class LoaderIphone extends CreatedUtils {
     // 加载模型
     await this.getIphoneGltf()
 
-    // 加载手机模型
-    this.loadIphone()
-
     // 绘制圆
     this.drawHalfCircle()
-    // 普通字体
-    // this.digital()
+
     // 几何字体
     this.digitalCube('720°')
 
     this.changePosition()
+
+    // 加载手机模型
+    await this.loadIphone()
 
     // 加载完成
     loadFalse(true)
