@@ -16,7 +16,7 @@ export class changeLoading extends LoaderIphone {
 
   createGlassPanel = () => {
     // 清除文字
-    this.clearDigital()
+    this.clearDigitalText()
 
     // 创建毛玻璃材质
     const material = new THREE.MeshPhysicalMaterial({
@@ -33,26 +33,10 @@ export class changeLoading extends LoaderIphone {
 
     // 设置材质
     this.iphoneMap.material = material
-
-    // 修改文字
-
-    // // 创建一个网格模型
-    // this.demoMesh = new THREE.Mesh(geometry, material)
-
-    // // 添加到组里
-    // this.glassPanel.add(this.demoMesh)
-
-    // //  修改位置
-    // this.glassPanel.position.set(0, 0, 65)
-
-    // // 添加到场景里
-    // this.scene.add(this.glassPanel)
   }
 
   //创建圆弧
   createArc = async () => {
-    // console.log(this.loadingGroup.name)
-
     if (this.loadingGroup.name === '加载环') return
 
     // 创建圆弧模板
@@ -92,6 +76,8 @@ export class changeLoading extends LoaderIphone {
 
   // 修改手机贴图
   changeIphoneMap = async (mapName: string) => {
+    this.clearDigitalText()
+
     // 启动加载圆弧
     this.createArc()
 
@@ -100,12 +86,14 @@ export class changeLoading extends LoaderIphone {
 
     await this.loadIphone(mapName)
 
-    // 取消加载
-    this.clearArc()
+    // 取消文字加载
+    this.clearArcText()
+
+    this.digitalCube('')
   }
 
   // 清除加载圆弧
-  clearArc = () => {
+  clearArcText = () => {
     this.loadingGroup.clear()
     this.loadingGroup = new THREE.Group()
   }

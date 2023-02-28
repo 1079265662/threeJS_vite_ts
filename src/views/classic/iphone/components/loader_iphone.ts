@@ -57,9 +57,6 @@ export class LoaderIphone extends CreatedUtils {
 
   // 加载手机模型的操作
   loadIphone = async (mapName = '极光紫') => {
-    // 开始加载
-    loadFalse()
-
     // 导入色彩贴图
     const mapTexture = this.textureLoader.loadAsync(
       getAssetsFile(`iphone/map/${mapName}.png`)
@@ -144,11 +141,6 @@ export class LoaderIphone extends CreatedUtils {
 
     // 获取手机的大小
     this.iphoneSize = this.getBoxSize(this.iphoneMap)
-
-    // 创建文字
-    this.digitalCube('720°')
-    // 加载完成
-    loadFalse(true)
   }
 
   // 绘制一个半圆线
@@ -191,38 +183,14 @@ export class LoaderIphone extends CreatedUtils {
     this.scene.add(this.lineAndNumber)
   }
 
-  // 添加数字介绍
-  digital = async (textItem: string) => {
-    // 声明字体加载器
-    const fontLoader = new FontLoader()
-
-    // 加载常规字体
-    const font = await fontLoader.loadAsync(helvetiker)
-    // 设置文字几何体
-    const fontView = font.generateShapes(textItem, 10) // generateShapes(文字: string, 大小: number)
-
-    // 生成文字几何体
-    const textGeometry = new THREE.ShapeGeometry(fontView)
-
-    // 设置字体的材质朗伯材质
-    const material = new THREE.MeshLambertMaterial({
-      color: '#ffffff',
-      side: THREE.DoubleSide
-    })
-
-    // 设置文字模型
-    this.text = new THREE.Mesh(textGeometry, material)
-
-    // 设置文字的位置
-    this.text.position.set(-40, 0, 40)
-    this.text.rotateY(-Math.PI / 5)
-
-    // 添加到组中
-    this.lineAndNumber.add(this.text)
-  }
-
   // 几何体文字
   digitalCube = async (textItem: string) => {
+    // 存在直接添加
+    if (this.text) {
+      this.lineAndNumber.add(this.text)
+      return
+    }
+
     // 声明字体加载器
     const fontLoader = new FontLoader()
 
@@ -270,21 +238,26 @@ export class LoaderIphone extends CreatedUtils {
   }
 
   // 清除文字
-  clearDigital = () => {
+  clearDigitalText = () => {
     // 删除文字
     this.lineAndNumber.remove(this.text)
   }
 
   // 模型相关的操作
   loadEnvMap = async () => {
+    // 开始加载
+    loadFalse()
+
     // 添加场景添加背景
     this.scene.background = new THREE.Color('#757575')
+
     // 加载模型
     await this.getIphoneGltf()
 
     // 加载手机模型
     this.loadIphone()
 
+    // 绘制圆
     this.drawHalfCircle()
     // 普通字体
     // this.digital()
@@ -292,5 +265,8 @@ export class LoaderIphone extends CreatedUtils {
     this.digitalCube('720°')
 
     this.changePosition()
+
+    // 加载完成
+    loadFalse(true)
   }
 }

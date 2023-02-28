@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="stateDom" />
-    <!-- <LoaDing :loadingNumber="loadingNumber" /> -->
+    <LoaDing :loadingNumber="loadingNumber" />
 
     <!-- 格式化 -->
     <div
