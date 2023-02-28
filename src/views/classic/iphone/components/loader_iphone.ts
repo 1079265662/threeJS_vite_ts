@@ -138,9 +138,6 @@ export class LoaderIphone extends CreatedUtils {
     })
     // 添加场景中去
     this.scene.add(this.iphone)
-
-    // 获取手机的大小
-    this.iphoneSize = this.getBoxSize(this.iphoneMap)
   }
 
   // 绘制一个半圆线
