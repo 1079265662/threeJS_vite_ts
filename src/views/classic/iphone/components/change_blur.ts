@@ -78,8 +78,8 @@ export class changeLoading extends LoaderIphone {
 
   // 修改手机贴图
   changeIphoneMap = async (mapName: string) => {
-    // 清除展示文字
-    this.clearDigitalText()
+    // 删除文字
+    this.lineAndNumber.remove(this.text)
 
     // 启动加载圆弧
     this.createArc()
@@ -103,6 +103,8 @@ export class changeLoading extends LoaderIphone {
 
     // 取消文字加载
     this.clearArcText()
+    // 清除展示文字
+    this.clearDigitalText()
 
     // 添加几何体文字
     this.digitalCube(mapName)
