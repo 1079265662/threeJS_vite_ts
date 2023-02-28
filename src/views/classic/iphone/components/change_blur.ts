@@ -100,8 +100,6 @@ export class changeLoading extends LoaderIphone {
     // 标记为需要更新
     this.iphoneMap.material.needsUpdate = true
 
-    // 清除展示文字
-    this.clearDigitalText()
     // 清除加载
     this.clearArcText()
   }
