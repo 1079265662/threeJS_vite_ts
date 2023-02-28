@@ -91,7 +91,7 @@ export class changeLoading extends LoaderIphone {
     this.clearArcText()
 
     // 添加几何体文字
-    this.digitalCube('')
+    this.digitalCube(mapName)
   }
 
   // 清除加载圆弧

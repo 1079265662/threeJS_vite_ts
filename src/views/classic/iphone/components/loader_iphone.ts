@@ -11,11 +11,14 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入json字体加载器
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
 // 导入three.js的json字体, url资源需要在后缀加上?url
-import helvetiker from 'three/examples/fonts/optimer_bold.typeface.json?url'
+import helvetiker from '@/assets/iphone/font/text.json?url'
+// import helvetiker from 'three/examples/fonts/optimer_bold.typeface.json?url'
 // 导入字体几何体
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 // 导入手机模型gltf
 import huawei from '@/assets/iphone/huaweiB.glb'
+// 导入字体对应的颜色
+import { textMap } from '@/settings'
 
 // 导入网格的类型
 import type { Mesh } from 'three'
@@ -37,6 +40,8 @@ export class LoaderIphone extends CreatedUtils {
   textureLoader = new THREE.TextureLoader()
   // 设置一个环境贴图加载器
   envMapLoader = new THREE.CubeTextureLoader()
+  // 字体加载器
+  fontLoader = new FontLoader()
 
   // 修改的位置
   positionChange: [number, number, number] = [0, -170 / 2, 0]
@@ -182,25 +187,22 @@ export class LoaderIphone extends CreatedUtils {
 
   // 几何体文字
   digitalCube = async (textItem: string) => {
-    // 存在直接添加
-    if (this.text) {
-      this.lineAndNumber.add(this.text)
-      return
-    }
+    // // 存在直接添加
+    // if (this.text) {
+    //   this.lineAndNumber.add(this.text)
+    //   return
+    // }
 
-    // 声明字体加载器
-    const fontLoader = new FontLoader()
+    // 加载json字体
+    const font = await this.fontLoader.loadAsync(helvetiker)
 
-    // 加载常规字体
-    const font = await fontLoader.loadAsync(helvetiker)
     // 设置文字几何体
     // const fontView = font.generateShapes('720°', 10) // generateShapes(文字: string, 大小: number)
-
     // TextGeometry(文字: string, 参数: object)
     const geometry = new TextGeometry(textItem, {
       font, //THREE.Font的实例。
-      size: 10, // 字体大小，默认值为100。
-      height: 2, // 挤出文本的厚度。默认值为50
+      size: 8, // 字体大小，默认值为100。
+      height: 1, // 挤出文本的厚度。默认值为50
       curveSegments: 20, // Integer。（表示文本的）曲线上点的数量。默认值为12, 3D文字的曲线分 段数越大，圆弧越平滑(大字需要)。
 
       // 斜角参数, 不开启斜角的话, 下面的参数都不起作用
@@ -212,7 +214,7 @@ export class LoaderIphone extends CreatedUtils {
 
     // 设置字体的材质朗伯材质
     const material = new THREE.MeshLambertMaterial({
-      color: '#ffffff',
+      color: textMap.get(textItem),
       side: THREE.DoubleSide
     })
 
@@ -220,8 +222,9 @@ export class LoaderIphone extends CreatedUtils {
     this.text = new THREE.Mesh(geometry, material)
 
     // 设置文字的位置
-    this.text.position.set(-39, 0, 40)
-    this.text.rotateY(-Math.PI / 5)
+    this.text.position.set(-44, 0, 40)
+    this.text.rotateY(-Math.PI / 6.1)
+    this.text.rotateX(-0.1314)
     this.text.name = '文字'
 
     // 添加到组中
@@ -255,7 +258,7 @@ export class LoaderIphone extends CreatedUtils {
     this.drawHalfCircle()
 
     // 几何字体
-    this.digitalCube('720°')
+    this.digitalCube('极光紫')
 
     this.changePosition()
 

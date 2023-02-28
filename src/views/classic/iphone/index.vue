@@ -5,7 +5,7 @@
 
     <!-- 格式化 -->
     <div
-      class="absolute right-8 bottom-32 flex flex-col gap-4 lg:right-1/2 lg:bottom-10 lg:translate-x-1/2 lg:flex-row"
+      class="absolute right-6 bottom-32 flex flex-col gap-4 lg:right-1/2 lg:bottom-10 lg:translate-x-1/2 lg:flex-row"
     >
       <div
         @click="cilckColor('极光紫')"
@@ -18,7 +18,7 @@
       />
       <div
         @click="cilckColor('极光蓝')"
-        class="color from-sky-500 via-sky-300 to-gray-100"
+        class="color from-blue-500 via-sky-400 to-gray-100"
       />
     </div>
   </div>

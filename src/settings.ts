@@ -10,4 +10,11 @@ const viewSettings = {
 const button = {
   reset: '重 置'
 }
-export { viewSettings, button }
+
+const textMap = new Map([
+  ['极光紫', '#64255f'],
+  ['幻夜黑', '#131313'],
+  ['珊瑚红', '#972737'],
+  ['极光蓝', '#26797d']
+])
+export { viewSettings, button, textMap }
