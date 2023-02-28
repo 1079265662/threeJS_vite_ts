@@ -16,6 +16,7 @@ export class changeLoading extends LoaderIphone {
   // 创建圆弧加载的组
   loadingGroup = new THREE.Group()
 
+  // 作废
   createGlassPanel = () => {
     // 清除文字
     this.clearDigitalText()
@@ -68,11 +69,12 @@ export class changeLoading extends LoaderIphone {
     }
 
     // 加载的设置位置
-    this.loadingGroup.position.set(-15, 0, 40)
+    this.loadingGroup.position.set(-15, 0, -100)
     // this.loadingGroup.rotateY(-Math.PI / 5.6)
+    // 设置到透视相机中
+    this.camera.add(this.loadingGroup)
+    // 设置名称
     this.loadingGroup.name = '加载环'
-
-    this.scene.add(this.loadingGroup)
   }
 
   // 修改手机贴图
@@ -84,9 +86,6 @@ export class changeLoading extends LoaderIphone {
 
     // 启动加载
     this.createArc()
-
-    // 实现毛玻璃效果
-    this.createGlassPanel()
 
     // 导入色彩贴图
     const texture = await this.textureLoader.loadAsync(
