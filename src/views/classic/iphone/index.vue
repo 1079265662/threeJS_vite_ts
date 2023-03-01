@@ -1,8 +1,15 @@
 <template>
   <div class="relative">
     <div ref="stateDom" />
-    <LoaDing :loadingNumber="loadingNumber" />
+    <!-- <LoaDing :loadingNumber="loadingNumber" /> -->
 
+    <div
+      class="absolute bottom-56 right-20 grid place-items-center lg:right-1/2 lg:bottom-20 lg:translate-x-1/2"
+      @click="changRotate"
+    >
+      <div v-show="!pause" class="cursor-pointer select-none text-3xl">▶️</div>
+      <div v-show="pause" class="cursor-pointer select-none text-3xl">⏸︎</div>
+    </div>
     <!-- 格式化 -->
     <div
       class="absolute right-6 bottom-32 flex flex-col gap-4 lg:right-1/2 lg:bottom-10 lg:translate-x-1/2 lg:flex-row"
@@ -33,12 +40,21 @@ import { loadingNumber } from '@/utils/loading'
 
 // 获取Dom
 const stateDom = ref()
+// 暂停启动
+const pause = ref(true)
+
 // 储存three.js的实例
 let Three: CreatedCanvas
 
-// 点击事件
+// 点击切换不同颜色
 const cilckColor = (mapName: string) => {
   Three.changeIphoneMap(mapName)
+}
+
+// 暂停启动旋转
+const changRotate = () => {
+  pause.value = !pause.value
+  Three.rotateButton = pause.value
 }
 
 onMounted(() => {
@@ -63,4 +79,7 @@ export default {
 .color {
   @apply h-10 w-10 rounded-full bg-gradient-to-tr;
 }
+/* .absoluteDiv {
+  @apply ;
+} */
 </style>

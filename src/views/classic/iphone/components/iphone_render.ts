@@ -15,6 +15,8 @@ export class CreatedCanvas extends changeLoading {
 
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
+  // 是否进行旋转(按钮)
+  rotateButton = true
 
   // 创建场景
   createScene = () => {
@@ -112,7 +114,7 @@ export class CreatedCanvas extends changeLoading {
     const rotateSpeed = 0.003
 
     // 加载成功后进行旋转操作, 判断是否需要旋转操作
-    if (this.rotateGo) {
+    if (this.rotateGo && this.rotateButton) {
       this.iphone.rotateY(rotateSpeed)
       // 添加到组中
       this.lineAndNumber.rotateY(rotateSpeed)
