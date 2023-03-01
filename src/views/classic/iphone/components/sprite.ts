@@ -23,7 +23,8 @@ export class CreatedSprite extends CreatedUtils {
 
     const material = new THREE.SpriteMaterial({
       map: spriteMap,
-      transparent: true
+      transparent: true,
+      depthWrite: false
     })
 
     const sprite = new THREE.Sprite(material)
@@ -32,9 +33,12 @@ export class CreatedSprite extends CreatedUtils {
 
     sprite.position.set(0, 5, -5)
 
-    this.spriteMesh.add(sprite)
+    // this.spriteMesh.add(
+    //   // 创建辅助线
+    //   this.addaxesHelper(100)
+    // )
 
-    console.log(sprite)
+    this.spriteMesh.add(sprite)
 
     // 创建精灵材质
   }

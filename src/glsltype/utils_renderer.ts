@@ -44,5 +44,7 @@ export class CreatedUtils extends CreatedRender {
     const axesHelper = new THREE.AxesHelper(length)
     // 添加到场景中
     this.scene.add(axesHelper)
+
+    return axesHelper
   }
 }
