@@ -34,6 +34,8 @@ export class Type {
     1000
   )
 
+  // 创建纹理加载器
+  textureLoader = new THREE.TextureLoader()
   // 创建时钟
   clock = new THREE.Clock()
 }

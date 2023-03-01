@@ -53,10 +53,17 @@ const cilckColor = (mapName: string) => {
 
 // 暂停启动旋转
 const changRotate = () => {
+  // 停止物体旋转
   pause.value = !pause.value
   Three.rotateButton = pause.value
-}
 
+  // 全局暂停, 清除动画, 节省性能, 但是没有交互效果
+  // if (pause.value) {
+  //   Three.stopRender()
+  // } else {
+  //   Three.stop()
+  // }
+}
 onMounted(() => {
   // 创建three.js实例, 传递页面Dom
   Three = new CreatedCanvas(stateDom.value)

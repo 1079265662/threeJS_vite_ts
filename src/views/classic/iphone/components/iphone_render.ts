@@ -3,10 +3,10 @@ import * as THREE from 'three'
 
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-// 导入模型渲染操作
-import { changeLoading } from './change_blur'
 
-export class CreatedCanvas extends changeLoading {
+import { ChangeLoading } from './change_blur'
+
+export class CreatedCanvas extends ChangeLoading {
   constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
@@ -105,6 +105,12 @@ export class CreatedCanvas extends changeLoading {
   // 销毁监听
   onRemoveEventListener = () => {
     window.removeEventListener('mousemove', this.stopRotate)
+  }
+
+  // 暂停
+  stopRender = () => {
+    // 清除动画
+    cancelAnimationFrame(this.animationId)
   }
 
   // 渲染动画

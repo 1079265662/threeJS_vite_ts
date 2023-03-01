@@ -5,7 +5,7 @@ import * as THREE from 'three'
 // 导入加载
 import { loadFalse } from '@/utils/loading'
 // 导入工具方法类
-import { CreatedUtils } from '@/glsltype/utils_renderer'
+import { CreatedSprite } from './sprite'
 // 导入外包加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入json字体加载器
@@ -16,12 +16,12 @@ import helvetiker from '@/assets/iphone/font/text.json?url'
 // 导入字体几何体
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 // 导入手机模型gltf
-import huawei from '@/assets/iphone/huaweiB.glb'
+import huawei from '@/assets/iphone/手机.glb'
 // 导入字体对应的颜色
 import { textMap } from '@/settings'
 
-export class LoaderIphone extends CreatedUtils {
-  iphoneMap!: THREE.Mesh
+export class LoaderIphone extends CreatedSprite {
+  iphoneMap!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>
   // 储存手机的大小
   iphoneSize!: THREE.Vector3
   // 文字
@@ -33,15 +33,14 @@ export class LoaderIphone extends CreatedUtils {
   lineAndNumber = new THREE.Group()
   // 创建glTF加载器
   loader = new GLTFLoader()
-  // 创建纹理加载器
-  textureLoader = new THREE.TextureLoader()
+
   // 设置一个环境贴图加载器
   envMapLoader = new THREE.CubeTextureLoader()
   // 字体加载器
   fontLoader = new FontLoader()
 
   // 修改的位置
-  positionChange: [number, number, number] = [0, -170 / 2, 0]
+  positionChange = new THREE.Vector3(0, -170 / 2, 0)
   // 旋转启动
   rotateGo = false
   // 设置圆的半径
@@ -53,6 +52,7 @@ export class LoaderIphone extends CreatedUtils {
     const gltf = await this.loader.loadAsync(huawei)
     // 赋值模型
     this.iphone = gltf.scene
+    this.createdSprite(gltf.scene)
     // 加载完成后进行旋转
     this.rotateGo = true
   }
@@ -112,8 +112,11 @@ export class LoaderIphone extends CreatedUtils {
     alphaMap.flipY = false
     normalMap.flipY = false
 
-    // 查找贴图材质
-    this.iphoneMap = this.iphone.getObjectByName('手机') as THREE.Mesh
+    // 查找到手机的模型
+    this.iphoneMap = this.iphone.getObjectByName('手机') as THREE.Mesh<
+      THREE.BufferGeometry,
+      THREE.MeshStandardMaterial
+    >
 
     // 设置材质
     this.iphoneMap.material = new THREE.MeshStandardMaterial({
@@ -231,7 +234,7 @@ export class LoaderIphone extends CreatedUtils {
   // 修改位置
   changePosition = () => {
     // 修改组的位置
-    this.lineAndNumber.position.set(...this.positionChange)
+    this.lineAndNumber.position.copy(this.positionChange)
   }
 
   // 模型相关的操作

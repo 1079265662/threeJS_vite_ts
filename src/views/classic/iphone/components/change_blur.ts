@@ -9,7 +9,7 @@ import { getAssetsFile } from '@/utils/getAssetsFile'
 /**
  * 切换加载的毛玻璃效果
  */
-export class changeLoading extends LoaderIphone {
+export class ChangeLoading extends LoaderIphone {
   // 创建一个毛玻璃效果的面板
   glassPanel = new THREE.Group()
   demoMesh!: THREE.Mesh
@@ -94,9 +94,7 @@ export class changeLoading extends LoaderIphone {
 
     texture.flipY = false
 
-    const iphoneMapMaterial = this.iphoneMap
-      .material as THREE.MeshPhysicalMaterial
-
+    const iphoneMapMaterial = this.iphoneMap.material
     // 标记为需要更新
     iphoneMapMaterial.needsUpdate = true
     // 更新贴图
