@@ -52,6 +52,7 @@ export class LoaderIphone extends CreatedSprite {
     const gltf = await this.loader.loadAsync(huawei)
     // 赋值模型
     this.iphone = gltf.scene
+    // 创建信息点
     this.createdSprite(gltf.scene)
     // 加载完成后进行旋转
     this.rotateGo = true

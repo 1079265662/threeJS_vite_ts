@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <div ref="stateDom" />
-    <!-- <LoaDing :loadingNumber="loadingNumber" /> -->
+    <LoaDing :loadingNumber="loadingNumber" />
 
     <div
       class="absolute bottom-56 right-20 grid place-items-center lg:right-1/2 lg:bottom-20 lg:translate-x-1/2"

@@ -24,6 +24,7 @@ export class CreatedSprite extends CreatedUtils {
     const material = new THREE.SpriteMaterial({
       map: spriteMap,
       transparent: true,
+      depthTest: true,
       depthWrite: false
     })
 
