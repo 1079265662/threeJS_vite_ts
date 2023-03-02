@@ -6,6 +6,7 @@ import * as THREE from 'three'
 import { gsap } from 'gsap'
 // 静态资源引入方法
 import { getAssetsFile } from '@/utils/getAssetsFile'
+
 /**
  * 切换加载的毛玻璃效果
  */
@@ -66,6 +67,7 @@ export class ChangeLoading extends LoaderIphone {
         repeat: -1,
         yoyo: true
       })
+      // gsao
     }
 
     // 加载的设置位置

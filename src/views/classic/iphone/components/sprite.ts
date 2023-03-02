@@ -4,6 +4,8 @@ import { CreatedUtils } from '@/glsltype/utils_renderer'
 import * as THREE from 'three'
 // 静态资源引入方法
 import { getAssetsFile } from '@/utils/getAssetsFile'
+// 导入gsap
+import { gsap } from 'gsap'
 
 export class CreatedSprite extends CreatedUtils {
   spriteMesh!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>
@@ -23,14 +25,26 @@ export class CreatedSprite extends CreatedUtils {
 
     const material = new THREE.SpriteMaterial({
       map: spriteMap,
-      transparent: true,
-      depthTest: true,
-      depthWrite: false
+      transparent: true
+      // depthTest: true, // 默认为true
+      // depthWrite: false
     })
 
     const sprite = new THREE.Sprite(material)
 
-    sprite.scale.set(10, 10, 10)
+    // 设置透明材质的渲染顺序
+    sprite.renderOrder = 2
+
+    sprite.scale.set(10, 10, 0)
+
+    gsap.to(sprite.scale, {
+      x: 7,
+      y: 7,
+      duration: 1,
+      repeat: -1,
+      yoyo: true,
+      ease: 'power3.out'
+    })
 
     sprite.position.set(0, 5, -5)
 

@@ -28,9 +28,12 @@
         class="color from-blue-500 via-sky-400 to-gray-100"
       />
     </div>
+    <TipsIphone />
   </div>
 </template>
 <script setup lang="ts">
+// 导入提示组件
+import TipsIphone from './components_vue/tips.vue'
 // 导入Vue3的API
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 // 导入实例
