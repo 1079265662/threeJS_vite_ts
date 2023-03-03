@@ -3,7 +3,7 @@ import * as THREE from 'three'
 
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-
+import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import { ChangeLoading } from './change_blur'
 
 export class CreatedCanvas extends ChangeLoading {
@@ -13,6 +13,7 @@ export class CreatedCanvas extends ChangeLoading {
     this.canvas = canvas
   }
 
+  labelRenderer = new CSS2DRenderer()
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
   // 是否进行旋转(按钮)
@@ -50,6 +51,10 @@ export class CreatedCanvas extends ChangeLoading {
     // 设置渲染器(画布)的大小 通过setSize()设置
     this.renderer.setSize(window.innerWidth, window.innerHeight) // setSize(画布宽度, 画布高度)
     // 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
+    this.canvas.appendChild(this.renderer.domElement)
+
+    // 设置2D标签渲染器
+    this.labelRenderer.setSize(window.innerWidth, window.innerHeight)
     this.canvas.appendChild(this.renderer.domElement)
 
     // 创建创建一个轨道控制器 实现交互渲染
@@ -127,8 +132,11 @@ export class CreatedCanvas extends ChangeLoading {
     }
     // 设置阻尼感必须在动画中调用.update()
     this.controls.update()
+
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)
+    this.labelRenderer.render(this.scene, this.camera)
+
     // 使用动画更新的回调API实现持续更新动画的效果
     this.animationId = requestAnimationFrame(this.render)
   }

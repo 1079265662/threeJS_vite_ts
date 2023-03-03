@@ -28,14 +28,14 @@
         class="color from-blue-500 via-sky-400 to-gray-100"
       />
     </div>
-    <TipsIphone />
+    <TipsIphone ref="tipsIphone" />
   </div>
 </template>
 <script setup lang="ts">
 // 导入提示组件
 import TipsIphone from './components_vue/tips.vue'
 // 导入Vue3的API
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 // 导入实例
 import { CreatedCanvas } from './components/iphone_render'
 // 导入加载的进度
@@ -43,6 +43,7 @@ import { loadingNumber } from '@/utils/loading'
 
 // 获取Dom
 const stateDom = ref()
+const tipsIphone = ref()
 // 暂停启动
 const pause = ref(true)
 
@@ -70,6 +71,9 @@ const changRotate = () => {
 onMounted(() => {
   // 创建three.js实例, 传递页面Dom
   Three = new CreatedCanvas(stateDom.value)
+  console.log(tipsIphone.value)
+
+  // Three.Created2DLabel(tipsIphone.value)
   Three.createScene()
 })
 

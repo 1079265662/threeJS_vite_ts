@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="stateDom"
     class="absolute right-6 bottom-32 flex flex-row-reverse items-center gap-1"
   >
     <div
@@ -16,6 +17,13 @@
   </div>
 </template>
 
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const stateDom = ref
+
+defineExpose({ stateDom })
+</script>
 <script lang="ts">
 export default {
   name: 'TipsIphone'
