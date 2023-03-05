@@ -3,8 +3,15 @@
  */
 // 导入公共类
 import { Type } from './type'
+import type { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 
 export class CreatedRender extends Type {
+  // 是否开启CSS2DRenderer或者CSS3DRenderer的渲染
+  // 开启了2D
+  isCSS2DRenderer = false
+  // 2D渲染器
+  label2DRenderer!: CSS2DRenderer
+
   // 尺寸变化时调整渲染器大小
   onWindowResize = () => {
     // 解构window对象
@@ -15,6 +22,11 @@ export class CreatedRender extends Type {
     this.camera.updateProjectionMatrix()
     // 更新渲染器
     this.renderer.setSize(innerWidth, innerHeight)
+    // 如果开启了CSS2DRenderer
+    if (this.isCSS2DRenderer) {
+      // 更新CSS2DObject的渲染器
+      this.label2DRenderer.setSize(innerWidth, innerHeight)
+    }
     // 更新渲染器的像素比
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
   }

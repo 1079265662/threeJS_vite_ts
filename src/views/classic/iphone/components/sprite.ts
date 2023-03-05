@@ -6,8 +6,6 @@ import * as THREE from 'three'
 import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入gsap
 import { gsap } from 'gsap'
-// 创建2D标签
-import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 
 export class CreatedSprite extends CreatedUtils {
   spriteMesh!: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>
@@ -49,6 +47,7 @@ export class CreatedSprite extends CreatedUtils {
     })
 
     sprite.position.set(0, 5, -5)
+    sprite.name = '后置摄像头光点'
 
     // this.spriteMesh.add(
     //   // 创建辅助线
@@ -56,14 +55,5 @@ export class CreatedSprite extends CreatedUtils {
     // )
 
     this.spriteMesh.add(sprite)
-  }
-
-  // 创建2D标签
-  Created2DLabel = (label: HTMLElement) => {
-    const label2D = new CSS2DObject(label)
-
-    label2D.position.set(0, 0, 0)
-
-    this.scene.add(label2D)
   }
 }

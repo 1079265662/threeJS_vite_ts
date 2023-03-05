@@ -3,21 +3,29 @@ import * as THREE from 'three'
 
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
+import {
+  CSS2DRenderer,
+  CSS2DObject
+} from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import { ChangeLoading } from './change_blur'
 
 export class CreatedCanvas extends ChangeLoading {
-  constructor(canvas: HTMLElement) {
+  constructor(canvas: HTMLElement, tags: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
     this.canvas = canvas
+    this.tags = tags
   }
 
-  labelRenderer = new CSS2DRenderer()
   // 绘制canvas的Dom
   canvas!: HTMLElement | Document | Element
   // 是否进行旋转(按钮)
   rotateButton = true
+
+  // 标签内容
+  tags!: HTMLElement
+  // 标签2D对象
+  tags2D!: CSS2DObject
 
   // 创建场景
   createScene = () => {
@@ -53,10 +61,6 @@ export class CreatedCanvas extends ChangeLoading {
     // 将webgl渲染到指定的页面元素中去 (比如body 也可以设置其他页面Dom元素)
     this.canvas.appendChild(this.renderer.domElement)
 
-    // 设置2D标签渲染器
-    this.labelRenderer.setSize(window.innerWidth, window.innerHeight)
-    this.canvas.appendChild(this.renderer.domElement)
-
     // 创建创建一个轨道控制器 实现交互渲染
     // new OrbitControls(相机, 渲染器Dom元素)
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
@@ -69,12 +73,32 @@ export class CreatedCanvas extends ChangeLoading {
     // 设置控制器的最小距离
     this.controls.minDistance = 100
 
+    // 创建标签
+    this.createTags()
+    // 射线拾取
+    this.onAddEventListenerMousemove()
+    // 监听操作页面尺寸改变
+    this.onAddEventListener()
     // 渲染方法
     this.render()
-    // 监听操作页面尺寸改变
-    this.onAddEventListenerMousemove()
-    // 开启物体的旋转
-    this.onAddEventListener()
+  }
+
+  // 创建tags
+  createTags = () => {
+    this.label2DRenderer = new CSS2DRenderer()
+
+    // 设置2D标签渲染器
+    this.label2DRenderer.setSize(window.innerWidth, window.innerHeight)
+    this.label2DRenderer.domElement.style.position = 'absolute'
+    this.label2DRenderer.domElement.style.top = '0px'
+    this.label2DRenderer.domElement.style.pointerEvents = 'none'
+    // 将2D标签渲染器添加到页面中
+    document.body.appendChild(this.label2DRenderer.domElement)
+
+    // 把2D标签对象添加到场景中
+    this.tags2D = new CSS2DObject(this.tags)
+    this.tags2D.position.set(0, 0, 0)
+    this.scene.add(this.tags2D)
   }
 
   // 监听窗口变化
@@ -101,6 +125,8 @@ export class CreatedCanvas extends ChangeLoading {
     // 获取所有的立方体 intersectObjects()传入需要检测的物体
     const cube = raycaster.intersectObjects(this.scene.children) // 会返回所有与射线相交的多个对象的数组
 
+    console.log(cube)
+
     // 判断是否移动到手机上
     cube[0]?.object.name === '手机'
       ? (this.rotateGo = false)
@@ -110,6 +136,8 @@ export class CreatedCanvas extends ChangeLoading {
   // 销毁监听
   onRemoveEventListener = () => {
     window.removeEventListener('mousemove', this.stopRotate)
+    // 销毁CSS2DRenderer
+    document.body.removeChild(this.label2DRenderer.domElement)
   }
 
   // 暂停
@@ -135,7 +163,7 @@ export class CreatedCanvas extends ChangeLoading {
 
     // 使用渲染器,通过相机将场景渲染出来
     this.renderer.render(this.scene, this.camera) // render(场景, 相机)
-    this.labelRenderer.render(this.scene, this.camera)
+    this.label2DRenderer.render(this.scene, this.camera)
 
     // 使用动画更新的回调API实现持续更新动画的效果
     this.animationId = requestAnimationFrame(this.render)
