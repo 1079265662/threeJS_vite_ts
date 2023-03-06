@@ -17,6 +17,9 @@ export class CreatedCanvas extends ChangeLoading {
     this.tags = tags
   }
 
+  // 绘制canvas的Dom
+  canvas!: HTMLElement | Document | Element
+
   // 是否进行旋转(按钮)
   rotateButton = true
 

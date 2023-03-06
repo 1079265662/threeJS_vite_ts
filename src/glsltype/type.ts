@@ -8,9 +8,6 @@ import * as THREE from 'three'
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 export class Type {
-  // 绘制canvas的Dom
-  canvas!: HTMLElement | Document | Element
-
   // 轨道控制器
   controls!: OrbitControls
   // 设置动画id
