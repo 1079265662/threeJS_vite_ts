@@ -17,8 +17,6 @@ export class CreatedCanvas extends ChangeLoading {
     this.tags = tags
   }
 
-  // 绘制canvas的Dom
-  canvas!: HTMLElement | Document | Element
   // 是否进行旋转(按钮)
   rotateButton = true
 
@@ -26,6 +24,9 @@ export class CreatedCanvas extends ChangeLoading {
   tags!: HTMLElement
   // 标签2D对象
   tags2D!: CSS2DObject
+
+  // 创建一个光线投射器
+  raycaster = new THREE.Raycaster()
 
   // 创建场景
   createScene = () => {
@@ -89,55 +90,86 @@ export class CreatedCanvas extends ChangeLoading {
 
     // 设置2D标签渲染器
     this.label2DRenderer.setSize(window.innerWidth, window.innerHeight)
+
+    // 设置2D标签渲染器的样式
+    this.label2DRenderer.domElement.style.display = 'none' // 默认隐藏
+    this.label2DRenderer.domElement.style.overflow = 'visible' // 显示超出部分(默认隐藏), 适配移动端
     this.label2DRenderer.domElement.style.position = 'absolute'
-    this.label2DRenderer.domElement.style.top = '0px'
-    this.label2DRenderer.domElement.style.pointerEvents = 'none'
-    // 将2D标签渲染器添加到页面中
-    document.body.appendChild(this.label2DRenderer.domElement)
+    this.label2DRenderer.domElement.style.top = '80px' // 移动高度
+    this.label2DRenderer.domElement.style.left = '0px'
+    this.label2DRenderer.domElement.style.pointerEvents = 'none' // 鼠标事件不可用, 不遮挡canvas
+
+    // 将2D标签渲染器添加到canvas元素中
+    this.canvas.appendChild(this.label2DRenderer.domElement)
 
     // 把2D标签对象添加到场景中
     this.tags2D = new CSS2DObject(this.tags)
-    this.tags2D.position.set(0, 0, 0)
+    // 添加到场景中
     this.scene.add(this.tags2D)
   }
 
-  // 监听窗口变化
+  // 监听光线投射内容
   onAddEventListenerMousemove = () => {
+    // 监听鼠标移动事件, 监听旋转
     window.addEventListener('mousemove', this.stopRotate)
+    // 监听鼠标点击事件, 监听点击雪碧图标
+    window.addEventListener('click', this.onAddClickSprite)
   }
 
   // 通过光线投射, 暂停物体的旋转
   stopRotate = (item: MouseEvent) => {
-    const { clientX, clientY } = item
-    // 创建二维向量 用于记录鼠标的位置
-    const mouse = new THREE.Vector2()
+    // 获得全屏的webgl设备坐标
+    const FullXY = this.calculateFullXY(item)
 
-    // mousemove 鼠标移动事件 还可以替换其他时间click等
-    // 将鼠标点击位置的屏幕坐标转换成three.js中的标准设备坐标
-    mouse.x = (clientX / window.innerWidth) * 2 - 1 // X轴坐标 2个单位 -1到1
-    mouse.y = -((clientY / window.innerHeight) * 2 - 1) // Y轴坐标 2个单位 -1到1 这里需要反转一下 因为在JS/CSS坐标中Y轴是反的
-
-    // 创建一个光线投射器
-    const raycaster = new THREE.Raycaster()
     // 设置光线投射器的射线 通过setFromCamera()设置 传入鼠标的位置和相机
-    raycaster.setFromCamera(mouse, this.camera)
+    this.raycaster.setFromCamera(FullXY, this.camera)
 
-    // 获取所有的立方体 intersectObjects()传入需要检测的物体
-    const cube = raycaster.intersectObjects(this.scene.children) // 会返回所有与射线相交的多个对象的数组
+    // 投射scene场景中含的所有物体(子对象)
+    const cube = this.raycaster.intersectObjects([this.iphone]) // 会返回所有与射线相交的多个对象的数组
 
-    console.log(cube)
+    // 判断是否移动到手机上, 暂停旋转
+    if (cube.length !== 0) {
+      this.rotateGo = false
+    } else {
+      if (this.label2DRenderer.domElement.style.display === 'block') return
+      this.rotateGo = true
+    }
+  }
 
-    // 判断是否移动到手机上
-    cube[0]?.object.name === '手机'
-      ? (this.rotateGo = false)
-      : (this.rotateGo = true)
+  // 通过光线投射, 监听可点击的内容
+  onAddClickSprite = (item: MouseEvent) => {
+    // 获得全屏的webgl设备坐标
+    const FullXY = this.calculateFullXY(item)
+
+    // 设置光线投射器 的射线 通过setFromCamera()设置 传入鼠标的位置和相机
+    this.raycaster.setFromCamera(FullXY, this.camera)
+
+    // 投射雪碧图标(object3D对象)
+    if (this.spriteMesh) {
+      const spriteMeshRay = this.raycaster.intersectObjects([this.spriteMesh]) // 会返回所有与射线相交的多个对象的数组
+
+      // 判断是否点击到雪碧图标
+      if (spriteMeshRay[0]?.object.name === '后置摄像头光点') {
+        // 关闭旋转
+        this.rotateGo = false
+
+        this.tags2D.position.copy(spriteMeshRay[0].point)
+        this.label2DRenderer.domElement.style.display = 'block'
+      } else {
+        // 启动旋转
+        this.rotateGo = true
+        this.label2DRenderer.domElement.style.display = 'none'
+      }
+    }
   }
 
   // 销毁监听
   onRemoveEventListener = () => {
     window.removeEventListener('mousemove', this.stopRotate)
+    // 监听鼠标点击事件, 监听点击雪碧图标
+    window.removeEventListener('click', this.onAddClickSprite)
     // 销毁CSS2DRenderer
-    document.body.removeChild(this.label2DRenderer.domElement)
+    this.canvas.removeChild(this.label2DRenderer.domElement)
   }
 
   // 暂停

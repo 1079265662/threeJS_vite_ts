@@ -47,4 +47,21 @@ export class CreatedUtils extends CreatedRender {
 
     return axesHelper
   }
+
+  /**
+   * @description 计算全屏下的webgl设备坐标
+   * @param item 传入的鼠标事件
+   */
+  calculateFullXY = (item: MouseEvent) => {
+    const { clientX, clientY } = item
+    // 创建二维向量 用于记录鼠标的位置
+    const mouse = new THREE.Vector2()
+
+    // mousemove 鼠标移动事件 还可以替换其他时间click等
+    // 将鼠标点击位置的屏幕坐标转换成three.js中的标准设备坐标
+    mouse.x = (clientX / window.innerWidth) * 2 - 1 // X轴坐标 2个单位 -1到1
+    mouse.y = -((clientY / window.innerHeight) * 2 - 1) // Y轴坐标 2个单位 -1到1 这里需要反转一下 因为在JS/CSS坐标中Y轴是反的
+
+    return mouse
+  }
 }

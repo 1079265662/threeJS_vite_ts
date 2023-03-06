@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div>
     <div ref="stateDom" />
     <LoaDing :loadingNumber="loadingNumber" />
 
@@ -28,12 +28,12 @@
         class="color from-blue-500 via-sky-400 to-gray-100"
       />
     </div>
-    <!-- <TipsIphone ref="tipsIphone" /> -->
+    <TipsIphone ref="tipsIphone" />
   </div>
 </template>
 <script setup lang="ts">
 // 导入提示组件
-import type TipsIphone from './components_vue/tips.vue'
+import TipsIphone from './components_vue/tips.vue'
 // 导入Vue3的API
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 

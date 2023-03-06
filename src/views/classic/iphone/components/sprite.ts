@@ -46,7 +46,7 @@ export class CreatedSprite extends CreatedUtils {
       ease: 'power3.out'
     })
 
-    sprite.position.set(0, 5, -5)
+    sprite.position.set(-10, 5, 0)
     sprite.name = '后置摄像头光点'
 
     // this.spriteMesh.add(
