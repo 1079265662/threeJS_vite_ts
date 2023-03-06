@@ -105,8 +105,9 @@ export class CreatedCanvas extends ChangeLoading {
     // 将2D标签渲染器添加到canvas元素中
     this.canvas.appendChild(this.label2DRenderer.domElement)
 
-    // 把2D标签对象添加到场景中
+    // 把Dom元素转化为2D对象
     this.tags2D = new CSS2DObject(this.tags)
+
     // 添加到场景中
     this.scene.add(this.tags2D)
   }
@@ -127,13 +128,14 @@ export class CreatedCanvas extends ChangeLoading {
     // 设置光线投射器的射线 通过setFromCamera()设置 传入鼠标的位置和相机
     this.raycaster.setFromCamera(FullXY, this.camera)
 
-    // 投射scene场景中含的所有物体(子对象)
-    const cube = this.raycaster.intersectObjects([this.iphone]) // 会返回所有与射线相交的多个对象的数组
+    // 投射手机Object3D对象
+    const cube = this.raycaster.intersectObject(this.iphone)
 
     // 判断是否移动到手机上, 暂停旋转
     if (cube.length !== 0) {
       this.rotateGo = false
     } else {
+      // 如果显示2D标签, 则不旋转
       if (this.label2DRenderer.domElement.style.display === 'block') return
       this.rotateGo = true
     }
@@ -149,6 +151,7 @@ export class CreatedCanvas extends ChangeLoading {
 
     // 投射雪碧图标(object3D对象)
     if (this.spriteMesh) {
+      // 投射多个Object3D对象, 数组的形式
       const spriteMeshRay = this.raycaster.intersectObjects([this.spriteMesh]) // 会返回所有与射线相交的多个对象的数组
 
       // 判断是否点击到雪碧图标
@@ -156,11 +159,15 @@ export class CreatedCanvas extends ChangeLoading {
         // 关闭旋转
         this.rotateGo = false
 
+        // 设置2D标签的位置, 与雪碧图标的位置一致
         this.tags2D.position.copy(spriteMeshRay[0].point)
+        // 显示2D标签
         this.label2DRenderer.domElement.style.display = 'block'
       } else {
         // 启动旋转
         this.rotateGo = true
+
+        // 隐藏2D标签
         this.label2DRenderer.domElement.style.display = 'none'
       }
     }
@@ -168,8 +175,9 @@ export class CreatedCanvas extends ChangeLoading {
 
   // 销毁监听
   onRemoveEventListener = () => {
+    // 销毁旋转
     window.removeEventListener('mousemove', this.stopRotate)
-    // 监听鼠标点击事件, 监听点击雪碧图标
+    // 销毁雪碧
     window.removeEventListener('click', this.onAddClickSprite)
     // 销毁CSS2DRenderer
     this.canvas.removeChild(this.label2DRenderer.domElement)

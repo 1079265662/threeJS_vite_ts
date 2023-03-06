@@ -12,11 +12,25 @@
         5000万三摄系统，全景、广角、微距技能任意释放。 三星GN5超感光主摄，1/1.57
         英寸超大底， 无论抓拍、夜拍，随手拍都能清晰呈现。
       </h2>
+      <!-- {{ number }} -->
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// import { ref, onMounted } from 'vue'
+// const number = ref(0)
+
+// onMounted(() => {
+//   setInterval(() => {
+//     add()
+//   }, 1000)
+// })
+
+// const add = () => {
+//   number.value++
+// }
+</script>
 <script lang="ts">
 export default {
   name: 'TipsIphone'

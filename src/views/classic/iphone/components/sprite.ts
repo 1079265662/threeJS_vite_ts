@@ -18,7 +18,7 @@ export class CreatedSprite extends CreatedUtils {
       THREE.MeshStandardMaterial
     >
 
-    // 导入精灵图
+    // 导入雪碧图
     const spriteMap = await this.textureLoader.loadAsync(
       getAssetsFile('iphone/sprite/光点.png')
     )

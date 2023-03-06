@@ -11,6 +11,7 @@ const button = {
   reset: '重 置'
 }
 
+// 手机颜色
 const textMap = new Map([
   ['极光紫', '#64255f'],
   ['幻夜黑', '#131313'],
