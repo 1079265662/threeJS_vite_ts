@@ -126,7 +126,7 @@ export class LoaderIphone extends CreatedSprite {
       // 设置金属度
       metalness: 1,
       // 设置光滑度
-      roughness: 0.5,
+      // roughness: 0,
       // 设置颜色贴图
       map,
       // 设置金属度
@@ -141,6 +141,7 @@ export class LoaderIphone extends CreatedSprite {
       envMap,
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 0.8
+      // emissiveIntensity = 0.1
     })
 
     // 添加场景中去
@@ -214,7 +215,10 @@ export class LoaderIphone extends CreatedSprite {
     })
 
     // 设置字体的材质朗伯材质
-    const material = new THREE.MeshLambertMaterial({
+    const material = new THREE.MeshStandardMaterial({
+      metalness: 0.25,
+      // 设置光滑度
+      // roughness: 1,
       color: textMap.get(textItem),
       side: THREE.DoubleSide
     })
@@ -257,7 +261,7 @@ export class LoaderIphone extends CreatedSprite {
 
     this.changePosition()
 
-    // 加载手机模型
+    // 加载手机贴图
     await this.loadIphone()
 
     // 加载完成

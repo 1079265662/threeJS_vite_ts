@@ -17,28 +17,6 @@ export class ChangeLoading extends LoaderIphone {
   // 创建圆弧加载的组
   loadingGroup = new THREE.Group()
 
-  // 作废
-  createGlassPanel = () => {
-    // 清除文字
-    this.clearDigitalText()
-
-    // // 创建毛玻璃材质
-    // const material = new THREE.MeshPhysicalMaterial({
-    //   side: THREE.DoubleSide,
-    //   specularColor: new THREE.Color('#ffffff'),
-    //   color: 0xffffff,
-    //   transmission: 0.9063505503810331,
-    //   opacity: 0.9713801862828112,
-    //   metalness: 0,
-    //   roughness: 0.45114309906858596,
-    //   ior: 1.52,
-    //   specularIntensity: 1
-    // })
-
-    // // 设置材质
-    // this.iphoneMap.material = material
-  }
-
   //创建圆弧
   createArc = async () => {
     if (this.loadingGroup.name === '加载环') return
@@ -81,6 +59,7 @@ export class ChangeLoading extends LoaderIphone {
 
   // 修改手机贴图
   changeIphoneMap = async (mapName: string) => {
+    // 清除之前的文字
     this.clearDigitalText()
 
     // 添加几何体文字

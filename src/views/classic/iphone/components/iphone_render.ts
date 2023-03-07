@@ -17,9 +17,6 @@ export class CreatedCanvas extends ChangeLoading {
     this.tags = tags
   }
 
-  // 绘制canvas的Dom
-  canvas!: HTMLElement | Document | Element
-
   // 是否进行旋转(按钮)
   rotateButton = true
 
@@ -33,28 +30,26 @@ export class CreatedCanvas extends ChangeLoading {
 
   // 创建场景
   createScene = () => {
-    this.loadEnvMap()
-
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
     this.camera.position.set(0, 0, 200) // 默认没有参数 需要设置参数
+
     // 把相机添加到场景中
     this.scene.add(this.camera)
 
-    // 创建平行光
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight.position.set(200, 100, 300)
-    this.scene.add(directionalLight)
-    // this.setLightHelper(directionalLight)
-    // 创建平行光
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1)
-    directionalLight2.position.set(-200, -100, -300)
-    this.scene.add(directionalLight2)
-    // this.setLightHelper(directionalLight2)
+    // // 创建平行光
+    // const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+    // directionalLight.position.set(200, 100, 300)
+    // this.scene.add(directionalLight)
+    // // this.setLightHelper(directionalLight)
+
+    // // 创建平行光
+    // const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1)
+    // directionalLight2.position.set(-200, -100, -300)
+    // this.scene.add(directionalLight2)
+    // // this.setLightHelper(directionalLight2)
 
     // 环境光
-    const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
-    light.position.set(200, 300, 100)
-    // light.color.set(new THREE.Color('#ff3040'))
+    const light = new THREE.AmbientLight(0xffffff, 1.8) // soft white light
     this.scene.add(light)
 
     // 创建辅助线
@@ -77,6 +72,7 @@ export class CreatedCanvas extends ChangeLoading {
     // 设置控制器的最小距离
     this.controls.minDistance = 100
 
+    this.loadEnvMap()
     // 创建标签
     this.createTags()
     // 射线拾取

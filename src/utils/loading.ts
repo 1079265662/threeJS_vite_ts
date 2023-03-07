@@ -17,6 +17,8 @@ export function loadTexture(
   total: number | void,
   loaded: number | void
 ): LoadingManager | any {
+  // 重置加载进度
+
   loadingNumber.value = 0
 
   // 对于单独文件的加载进行计算(比如hdr)
@@ -43,7 +45,9 @@ export function loadTexture(
  * @returns {}
  */
 export function loadFalse(loadingIng = false) {
+  // 重置加载进度
   loadingNumber.value = 0
+
   const i = setInterval(() => {
     // 加载完成清除定时器
     if (loadingIng) {

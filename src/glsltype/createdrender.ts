@@ -1,6 +1,8 @@
+// createdrender.ts
 /**
  * three.js渲染的公共方法类
  */
+
 // 导入公共类
 import { Type } from './type'
 import type { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'

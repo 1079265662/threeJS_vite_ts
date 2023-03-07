@@ -1,3 +1,4 @@
+// type.ts
 /**
  * three.js渲染的公共类
  */
@@ -8,6 +9,9 @@ import * as THREE from 'three'
 import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 export class Type {
+  // 绘制canvas的Dom
+  canvas!: HTMLElement | Document | Element
+
   // 轨道控制器
   controls!: OrbitControls
   // 设置动画id
@@ -20,8 +24,10 @@ export class Type {
     antialias: true, // 关掉锯齿
     alpha: true // 设置背景透明
   })
+
   // 设置场景
   scene = new THREE.Scene()
+
   // 设置相机
   camera = new THREE.PerspectiveCamera(
     // 视觉角度

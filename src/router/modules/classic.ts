@@ -52,5 +52,14 @@ export const classic = [
     meta: {
       title: '苹果手机'
     }
+  },
+  {
+    path: '/bydcar',
+    name: 'BydCar',
+    // 设置按需加载
+    component: () => import('@/views/classic/bydcar/index.vue'),
+    meta: {
+      title: '比亚迪汽车'
+    }
   }
 ]

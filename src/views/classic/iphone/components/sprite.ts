@@ -35,7 +35,7 @@ export class CreatedSprite extends CreatedUtils {
     // 设置透明材质的渲染顺序
     sprite.renderOrder = 2
 
-    sprite.scale.set(10, 10, 0)
+    sprite.scale.set(11, 11, 0)
 
     gsap.to(sprite.scale, {
       x: 7,
@@ -43,7 +43,7 @@ export class CreatedSprite extends CreatedUtils {
       duration: 1,
       repeat: -1,
       yoyo: true,
-      ease: 'power3.out'
+      ease: 'power1.out'
     })
 
     sprite.position.set(-10, 5, 0)

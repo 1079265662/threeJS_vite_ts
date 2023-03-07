@@ -19,9 +19,6 @@ export class CreateWorld extends CreatedRender {
     this.canvas = canvas
   }
 
-  // 绘制canvas的Dom
-  canvas!: HTMLElement | Document | Element
-
   // 球体长宽
   sphereNumber = {
     width: 10,

@@ -70,6 +70,11 @@ const changRotate = () => {
   // }
 }
 onMounted(() => {
+  createdIphone()
+})
+
+// 加载手机
+const createdIphone = () => {
   // 创建three.js实例, 传递页面Dom
   Three = new CreatedCanvas(
     stateDom.value as HTMLElement,
@@ -78,7 +83,7 @@ onMounted(() => {
   Three.isCSS2DRenderer = true
   // Three.Created2DLabel(tipsIphone.value?.$el)
   Three.createScene()
-})
+}
 
 onBeforeUnmount(() => {
   // 销毁three.js实例

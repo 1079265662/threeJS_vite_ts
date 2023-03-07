@@ -1,6 +1,8 @@
+// utils_renderer.ts
 /**
  * three.js渲染的工具方法类
  */
+
 // 导入three.js
 import * as THREE from 'three'
 // 导入公共类
