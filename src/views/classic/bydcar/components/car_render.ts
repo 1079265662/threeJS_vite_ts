@@ -14,12 +14,11 @@ export class CreatedCanvas extends LoaderCar {
 
   // 创建场景
   createScene = () => {
-    console.log(THREE.LinearEncoding)
-
     // 修改渲染编码
     this.renderer.outputEncoding = THREE.sRGBEncoding
 
-    this.loadCar()
+    // 开始加载的内容
+    this.setScene()
 
     // 创建平行光
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4)
@@ -27,21 +26,21 @@ export class CreatedCanvas extends LoaderCar {
     // 把光源添加到相机上
     this.camera.add(directionalLight)
 
-    // 创建平行光2
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8)
-    // 设置光源的位置
-    directionalLight2.position.set(400, 200, 300)
-    // 把光源添加到场景中
-    this.scene.add(directionalLight2)
-    this.setLightHelper(directionalLight2)
+    // // 创建平行光2
+    // const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8)
+    // // 设置光源的位置
+    // directionalLight2.position.set(400, 200, 300)
+    // // 把光源添加到场景中
+    // this.scene.add(directionalLight2)
+    // this.setLightHelper(directionalLight2)
 
-    // 创建平行光3
-    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.8)
-    // 设置光源的位置
-    directionalLight3.position.set(-400, -200, -300)
-    // 把光源添加到场景中
-    this.scene.add(directionalLight3)
-    this.setLightHelper(directionalLight3)
+    // // 创建平行光3
+    // const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.8)
+    // // 设置光源的位置
+    // directionalLight3.position.set(-400, -200, -300)
+    // // 把光源添加到场景中
+    // this.scene.add(directionalLight3)
+    // this.setLightHelper(directionalLight3)
 
     // 环境光
     const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
