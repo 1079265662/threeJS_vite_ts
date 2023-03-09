@@ -1,11 +1,10 @@
-// 导入工具方法类
-import { LoaderCar } from './car_loader'
+import { GuiCreated } from './car_gui'
 // 导入three.js
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-export class CreatedCanvas extends LoaderCar {
+export class CreatedCanvas extends GuiCreated {
   constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
@@ -66,9 +65,9 @@ export class CreatedCanvas extends LoaderCar {
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
     // 设置控制器的最大距离
-    this.controls.maxDistance = 800
+    this.controls.maxDistance = 600
     // 设置控制器的最小距离
-    this.controls.minDistance = 300
+    this.controls.minDistance = 260
     // 禁用轨道控制器
     // this.controls.enabled = false
 
@@ -76,6 +75,8 @@ export class CreatedCanvas extends LoaderCar {
     this.render()
     // 添加监听画布大小变化
     this.onAddEventListener()
+    // 生成GUI调试面板
+    this.createGui()
   }
 
   // 渲染动画

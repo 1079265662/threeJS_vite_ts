@@ -50,12 +50,34 @@ export class LoaderIphone extends CreatedSprite {
   getIphoneGltf = async () => {
     // 异步获得加载的模型
     const gltf = await this.loader.loadAsync(huawei)
+
     // 赋值模型
     this.iphone = gltf.scene
+
     // 创建信息点
     this.createdSprite(gltf.scene)
+
     // 加载完成后进行旋转
     this.rotateGo = true
+  }
+
+  // 加载环境贴图
+  loadEnvMapScene = async () => {
+    // 加载环境贴图
+    const envMapTexture = await this.envMapLoader.loadAsync([
+      getAssetsFile('envMap/px.jpg'),
+      getAssetsFile('envMap/nx.jpg'),
+      getAssetsFile('envMap/py.jpg'),
+      getAssetsFile('envMap/ny.jpg'),
+      getAssetsFile('envMap/pz.jpg'),
+      getAssetsFile('envMap/nz.jpg')
+    ] as any)
+
+    // 添加场景添加背景
+    this.scene.background = new THREE.Color('#757575')
+
+    // 设置环境贴图
+    this.scene.environment = envMapTexture
   }
 
   // 加载手机模型的操作
@@ -85,25 +107,14 @@ export class LoaderIphone extends CreatedSprite {
       getAssetsFile('iphone/normal.png')
     )
 
-    // 加载环境贴图
-    const envMapTexture = this.envMapLoader.loadAsync([
-      getAssetsFile('envMap/px.jpg'),
-      getAssetsFile('envMap/nx.jpg'),
-      getAssetsFile('envMap/py.jpg'),
-      getAssetsFile('envMap/ny.jpg'),
-      getAssetsFile('envMap/pz.jpg'),
-      getAssetsFile('envMap/nz.jpg')
-    ] as any)
-
     // 请求贴图数据
-    const [map, metalnessMap, roughnessMap, alphaMap, normalMap, envMap] =
+    const [map, metalnessMap, roughnessMap, alphaMap, normalMap] =
       await Promise.all([
         mapTexture,
         metalnessMapTexture,
         roughnessMapTexture,
         alphaMapTexture,
-        normalMapTexture,
-        envMapTexture
+        normalMapTexture
       ])
 
     // 取消贴图的反转
@@ -137,11 +148,8 @@ export class LoaderIphone extends CreatedSprite {
       normalMap,
       // 设置透明度贴图
       alphaMap,
-      // 设置环境贴图
-      envMap,
       // 设置环境贴图的强度, 默认是1
       envMapIntensity: 0.8
-      // emissiveIntensity = 0.1
     })
 
     // 添加场景中去
@@ -247,11 +255,8 @@ export class LoaderIphone extends CreatedSprite {
     // 开始加载
     loadFalse()
 
-    // 添加场景添加背景
-    this.scene.background = new THREE.Color('#757575')
-
-    // 加载模型
-    await this.getIphoneGltf()
+    // 设置环境贴图
+    this.loadEnvMapScene()
 
     // 绘制圆
     this.drawHalfCircle()
@@ -259,7 +264,11 @@ export class LoaderIphone extends CreatedSprite {
     // 几何字体
     this.digitalCube('极光紫')
 
+    // 修改位置
     this.changePosition()
+
+    // 加载模型
+    await this.getIphoneGltf()
 
     // 加载手机贴图
     await this.loadIphone()
