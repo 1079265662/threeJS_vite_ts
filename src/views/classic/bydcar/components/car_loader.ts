@@ -7,9 +7,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 // 导入加载
 import { loadTexture } from '@/utils/loading'
 // 静态资源引入方法
-import { getAssetsFile } from '@/utils/getAssetsFile'
+// import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入汽车模型gltf
-// import car from '@/assets/car/轿车.gltf'
+import car from '/car/轿车.gltf'
 
 // 调试参数
 // 金属条
@@ -95,7 +95,7 @@ export class LoaderCar extends CreatedUtils {
         >
         meshOject.material = new THREE.MeshPhysicalMaterial({
           color: meshOject.material.color,
-          clearcoat: guiControlsShell.clearcoat, // 设置清晰度
+          clearcoat: guiControlsShell.clearcoat, // 设置清漆度
           clearcoatRoughness: guiControlsShell.clearcoatRoughness, // 设置清晰度粗糙度
           metalness: guiControlsShell.metalness, // 设置金属度
           roughness: guiControlsShell.roughness, // 设置粗糙度
@@ -115,7 +115,7 @@ export class LoaderCar extends CreatedUtils {
         console.log(meshOject)
 
         meshOject.material = new THREE.MeshPhysicalMaterial({
-          color: '#000000', // 设置颜色
+          color: '#ffffff', // 设置颜色
           opacity: 0.5, // 设置透明度, 默认为1 透明度可以实现车窗膜效果
           transparent: true, // 设置透明
           transmission: guiControlsGlass.transmission, // .transmission属性用于设置玻璃材质
@@ -138,7 +138,7 @@ export class LoaderCar extends CreatedUtils {
   // 加载轿车模型
   loadCar = async () => {
     // 异步获得加载的模型
-    const gltf = await this.loader.loadAsync('/car/轿车.gltf')
+    const gltf = await this.loader.loadAsync(car)
 
     // 修改名称
     gltf.scene.name = '车模'
