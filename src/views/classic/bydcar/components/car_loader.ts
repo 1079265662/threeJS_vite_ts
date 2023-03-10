@@ -9,7 +9,7 @@ import { loadTexture } from '@/utils/loading'
 // 静态资源引入方法
 import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入汽车模型gltf
-import car from '@/assets/car/轿车.gltf'
+// import car from '@/assets/car/轿车.gltf'
 
 // 调试参数
 // 金属条
@@ -138,7 +138,7 @@ export class LoaderCar extends CreatedUtils {
   // 加载轿车模型
   loadCar = async () => {
     // 异步获得加载的模型
-    const gltf = await this.loader.loadAsync(car)
+    const gltf = await this.loader.loadAsync('/car/轿车.gltf')
 
     // 修改名称
     gltf.scene.name = '车模'
@@ -191,14 +191,25 @@ export class LoaderCar extends CreatedUtils {
 
   // 设置环境贴图
   setEnvMap = async () => {
-    const envMapTexture = await this.envMapLoader.loadAsync([
-      getAssetsFile('car/envMap/px.jpg'),
-      getAssetsFile('car/envMap/nx.jpg'),
-      getAssetsFile('car/envMap/py.jpg'),
-      getAssetsFile('car/envMap/ny.jpg'),
-      getAssetsFile('car/envMap/pz.jpg'),
-      getAssetsFile('car/envMap/nz.jpg')
-    ] as any)
+    const envMapTexture = await this.envMapLoader
+      .setPath('/')
+      .loadAsync([
+        'car/envMap/px.jpg',
+        'car/envMap/nx.jpg',
+        'car/envMap/py.jpg',
+        'car/envMap/ny.jpg',
+        'car/envMap/pz.jpg',
+        'car/envMap/nz.jpg'
+      ])
+
+    // const envMapTexture = await this.envMapLoader.loadAsync([
+    //   getAssetsFile('car/envMap/px.jpg'),
+    //   getAssetsFile('car/envMap/nx.jpg'),
+    //   getAssetsFile('car/envMap/py.jpg'),
+    //   getAssetsFile('car/envMap/ny.jpg'),
+    //   getAssetsFile('car/envMap/pz.jpg'),
+    //   getAssetsFile('car/envMap/nz.jpg')
+    // ] as any)
 
     // 设置环境贴图
     this.scene.background = envMapTexture

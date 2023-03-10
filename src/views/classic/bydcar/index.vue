@@ -18,6 +18,8 @@ const stateDom = ref()
 let Three: CreatedCanvas
 
 onMounted(() => {
+  // process.env.BASE_URL
+  // console.log(import.meta.env.BASE_URL)
   // 创建three.js实例
   Three = new CreatedCanvas(stateDom.value)
   // 传递页面Dom 绘制three.js
