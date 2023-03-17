@@ -1,9 +1,7 @@
 <template>
   <div>
-    <!-- <div>{{ Number213 }}</div> -->
-    <!-- {{ Three?.loadingNumber.value }} -->
-
     <div ref="stateDom" />
+    <!-- 在模板中, 如果是class类中的Vue响应式数据，需要使用.value -->
     <LoaDing :loadingNumber="Three?.loadingNumber.value" />
   </div>
 </template>

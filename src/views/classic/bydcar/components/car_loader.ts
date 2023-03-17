@@ -77,7 +77,7 @@ export class LoaderCar extends CreatedUtils {
           THREE.MeshStandardMaterial
         >
         meshOject.material = new THREE.MeshStandardMaterial({
-          color: '#000000',
+          color: '#ffffff',
           metalness: guiControlsMirror.metalness,
           roughness: guiControlsMirror.roughness,
           envMapIntensity: guiControlsMirror.envMapIntensity
@@ -115,7 +115,7 @@ export class LoaderCar extends CreatedUtils {
         console.log(meshOject)
 
         meshOject.material = new THREE.MeshPhysicalMaterial({
-          color: '#ffffff', // 设置颜色
+          color: '#000000', // 设置颜色
           opacity: 0.5, // 设置透明度, 默认为1 透明度可以实现车窗膜效果
           transparent: true, // 设置透明
           transmission: guiControlsGlass.transmission, // .transmission属性用于设置玻璃材质
