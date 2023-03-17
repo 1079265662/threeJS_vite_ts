@@ -4,10 +4,6 @@ import { CreatedUtils } from '@/glsltype/utils_renderer'
 import * as THREE from 'three'
 // 导入外包加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-// 导入加载
-import { loadTexture } from '@/utils/loading'
-// 静态资源引入方法
-// import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入汽车模型gltf
 import car from '/car/轿车.gltf'
 

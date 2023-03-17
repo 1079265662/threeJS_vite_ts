@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="stateDom" />
-    <!-- 在模板中, 如果是class类中的Vue响应式数据，需要使用.value -->
+    <!-- 如果是class类中的Vue响应式数据, 在模板中使用需要.value -->
     <LoaDing :loadingNumber="Three?.loadingNumber.value" />
   </div>
 </template>
@@ -13,7 +13,7 @@ import { CreatedCanvas } from './components/car_render'
 
 // 获取Dom
 const stateDom = ref()
-// 储存three.js的实例
+// 通过shallowRef()浅层响应式代理three.js数据
 const Three = shallowRef<CreatedCanvas>()
 
 onMounted(() => {

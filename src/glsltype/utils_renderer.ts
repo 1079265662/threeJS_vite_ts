@@ -13,7 +13,7 @@ import type { LoadingManager } from 'three'
 import { ref } from 'vue'
 
 export class CreatedUtils extends CreatedRender {
-  // 加载数据
+  // 加载的进度
   loadingNumber = ref(0)
 
   /**
