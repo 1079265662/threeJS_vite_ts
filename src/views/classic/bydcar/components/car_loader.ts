@@ -77,7 +77,7 @@ export class LoaderCar extends CreatedUtils {
           THREE.MeshStandardMaterial
         >
         meshOject.material = new THREE.MeshStandardMaterial({
-          color: '#ffffff',
+          color: '#000000',
           metalness: guiControlsMirror.metalness,
           roughness: guiControlsMirror.roughness,
           envMapIntensity: guiControlsMirror.envMapIntensity
@@ -128,7 +128,7 @@ export class LoaderCar extends CreatedUtils {
   ])
 
   // 创建汽车glTF加载器
-  loader = new GLTFLoader(loadTexture())
+  loader = new GLTFLoader(this.createLoadingGLTF())
   // 创建汽车组
   carGroup = new THREE.Group()
 

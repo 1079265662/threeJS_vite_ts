@@ -7,8 +7,15 @@
 import * as THREE from 'three'
 // 导入公共类
 import { CreatedRender } from './createdrender'
+// 导入加载类型
+import type { LoadingManager } from 'three'
+// 导入Vue响应式
+import { ref } from 'vue'
 
 export class CreatedUtils extends CreatedRender {
+  // 加载数据
+  loadingNumber = ref(0)
+
   /**
    * @description 设置包围盒
    * @param THREE.Object3D 传入的物体
@@ -65,5 +72,47 @@ export class CreatedUtils extends CreatedRender {
     mouse.y = -((clientY / window.innerHeight) * 2 - 1) // Y轴坐标 2个单位 -1到1 这里需要反转一下 因为在JS/CSS坐标中Y轴是反的
 
     return mouse
+  }
+
+  /**
+   * @description: GLTF模型进度加载器
+   * @returns LoadingManager | undefined
+   */
+  createLoadingGLTF = (): LoadingManager | undefined => {
+    // 创建加载器
+    const manager = new THREE.LoadingManager()
+
+    // 加载中的参数  url被加载的项的url itemsLoaded目前已加载项的个数 itemsTotal总共所需要加载项的个数。
+    manager.onProgress = (url, itemsLoaded, itemsTotal) => {
+      // 获取加载百分比: 已加载个数 / 总数量 * 100 计算出加载百分比 并取两位小数
+      this.loadingNumber.value = Number(
+        ((itemsLoaded / itemsTotal) * 100).toFixed(2)
+      )
+      console.log(this.loadingNumber)
+    }
+
+    return manager
+  }
+
+  /**
+   * @description: 假的加载管理器
+   * @returns {}
+   */
+  createLoadingFalse = (loadingIng = false) => {
+    const i = setInterval(() => {
+      // 加载完成清除定时器
+      if (loadingIng) {
+        this.loadingNumber.value = 100
+        // 加载完成后清除定时器
+        clearInterval(i)
+      } else {
+        // 0到3之间随机数
+        const random = Math.floor(Math.random() * 2 + 0)
+        // 不能能超过98, 到98就卡住
+        if (this.loadingNumber.value >= 98) return
+        // 每次加1
+        this.loadingNumber.value += random
+      }
+    }, 50)
   }
 }

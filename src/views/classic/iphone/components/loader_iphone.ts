@@ -2,8 +2,6 @@
 import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入three.js
 import * as THREE from 'three'
-// 导入加载
-import { loadFalse } from '@/utils/loading'
 // 导入工具方法类
 import { CreatedSprite } from './sprite'
 // 导入外包加载器
@@ -253,7 +251,7 @@ export class LoaderIphone extends CreatedSprite {
   // 模型相关的操作
   loadEnvMap = async () => {
     // 开始加载
-    loadFalse()
+    this.createLoadingFalse()
 
     // 设置环境贴图
     this.loadEnvMapScene()
@@ -274,6 +272,6 @@ export class LoaderIphone extends CreatedSprite {
     await this.loadIphone()
 
     // 加载完成
-    loadFalse(true)
+    this.createLoadingFalse(true)
   }
 }

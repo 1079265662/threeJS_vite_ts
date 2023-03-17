@@ -1,7 +1,7 @@
 <template>
   <div>
     <div ref="stateDom" />
-    <LoaDing :loadingNumber="loadingNumber" />
+    <LoaDing :loadingNumber="Three?.loadingNumber.value" />
 
     <div
       class="absolute bottom-56 right-20 grid place-items-center lg:right-1/2 lg:bottom-20 lg:translate-x-1/2"
@@ -35,7 +35,7 @@
 // 导入提示组件
 import TipsIphone from './components_vue/tips.vue'
 // 导入Vue3的API
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, shallowRef } from 'vue'
 
 // 导入实例
 import { CreatedCanvas } from './components/iphone_render'
@@ -49,18 +49,18 @@ const tipsIphone = ref<InstanceType<typeof TipsIphone>>()
 const pause = ref(true)
 
 // 储存three.js的实例
-let Three: CreatedCanvas
+const Three = shallowRef<CreatedCanvas>()
 
 // 点击切换不同颜色
 const cilckColor = (mapName: string) => {
-  Three.changeIphoneMap(mapName)
+  Three.value?.changeIphoneMap(mapName)
 }
 
 // 暂停启动旋转
 const changRotate = () => {
   // 停止物体旋转
   pause.value = !pause.value
-  Three.rotateButton = pause.value
+  Three.value!.rotateButton = pause.value
 
   // 全局暂停, 清除动画, 节省性能, 但是没有交互效果
   // if (pause.value) {
@@ -76,19 +76,19 @@ onMounted(() => {
 // 加载手机
 const createdIphone = () => {
   // 创建three.js实例, 传递页面Dom
-  Three = new CreatedCanvas(
+  Three.value = new CreatedCanvas(
     stateDom.value as HTMLElement,
     tipsIphone.value?.$el
   )
-  Three.isCSS2DRenderer = true
+  Three.value.isCSS2DRenderer = true
   // Three.Created2DLabel(tipsIphone.value?.$el)
-  Three.createScene()
+  Three.value.createScene()
 }
 
 onBeforeUnmount(() => {
   // 销毁three.js实例
-  Three.dispose()
-  Three.onRemoveEventListener()
+  Three.value?.dispose()
+  Three.value?.onRemoveEventListener()
 })
 </script>
 

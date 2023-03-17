@@ -16,7 +16,7 @@ export const loadingNumber = ref(0)
 export function loadTexture(
   total: number | void,
   loaded: number | void
-): LoadingManager | any {
+): LoadingManager | undefined {
   // 重置加载进度
 
   loadingNumber.value = 0
