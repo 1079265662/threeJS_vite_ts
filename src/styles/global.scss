@@ -18,10 +18,6 @@ body {
 .fade-leave-to {
   opacity: 0;
 }
-// 调整dui组件层级
-.dg.ac {
-  z-index: $zIndex !important;
-}
 
 /************** 滚动条 **************/
 ::-webkit-scrollbar {

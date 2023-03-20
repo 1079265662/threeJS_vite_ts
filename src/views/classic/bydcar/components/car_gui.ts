@@ -6,21 +6,27 @@ import {
   guiControlsGlass
 } from './car_loader'
 // ES6:
-import * as dat from 'dat.gui'
+import GUI from 'lil-gui'
 
 export class GuiCreated extends LoaderCar {
   // 创建GUI调试面板的实例
-  gui = new dat.GUI()
+  gui = new GUI()
 
   // 创建GUI调试面板
   createGui = () => {
+    this.gui.hide()
+
+    this.gui.title('汽车调试面板')
+
     // 创建一个文件夹
     const folder = this.gui.addFolder('金属内容')
 
     folder
       .add(guiControlsLine, 'metalness', 0, 1.0)
       .name('金属度')
-      .onChange((value) => {
+      .onChange((value: number) => {
+        console.log(value)
+
         this.changCarMaterial({
           name: guiControlsLine.type,
           type: 'metalness',
@@ -31,7 +37,7 @@ export class GuiCreated extends LoaderCar {
     folder
       .add(guiControlsLine, 'roughness', 0, 1.0)
       .name('粗糙度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsLine.type,
           type: 'roughness',
@@ -42,7 +48,7 @@ export class GuiCreated extends LoaderCar {
     folder
       .add(guiControlsLine, 'envMapIntensity', 0, 2.0)
       .name('环境影响')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsLine.type,
           type: 'envMapIntensity',
@@ -56,7 +62,7 @@ export class GuiCreated extends LoaderCar {
     folder1
       .add(guiControlsMirror, 'metalness', 0, 1.0)
       .name('金属度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsMirror.type,
           type: 'metalness',
@@ -67,7 +73,7 @@ export class GuiCreated extends LoaderCar {
     folder1
       .add(guiControlsMirror, 'roughness', 0, 1.0)
       .name('粗糙度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsMirror.type,
           type: 'roughness',
@@ -78,7 +84,7 @@ export class GuiCreated extends LoaderCar {
     folder1
       .add(guiControlsMirror, 'envMapIntensity', 0, 2.0)
       .name('环境影响')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsMirror.type,
           type: 'envMapIntensity',
@@ -92,7 +98,7 @@ export class GuiCreated extends LoaderCar {
     folder2
       .add(guiControlsShell, 'clearcoat', 0, 1.0)
       .name('清漆层厚度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsShell.type,
           type: 'clearcoat',
@@ -103,7 +109,7 @@ export class GuiCreated extends LoaderCar {
     folder2
       .add(guiControlsShell, 'clearcoatRoughness', 0, 1.0)
       .name('清漆层粗糙度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsShell.type,
           type: 'clearcoatRoughness',
@@ -114,7 +120,7 @@ export class GuiCreated extends LoaderCar {
     folder2
       .add(guiControlsShell, 'metalness', 0, 1.0)
       .name('金属度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsShell.type,
           type: 'metalness',
@@ -125,7 +131,7 @@ export class GuiCreated extends LoaderCar {
     folder2
       .add(guiControlsShell, 'roughness', 0, 1.0)
       .name('粗糙度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsShell.type,
           type: 'roughness',
@@ -136,7 +142,7 @@ export class GuiCreated extends LoaderCar {
     folder2
       .add(guiControlsShell, 'envMapIntensity', 0, 2.0)
       .name('环境影响')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsShell.type,
           type: 'envMapIntensity',
@@ -150,7 +156,7 @@ export class GuiCreated extends LoaderCar {
     folder3
       .add(guiControlsGlass, 'transmission', 0, 1.0)
       .name('透光度(对车窗不明显)')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsGlass.type,
           type: 'transmission',
@@ -161,7 +167,7 @@ export class GuiCreated extends LoaderCar {
     folder3
       .add(guiControlsGlass, 'opacity', 0.3, 0.8)
       .name('透明度(对车窗明显)')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsGlass.type,
           type: 'opacity',
@@ -172,7 +178,7 @@ export class GuiCreated extends LoaderCar {
     folder3
       .add(guiControlsGlass, 'envMapIntensity', 0, 2.0)
       .name('环境影响')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsGlass.type,
           type: 'envMapIntensity',
@@ -183,7 +189,7 @@ export class GuiCreated extends LoaderCar {
     folder3
       .add(guiControlsGlass, 'metalness', 0, 1.0)
       .name('金属度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsGlass.type,
           type: 'metalness',
@@ -194,7 +200,7 @@ export class GuiCreated extends LoaderCar {
     folder3
       .add(guiControlsGlass, 'roughness', 0, 1.0)
       .name('粗糙度')
-      .onChange((value) => {
+      .onChange((value: number) => {
         this.changCarMaterial({
           name: guiControlsGlass.type,
           type: 'roughness',
@@ -202,7 +208,7 @@ export class GuiCreated extends LoaderCar {
         })
       })
 
-    this.gui.width = 320
+    // this.gui.w = 320
     // 打开文件夹
     folder.open()
     // folder1.open()

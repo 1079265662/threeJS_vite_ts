@@ -183,6 +183,9 @@ export class LoaderCar extends CreatedUtils {
 
     // 添加到场景中
     this.scene.add(this.carGroup)
+
+    // 启动gui
+    this.gui.show()
   }
 
   // 设置环境贴图
@@ -218,7 +221,6 @@ export class LoaderCar extends CreatedUtils {
   setScene = () => {
     // 加载汽车模型
     this.loadCar()
-
     // 设置环境贴图
     this.setEnvMap()
   }

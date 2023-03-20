@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // 储存数据
 import { setCameraData, getCameraData } from '@/utils/local'
 // ES6:
-import * as dat from 'dat.gui'
+import GUI from 'lil-gui'
 
 export class CreateWorld {
   constructor(canvas: any) {
@@ -37,7 +37,7 @@ export class CreateWorld {
     1000
   )
   // 创建一个GUI对象
-  gui = new dat.GUI()
+  gui = new GUI()
 
   // 创建场景
   createScene() {

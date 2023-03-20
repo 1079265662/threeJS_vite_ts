@@ -6,6 +6,7 @@
 // 导入公共类
 import { Type } from './type'
 import type { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
+import type { GUI } from 'lil-gui'
 
 export class CreatedRender extends Type {
   // 是否开启CSS2DRenderer或者CSS3DRenderer的渲染
@@ -14,7 +15,7 @@ export class CreatedRender extends Type {
   // 2D渲染器
   label2DRenderer!: CSS2DRenderer
   //gui调试面板
-  gui!: dat.GUI
+  gui!: GUI
 
   // 尺寸变化时调整渲染器大小
   onWindowResize = () => {
