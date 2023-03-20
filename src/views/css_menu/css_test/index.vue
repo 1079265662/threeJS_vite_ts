@@ -52,7 +52,9 @@ export default {
     overflow: hidden;
     max-width: 1400px;
     margin: 0 auto;
+    padding: 10px;
     text-align-last: justify;
+    white-space: pre-line;
     .bg {
       position: absolute;
       top: 0;
@@ -84,7 +86,7 @@ export default {
 // }
 .g-scroll {
   width: 100vw;
-  height: 100vw;
+  height: 2000px;
 }
 // .iPhone-box {
 //   font-size: 48px;

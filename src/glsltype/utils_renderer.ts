@@ -88,7 +88,8 @@ export class CreatedUtils extends CreatedRender {
       this.loadingNumber.value = Number(
         ((itemsLoaded / itemsTotal) * 100).toFixed(2)
       )
-      console.log(this.loadingNumber)
+
+      console.log('加载中', this.loadingNumber.value)
     }
 
     return manager

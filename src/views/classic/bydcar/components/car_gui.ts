@@ -3,7 +3,15 @@ import {
   guiControlsLine,
   guiControlsMirror,
   guiControlsShell,
-  guiControlsGlass
+  guiControlsGlass,
+  tires,
+  headLights,
+  tailLights,
+  tailLights2,
+  tailLights3,
+  tailLights4,
+  plastic,
+  seatConfig
 } from './car_loader'
 // ES6:
 import GUI from 'lil-gui'
@@ -18,6 +26,16 @@ export class GuiCreated extends LoaderCar {
 
     this.gui.title('汽车调试面板')
 
+    // 创建重置方法
+    const guiObj = {
+      myFunction: () => {
+        this.gui.reset()
+      }
+    }
+
+    // 创建一个按钮
+    this.gui.add(guiObj, 'myFunction').name('重置')
+
     // 创建一个文件夹
     const folder = this.gui.addFolder('金属内容')
 
@@ -25,8 +43,6 @@ export class GuiCreated extends LoaderCar {
       .add(guiControlsLine, 'metalness', 0, 1.0)
       .name('金属度')
       .onChange((value: number) => {
-        console.log(value)
-
         this.changCarMaterial({
           name: guiControlsLine.type,
           type: 'metalness',
@@ -46,7 +62,7 @@ export class GuiCreated extends LoaderCar {
       })
 
     folder
-      .add(guiControlsLine, 'envMapIntensity', 0, 2.0)
+      .add(guiControlsLine, 'envMapIntensity', 0, 2.5)
       .name('环境影响')
       .onChange((value: number) => {
         this.changCarMaterial({
@@ -82,7 +98,7 @@ export class GuiCreated extends LoaderCar {
       })
 
     folder1
-      .add(guiControlsMirror, 'envMapIntensity', 0, 2.0)
+      .add(guiControlsMirror, 'envMapIntensity', 0, 2.5)
       .name('环境影响')
       .onChange((value: number) => {
         this.changCarMaterial({
@@ -94,6 +110,17 @@ export class GuiCreated extends LoaderCar {
 
     // 车漆效果
     const folder2 = this.gui.addFolder('车漆效果')
+
+    folder2
+      .addColor(guiControlsShell, 'color')
+      .name('颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: guiControlsShell.type,
+          type: 'color',
+          value
+        })
+      })
 
     folder2
       .add(guiControlsShell, 'clearcoat', 0, 1.0)
@@ -140,7 +167,7 @@ export class GuiCreated extends LoaderCar {
       })
 
     folder2
-      .add(guiControlsShell, 'envMapIntensity', 0, 2.0)
+      .add(guiControlsShell, 'envMapIntensity', 0, 2.5)
       .name('环境影响')
       .onChange((value: number) => {
         this.changCarMaterial({
@@ -176,7 +203,7 @@ export class GuiCreated extends LoaderCar {
       })
 
     folder3
-      .add(guiControlsGlass, 'envMapIntensity', 0, 2.0)
+      .add(guiControlsGlass, 'envMapIntensity', 0, 2.5)
       .name('环境影响')
       .onChange((value: number) => {
         this.changCarMaterial({
@@ -208,12 +235,222 @@ export class GuiCreated extends LoaderCar {
         })
       })
 
-    // this.gui.w = 320
-    // 打开文件夹
-    folder.open()
-    // folder1.open()
-    folder2.open()
-    folder3.open()
+    // 轮胎效果
+    const folder4 = this.gui.addFolder('轮胎效果')
+    folder4
+      .add(tires, 'metalness', 0, 1.0)
+      .name('金属度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: tires.type,
+          type: 'metalness',
+          value
+        })
+      })
+
+    folder4
+      .add(tires, 'roughness', 0, 1.0)
+      .name('粗糙度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: tires.type,
+          type: 'roughness',
+          value
+        })
+      })
+
+    folder4
+      .addColor(tires, 'color')
+      .name('轮胎颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: tires.type,
+          type: 'color',
+          value
+        })
+      })
+
+    // 前灯罩效果
+    const folder5 = this.gui.addFolder('前车灯')
+
+    folder5
+      .add(headLights, 'metalness', 0, 1.0)
+      .name('金属度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: headLights.type,
+          type: 'metalness',
+          value
+        })
+      })
+
+    folder5
+      .add(headLights, 'roughness', 0, 1.0)
+      .name('粗糙度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: headLights.type,
+          type: 'roughness',
+          value
+        })
+      })
+
+    folder5
+      .add(headLights, 'envMapIntensity', 0, 2.5)
+      .name('环境影响')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: headLights.type,
+          type: 'envMapIntensity',
+          value
+        })
+      })
+
+    folder5
+      .add(headLights, 'opacity', 0, 1.0)
+      .name('透明度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: headLights.type,
+          type: 'opacity',
+          value
+        })
+      })
+
+    folder5
+      .add(headLights, 'transmission', 0, 1.0)
+      .name('透光度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: headLights.type,
+          type: 'transmission',
+          value
+        })
+      })
+
+    const folder6 = this.gui.addFolder('尾灯灯罩')
+
+    folder6
+      .addColor(tailLights, 'color')
+      .name('尾灯颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: tailLights.type,
+          type: 'color',
+          value
+        })
+      })
+
+    const folder7 = this.gui.addFolder('尾灯第二层')
+
+    folder7
+      .addColor(tailLights2, 'color')
+      .name('尾灯颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: tailLights2.type,
+          type: 'color',
+          value
+        })
+      })
+
+    const folder8 = this.gui.addFolder('尾灯第三层')
+
+    folder8
+      .addColor(tailLights3, 'color')
+      .name('尾灯颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: tailLights3.type,
+          type: 'color',
+          value
+        })
+      })
+
+    const folder9 = this.gui.addFolder('尾灯发光')
+
+    folder9
+      .addColor(tailLights4, 'color')
+      .name('尾灯颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: tailLights4.type,
+          type: 'color',
+          value
+        })
+      })
+
+    // 创建塑料
+    const folder10 = this.gui.addFolder('塑料')
+
+    folder10
+      .add(plastic, 'metalness', 0, 1.0)
+      .name('金属度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: plastic.type,
+          type: 'metalness',
+          value
+        })
+      })
+
+    folder10
+      .add(plastic, 'roughness', 0, 1.0)
+      .name('粗糙度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: plastic.type,
+          type: 'roughness',
+          value
+        })
+      })
+
+    folder10
+      .addColor(plastic, 'color')
+      .name('塑料颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({
+          name: plastic.type,
+          type: 'color',
+          value
+        })
+      })
+
+    folder10
+      .add(plastic, 'envMapIntensity', 0, 2.5)
+      .name('环境影响')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: plastic.type,
+          type: 'envMapIntensity',
+          value
+        })
+      })
+
+    // 车座颜色
+    const folder11 = this.gui.addFolder('车座')
+
+    folder11
+      .addColor(seatConfig, 'color')
+      .name('车座颜色')
+      .onChange((value: string) => {
+        this.changCarMaterial({ name: seatConfig.type, type: 'color', value })
+      })
+
+    // 车座颜色
+    folder11
+      .add(seatConfig, 'roughness', 0, 1.0)
+      .name('粗糙度')
+      .onChange((value: number) => {
+        this.changCarMaterial({
+          name: seatConfig.type,
+          type: 'roughness',
+          value
+        })
+      })
+
+    folder1.close()
+    // folder4.close()
   }
 
   /**

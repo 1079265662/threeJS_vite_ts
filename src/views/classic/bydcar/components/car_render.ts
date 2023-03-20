@@ -65,9 +65,13 @@ export class CreatedCanvas extends GuiCreated {
     // 设置控制器阻尼 让控制器更真实 如果该值被启用，你将必须在你的动画循环里调用.update()
     this.controls.enableDamping = true
     // 设置控制器的最大距离
-    this.controls.maxDistance = 600
+    this.controls.maxDistance = 450
     // 设置控制器的最小距离
     this.controls.minDistance = 260
+    console.log(Math.PI / 2 - 0.1)
+
+    // 设置控制器的最大旋转角度
+    this.controls.maxPolarAngle = Math.PI / 2 - 0.1
     // 禁用轨道控制器
     // this.controls.enabled = false
 

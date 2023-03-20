@@ -4,6 +4,8 @@ import { CreatedUtils } from '@/glsltype/utils_renderer'
 import * as THREE from 'three'
 // 导入外包加载器
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// 导入加载器
+import { getAssetsFile } from '@/utils/getAssetsFile'
 // 导入汽车模型gltf
 import car from '/car/轿车.gltf'
 
@@ -26,11 +28,12 @@ export const guiControlsMirror = <THREE.MeshStandardMaterial>{
 
 // 车子外壳效果
 export const guiControlsShell = <THREE.MeshPhysicalMaterial>{
-  clearcoat: 1, //
-  clearcoatRoughness: 0.01,
-  metalness: 0.9,
-  roughness: 0.5,
-  envMapIntensity: 2.5,
+  color: new THREE.Color(0.06, 0.2, 0.007), // 设置颜色
+  clearcoat: 1, // 设置清漆度
+  clearcoatRoughness: 0.01, // 设置清漆粗糙度
+  metalness: 0.9, // 设置金属度
+  roughness: 0.5, // 设置粗糙度
+  envMapIntensity: 2.5, // 设置环境贴图强度
   type: '外壳'
 }
 
@@ -42,6 +45,66 @@ export const guiControlsGlass = <THREE.MeshPhysicalMaterial>{
   envMapIntensity: 1, // 设置环境贴图强度
   opacity: 0.5, // 设置透明度
   type: '玻璃'
+}
+
+// 轮胎效果
+export const tires = <THREE.MeshStandardMaterial>{
+  metalness: 0, // 设置金属度
+  roughness: 0.6, // 设置粗糙度
+  normalScale: new THREE.Vector2(3, 3), // 设置法线贴图缩放
+  color: new THREE.Color(0x000000), // 设置颜色
+  type: '轮胎'
+}
+
+// 前灯罩
+export const headLights = <THREE.MeshPhysicalMaterial>{
+  metalness: 0,
+  roughness: 0,
+  transmission: 1, // 设置透光度
+  transparent: true,
+  opacity: 0.9,
+  envMapIntensity: 2.5, // 设置环境贴图强度
+  type: '前灯罩'
+}
+
+// 尾灯灯罩
+export const tailLights = <THREE.MeshPhysicalMaterial>{
+  color: new THREE.Color(0xff0000),
+  type: '尾灯灯罩'
+}
+
+// 尾灯第二层
+export const tailLights2 = <THREE.MeshPhysicalMaterial>{
+  color: new THREE.Color('#ff0000'),
+  type: '尾灯第二层'
+}
+
+// 尾灯第三层
+export const tailLights3 = <THREE.MeshPhysicalMaterial>{
+  color: new THREE.Color(0x19190000),
+  type: '尾灯第三层'
+}
+
+// 尾灯发光
+export const tailLights4 = <THREE.MeshPhysicalMaterial>{
+  color: new THREE.Color(0x660000),
+  type: '尾灯发光'
+}
+
+// 塑料
+export const plastic = <THREE.MeshStandardMaterial>{
+  color: new THREE.Color(0x010101),
+  metalness: 0, // 设置金属度
+  roughness: 0.4, // 设置粗糙度
+  envMapIntensity: 1, // 设置环境贴图强度
+  type: '塑料'
+}
+
+// 车座
+export const seatConfig = <THREE.MeshStandardMaterial>{
+  color: new THREE.Color(0x010101),
+  roughness: 0.5, // 设置粗糙度
+  type: '车座'
 }
 
 export class LoaderCar extends CreatedUtils {
@@ -89,8 +152,10 @@ export class LoaderCar extends CreatedUtils {
           THREE.BufferGeometry,
           THREE.MeshPhysicalMaterial
         >
+
+        //  0.06 , 0.2 ,0.007
         meshOject.material = new THREE.MeshPhysicalMaterial({
-          color: meshOject.material.color,
+          color: guiControlsShell.color,
           clearcoat: guiControlsShell.clearcoat, // 设置清漆度
           clearcoatRoughness: guiControlsShell.clearcoatRoughness, // 设置清晰度粗糙度
           metalness: guiControlsShell.metalness, // 设置金属度
@@ -108,7 +173,6 @@ export class LoaderCar extends CreatedUtils {
           THREE.BufferGeometry,
           THREE.MeshPhysicalMaterial
         >
-        console.log(meshOject)
 
         meshOject.material = new THREE.MeshPhysicalMaterial({
           color: '#000000', // 设置颜色
@@ -118,6 +182,122 @@ export class LoaderCar extends CreatedUtils {
           metalness: guiControlsGlass.metalness, // 设置金属度
           roughness: guiControlsGlass.roughness, // 设置粗糙度
           envMapIntensity: guiControlsGlass.envMapIntensity // 设置环境贴图强度
+        })
+      }
+    ],
+    // 轮胎凹凸感增强
+    [
+      '轮胎',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshStandardMaterial
+        >
+        childMesh.material.color = tires.color // 设置颜色
+        childMesh.material.normalScale = tires.normalScale //加强法线贴图凹凸效果
+        childMesh.material.metalness = tires.metalness // 设置金属度
+        childMesh.material.roughness = tires.roughness // 设置粗糙度
+      }
+    ],
+    // 前灯罩
+    [
+      '前灯罩',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshPhysicalMaterial
+        >
+        childMesh.material = new THREE.MeshPhysicalMaterial({
+          color: '#ffffff',
+          metalness: headLights.metalness,
+          roughness: headLights.roughness,
+          transmission: headLights.transmission,
+          transparent: true,
+          opacity: headLights.opacity,
+          envMapIntensity: headLights.envMapIntensity
+        })
+      }
+    ],
+    // 尾灯灯罩
+    [
+      '尾灯灯罩',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshPhysicalMaterial
+        >
+
+        childMesh.material = new THREE.MeshPhysicalMaterial({
+          color: tailLights.color,
+          metalness: 0,
+          roughness: 0,
+          transmission: 0.5, // 设置透光度
+          opacity: 1,
+          transparent: true,
+          envMapIntensity: 2.5
+        })
+      }
+    ],
+    // 尾灯第二层
+    [
+      '尾灯第二层',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshPhysicalMaterial
+        >
+
+        childMesh.material = new THREE.MeshPhysicalMaterial({
+          color: tailLights2.color,
+          metalness: 0,
+          roughness: 0,
+          transmission: 0.5,
+          transparent: true
+        })
+      }
+    ],
+    // 尾灯第三层
+    [
+      '尾灯第三层',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshLambertMaterial
+        >
+
+        childMesh.material = new THREE.MeshLambertMaterial({
+          color: tailLights3.color
+        })
+      }
+    ],
+
+    // 尾灯发光
+    [
+      '尾灯发光',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshLambertMaterial
+        >
+        childMesh.material = new THREE.MeshLambertMaterial({
+          color: tailLights4.color
+        })
+      }
+    ],
+    // 塑料
+    [
+      '塑料',
+      (child: THREE.Object3D) => {
+        const childMesh = child as THREE.Mesh<
+          THREE.BufferGeometry,
+          THREE.MeshStandardMaterial
+        >
+
+        childMesh.material = new THREE.MeshStandardMaterial({
+          color: plastic.color,
+          metalness: plastic.metalness,
+          roughness: plastic.roughness,
+          envMapIntensity: plastic.envMapIntensity
         })
       }
     ]
@@ -166,16 +346,64 @@ export class LoaderCar extends CreatedUtils {
           this.mapFunction.get('玻璃')?.(child)
         }
 
-        // this.carGroup.getObjectByName('天窗黑玻璃')!.material =
-        //   new THREE.MeshPhysicalMaterial({
-        //     color: 0x00000,
-        //     metalness: 0,
-        //     roughness: 0,
-        //     envMapIntensity: 1.0,
-        //     transmission: 0.2, // .transmission属性用于设置玻璃材质
-        //     transparent: true
-        //   })
+        // 如果名称中包含轮胎
+        if (child.name.includes('轮胎')) {
+          this.mapFunction.get('轮胎')?.(child)
+        }
+
+        // 如果名称中包含前灯罩
+        if (child.name.includes('前灯罩')) {
+          this.mapFunction.get('前灯罩')?.(child)
+        }
+
+        // 如果名称中包含尾灯灯罩
+        if (child.name.includes('尾灯灯罩')) {
+          this.mapFunction.get('尾灯灯罩')?.(child)
+        }
+
+        // 如果名称中包含尾灯第二层
+        if (child.name.includes('尾灯第二层')) {
+          this.mapFunction.get('尾灯第二层')?.(child)
+        }
+
+        // 如果名称中包含尾灯第三层
+        if (child.name.includes('尾灯第三层')) {
+          this.mapFunction.get('尾灯第三层')?.(child)
+        }
+
+        // 如果名称中包含尾灯发光
+        if (child.name.includes('尾灯发光')) {
+          this.mapFunction.get('尾灯发光')?.(child)
+        }
+
+        // 如果名称中包含塑料
+        if (child.name.includes('塑料')) {
+          this.mapFunction.get('塑料')?.(child)
+        }
       }
+    })
+
+    // 修改天窗黑玻璃
+    const blackGlass = this.carGroup.getObjectByName('天窗黑玻璃') as THREE.Mesh
+
+    blackGlass.material = new THREE.MeshPhysicalMaterial({
+      color: 0x00000,
+      metalness: 0,
+      roughness: 0,
+      opacity: 0.7,
+      envMapIntensity: 1.0, // 设置环境贴图强度
+      transmission: 0.2, //  设置透光度
+      transparent: true
+    })
+
+    // 修改车座
+    const seat = this.carGroup.getObjectByName('车座') as THREE.Mesh
+
+    seat.material = new THREE.MeshPhysicalMaterial({
+      color: seatConfig.color,
+      metalness: 0.0,
+      roughness: seatConfig.roughness,
+      envMapIntensity: 1.0
     })
 
     // 创建包围盒
@@ -211,17 +439,53 @@ export class LoaderCar extends CreatedUtils {
     // ] as any)
 
     // 设置环境贴图
-    this.scene.background = envMapTexture
+    this.scene.background = new THREE.Color('#757575')
 
     // 场景内所有的物体添加默认的环境贴图 (如果物体不单独设置环境贴图 默认使用这个环境贴图)
     this.scene.environment = envMapTexture
+  }
+
+  // 创建平面
+  createPlane = async () => {
+    // 创建平面几何体
+    const planeGeometry = new THREE.PlaneGeometry(6000, 6000)
+
+    // 加载地板贴图
+    const planeTexture = await this.textureLoader.loadAsync(
+      getAssetsFile('floor/瓷砖.jpg')
+    )
+
+    // 设置加载器编码格式
+    planeTexture.encoding = THREE.sRGBEncoding
+
+    // 设置平铺
+    planeTexture.wrapS = THREE.RepeatWrapping
+    planeTexture.wrapT = THREE.RepeatWrapping
+    // 设置平铺数量, 默认是1, 1, 会拉伸贴图
+    planeTexture.repeat.set(50, 50)
+
+    // 创建平面材质
+    planeGeometry.rotateX(-Math.PI / 2)
+
+    // 创建平面网格模型
+    const planeMesh = new THREE.Mesh(
+      planeGeometry,
+      new THREE.MeshLambertMaterial({ map: planeTexture })
+    )
+
+    // 添加到场景中
+    this.scene.add(planeMesh)
   }
 
   // 设置场景方面的内容
   setScene = () => {
     // 加载汽车模型
     this.loadCar()
+
     // 设置环境贴图
     this.setEnvMap()
+
+    // 创建地面
+    this.createPlane()
   }
 }
