@@ -28,12 +28,12 @@ export const guiControlsMirror = <THREE.MeshStandardMaterial>{
 
 // 车子外壳效果
 export const guiControlsShell = <THREE.MeshPhysicalMaterial>{
-  color: new THREE.Color(0.06, 0.2, 0.007), // 设置颜色
+  color: new THREE.Color('#9d0b12'), // 设置颜色
   clearcoat: 1, // 设置清漆度
   clearcoatRoughness: 0.01, // 设置清漆粗糙度
   metalness: 0.9, // 设置金属度
   roughness: 0.5, // 设置粗糙度
-  envMapIntensity: 2.5, // 设置环境贴图强度
+  envMapIntensity: 1.5, // 设置环境贴图强度
   type: '外壳'
 }
 
@@ -63,7 +63,7 @@ export const headLights = <THREE.MeshPhysicalMaterial>{
   transmission: 1, // 设置透光度
   transparent: true,
   opacity: 0.9,
-  envMapIntensity: 2.5, // 设置环境贴图强度
+  envMapIntensity: 1.5, // 设置环境贴图强度
   type: '前灯罩'
 }
 
@@ -234,7 +234,7 @@ export class LoaderCar extends CreatedUtils {
           transmission: 0.5, // 设置透光度
           opacity: 1,
           transparent: true,
-          envMapIntensity: 2.5
+          envMapIntensity: 1.5
         })
       }
     ],
@@ -439,7 +439,7 @@ export class LoaderCar extends CreatedUtils {
     // ] as any)
 
     // 设置环境贴图
-    this.scene.background = new THREE.Color('#757575')
+    // this.scene.background = new THREE.Color('#9ea6a4')
 
     // 场景内所有的物体添加默认的环境贴图 (如果物体不单独设置环境贴图 默认使用这个环境贴图)
     this.scene.environment = envMapTexture
@@ -448,7 +448,7 @@ export class LoaderCar extends CreatedUtils {
   // 创建平面
   createPlane = async () => {
     // 创建平面几何体
-    const planeGeometry = new THREE.PlaneGeometry(6000, 6000)
+    const planeGeometry = new THREE.PlaneGeometry(4000, 4000)
 
     // 加载地板贴图
     const planeTexture = await this.textureLoader.loadAsync(
@@ -477,6 +477,12 @@ export class LoaderCar extends CreatedUtils {
     this.scene.add(planeMesh)
   }
 
+  // 添加雾化
+  addFog = () => {
+    // 设置雾化效果
+    this.scene.fog = new THREE.Fog('#000000', 500, 1500)
+  }
+
   // 设置场景方面的内容
   setScene = () => {
     // 加载汽车模型
@@ -487,5 +493,8 @@ export class LoaderCar extends CreatedUtils {
 
     // 创建地面
     this.createPlane()
+
+    // 添加雾化
+    this.addFog()
   }
 }

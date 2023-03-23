@@ -1,10 +1,10 @@
-import { GuiCreated } from './car_gui'
+import { ChangeCar } from './change_car'
 // 导入three.js
 import * as THREE from 'three'
 // 导入轨道控制器
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
-export class CreatedCanvas extends GuiCreated {
+export class CreatedCanvas extends ChangeCar {
   constructor(canvas: HTMLElement) {
     super()
     // 接收传入的画布Dom元素
@@ -73,7 +73,7 @@ export class CreatedCanvas extends GuiCreated {
     // 设置控制器的最大旋转角度
     this.controls.maxPolarAngle = Math.PI / 2 - 0.1
     // 禁用轨道控制器
-    // this.controls.enabled = false
+    this.controls.enablePan = false
 
     // 渲染方法
     this.render()

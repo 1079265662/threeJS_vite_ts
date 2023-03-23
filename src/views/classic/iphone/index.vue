@@ -39,8 +39,6 @@ import { ref, onMounted, onBeforeUnmount, shallowRef } from 'vue'
 
 // 导入实例
 import { CreatedCanvas } from './components/iphone_render'
-// 导入加载的进度
-import { loadingNumber } from '@/utils/loading'
 
 // 获取Dom
 const stateDom = ref<HTMLElement>()
