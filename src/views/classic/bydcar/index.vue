@@ -4,9 +4,16 @@
     <!-- 如果是class类中的Vue响应式数据, 在模板中使用需要.value -->
     <LoaDing :loadingNumber="Three?.loadingNumber.value" />
     <!-- 格式化 -->
+
     <div
       class="absolute left-6 bottom-32 flex flex-col gap-4 lg:left-1/2 lg:bottom-10 lg:-translate-x-1/2 lg:flex-row"
     >
+      <div
+        @click="clickAll()"
+        class="flex h-11 w-20 cursor-pointer items-center justify-center rounded-md bg-sky-500 ring-2 ring-sky-300"
+      >
+        全部展开
+      </div>
       <div
         @click="cilckColor('珊瑚红')"
         class="color from-red-600 via-red-500 to-gray-200"
@@ -43,9 +50,15 @@ const colorMap = new Map([
 const stateDom = ref()
 // 通过shallowRef()浅层响应式代理three.js数据
 const Three = shallowRef<CreatedCanvas>()
+
 // 点击切换不同颜色
 const cilckColor = (mapName: string) => {
   Three.value?.changeCarColor(colorMap.get(mapName))
+}
+
+// 全部展开
+const clickAll = () => {
+  Three.value?.openAllCarDoor()
 }
 
 onMounted(() => {
@@ -58,6 +71,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   // 销毁three.js实例
   Three.value?.dispose()
+  Three.value?.onRemoveEventListener()
 })
 </script>
 

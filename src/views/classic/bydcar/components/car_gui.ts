@@ -1,5 +1,4 @@
 import {
-  LoaderCar,
   guiControlsLine,
   guiControlsMirror,
   guiControlsShell,
@@ -12,7 +11,9 @@ import {
   tailLights4,
   plastic,
   seatConfig
-} from './car_loader'
+} from './car_map'
+
+import { LoaderCar } from './car_loader'
 // ES6:
 import GUI from 'lil-gui'
 

@@ -79,6 +79,8 @@ export class CreatedCanvas extends ChangeCar {
     this.render()
     // 添加监听画布大小变化
     this.onAddEventListener()
+    // 监听鼠标事件
+    this.onAddEventListenerClick()
     // 生成GUI调试面板
     this.createGui()
   }
