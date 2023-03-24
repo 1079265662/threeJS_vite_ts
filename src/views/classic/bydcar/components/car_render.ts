@@ -20,7 +20,7 @@ export class CreatedCanvas extends ChangeCar {
     this.setScene()
 
     // 创建平行光
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
     directionalLight.position.x = 15
     // 把光源添加到相机上
     this.camera.add(directionalLight)
@@ -42,7 +42,7 @@ export class CreatedCanvas extends ChangeCar {
     // this.setLightHelper(directionalLight3)
 
     // 环境光
-    const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
+    const light = new THREE.AmbientLight(0xffffff, 0.8) // soft white light
     this.scene.add(light)
 
     // 创建辅助线
