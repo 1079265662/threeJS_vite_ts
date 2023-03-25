@@ -29,14 +29,33 @@ export class ChangeCar extends GuiCreated {
 
       // 如果点击的是车门
       if (spriteMeshRay[0]?.object.parent?.name) {
-        if (this.sound.isPlaying) {
-          this.sound.stop()
-        } else {
-          this.sound.play()
-        }
+        const carMesh = this.carMesh.getObjectByName(
+          spriteMeshRay[0].object.parent.name
+        ) as THREE.Mesh
 
         // 执行车门的点击事件
-        doorClick.get(spriteMeshRay[0].object.parent.name)?.(this.carMesh)
+        doorClick.get(spriteMeshRay[0].object.parent.name)?.(
+          // 车门的父级是车身
+          carMesh.parent as THREE.Object3D
+        )
+
+        // 判断父级是否旋转过
+        if (
+          carMesh.parent?.rotation.y === 0 &&
+          carMesh.parent?.rotation.z === 0
+        ) {
+          if (this.soundOpen.isPlaying) {
+            this.soundOpen.stop()
+          } else {
+            this.soundOpen.play()
+          }
+        } else {
+          if (this.soundClose.isPlaying) {
+            this.soundClose.stop()
+          } else {
+            this.soundClose.play()
+          }
+        }
       }
     }
   }
@@ -44,14 +63,33 @@ export class ChangeCar extends GuiCreated {
   // 打开全部车门
   openAllCarDoor = () => {
     this.spriteMeshList.forEach((item) => {
+      const carMesh = this.carMesh.getObjectByName(
+        item.parent!.name
+      ) as THREE.Mesh
+
       // 全部展开
-      doorClick.get(item.parent!.name)?.(this.carMesh)
+      doorClick.get(item.parent!.name)?.(carMesh.parent as THREE.Object3D)
+
+      // 判断父级是否旋转过
+
+      // 判断父级是否旋转过
+      if (
+        carMesh.parent?.rotation.y === 0 &&
+        carMesh.parent?.rotation.z === 0
+      ) {
+        if (this.soundOpen.isPlaying) {
+          this.soundOpen.stop()
+        } else {
+          this.soundOpen.play()
+        }
+      } else {
+        if (this.soundClose.isPlaying) {
+          this.soundClose.stop()
+        } else {
+          this.soundClose.play()
+        }
+      }
     })
-    if (this.sound.isPlaying) {
-      this.sound.stop()
-    } else {
-      this.sound.play()
-    }
   }
 
   // 监听光线投射内容

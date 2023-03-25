@@ -12,8 +12,10 @@ import { mapFunction } from './car_map'
 import { seatConfig, doorClick } from './car_map'
 // 导入gsap
 import { gsap } from 'gsap'
-// 导入音频
-import carSound from '@/assets/car/music/car_door.mp3'
+// 导入打开车门音频
+import carOpne from '@/assets/car/music/car_door.mp3'
+// 导入关闭车门音频
+import carClose from '@/assets/car/music/car_close.mp3'
 
 export class LoaderCar extends CreatedUtils {
   // 创建汽车glTF加载器
@@ -31,7 +33,16 @@ export class LoaderCar extends CreatedUtils {
   spriteMeshList = [] as THREE.Sprite[]
 
   // 音频
-  sound!: THREE.Audio
+  soundOpen!: THREE.Audio
+
+  // 音频
+  soundClose!: THREE.Audio
+
+  // three.js的音频监听器
+  audioListener!: THREE.AudioListener
+
+  // 创建音频加载器
+  audioLoader = new THREE.AudioLoader()
 
   // 加载轿车模型
   loadCar = async () => {
@@ -265,33 +276,43 @@ export class LoaderCar extends CreatedUtils {
       // spriteMesh.name = `光标${key}`
       // spriteMesh.position.set(0, 0, -30)
     })
-
-    console.log(this.spriteMeshList)
   }
 
   // 添加雾化
   addFog = () => {
     // 设置雾化效果
-    this.scene.fog = new THREE.Fog('#000000', 500, 1500)
+    this.scene.fog = new THREE.Fog('#000000', 450, 1500)
   }
 
-  // 创建一个音频
+  // 创建一个开门音频
   createAudio = async () => {
     // 创建一个音频监听器
-    const listener = new THREE.AudioListener()
+    this.audioListener = new THREE.AudioListener()
 
     // 将监听器添加到相机中, 为什么要添加到相机中呢? 因为相机是移动的, 所以音频也要跟着移动
-    this.camera.add(listener)
+    this.camera.add(this.audioListener)
 
     // 创建一个音频
-    this.sound = new THREE.Audio(listener)
+    this.soundOpen = new THREE.Audio(this.audioListener)
 
     // 创建一个音频加载器
-    const audioLoader = new THREE.AudioLoader()
+    this.audioLoader = new THREE.AudioLoader()
 
     // 加载音频
-    const music = await audioLoader.loadAsync(carSound)
-    this.sound.setBuffer(music)
+    const music = await this.audioLoader.loadAsync(carOpne)
+
+    this.soundOpen.setBuffer(music)
+  }
+
+  // 创建一个关门音频
+  createCloseAudio = async () => {
+    // 创建一个音频
+    this.soundClose = new THREE.Audio(this.audioListener)
+
+    // 加载音频
+    const music = await this.audioLoader.loadAsync(carClose)
+
+    this.soundClose.setBuffer(music)
   }
 
   // 设置场景方面的内容
@@ -301,6 +322,8 @@ export class LoaderCar extends CreatedUtils {
 
     // 加载音频
     this.createAudio()
+
+    this.createCloseAudio()
 
     // 设置环境贴图
     this.setEnvMap()

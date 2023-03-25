@@ -4,25 +4,26 @@ import * as THREE from 'three'
 // 导入gsap
 import { gsap } from 'gsap'
 
+const startTime = 1
+const endTime = 0.5
+
 // 创建车门相关的交互
 export const doorClick = new Map([
   [
     '右前光标',
-    (car: THREE.Mesh) => {
-      const carMesh = car.getObjectByName('右前门') as THREE.Mesh
-
+    (carMesh: THREE.Object3D) => {
       const angle = Math.PI / 3.5
 
       if (carMesh.rotation.y === 0) {
         gsap.to(carMesh.rotation, {
           y: angle,
-          duration: 1,
+          duration: startTime,
           ease: 'power2.out'
         })
       } else {
         gsap.to(carMesh.rotation, {
           y: 0,
-          duration: 1,
+          duration: endTime,
           ease: 'power4.out'
         })
       }
@@ -30,21 +31,19 @@ export const doorClick = new Map([
   ],
   [
     '左前光标',
-    (car: THREE.Mesh) => {
-      const carMesh = car.getObjectByName('左前门') as THREE.Mesh
-
+    (carMesh: THREE.Object3D) => {
       const angle = Math.PI / 3.5
 
       if (carMesh.rotation.y === 0) {
         gsap.to(carMesh.rotation, {
           y: -angle,
-          duration: 1,
+          duration: startTime,
           ease: 'power2.out'
         })
       } else {
         gsap.to(carMesh.rotation, {
           y: 0,
-          duration: 1,
+          duration: endTime + 0.1,
           ease: 'power4.out'
         })
       }
@@ -52,21 +51,19 @@ export const doorClick = new Map([
   ],
   [
     '右后光标',
-    (car: THREE.Mesh) => {
-      const carMesh = car.getObjectByName('右后门') as THREE.Mesh
-
+    (carMesh: THREE.Object3D) => {
       const angle = Math.PI / 3.5
 
       if (carMesh.rotation.y === 0) {
         gsap.to(carMesh.rotation, {
           y: angle,
-          duration: 1,
+          duration: startTime,
           ease: 'power2.out'
         })
       } else {
         gsap.to(carMesh.rotation, {
           y: 0,
-          duration: 1,
+          duration: endTime + 0.1,
           ease: 'power4.out'
         })
       }
@@ -74,21 +71,19 @@ export const doorClick = new Map([
   ],
   [
     '左后光标',
-    (car: THREE.Mesh) => {
-      const carMesh = car.getObjectByName('左后门') as THREE.Mesh
-
+    (carMesh: THREE.Object3D) => {
       const angle = Math.PI / 3.5
 
       if (carMesh.rotation.y === 0) {
         gsap.to(carMesh.rotation, {
           y: -angle,
-          duration: 1,
+          duration: startTime,
           ease: 'power2.out'
         })
       } else {
         gsap.to(carMesh.rotation, {
           y: 0,
-          duration: 1,
+          duration: endTime + 0.1,
           ease: 'power4.out'
         })
       }
@@ -96,21 +91,19 @@ export const doorClick = new Map([
   ],
   [
     '后备箱光标',
-    (car: THREE.Mesh) => {
-      const carMesh = car.getObjectByName('后备箱') as THREE.Mesh
-
+    (carMesh: THREE.Object3D) => {
       const angle = Math.PI / 3.5
 
       if (carMesh.rotation.z === 0) {
         gsap.to(carMesh.rotation, {
           z: angle,
-          duration: 1,
+          duration: startTime,
           ease: 'power2.out'
         })
       } else {
         gsap.to(carMesh.rotation, {
           z: 0,
-          duration: 1,
+          duration: endTime + 0.1,
           ease: 'power4.out'
         })
       }
