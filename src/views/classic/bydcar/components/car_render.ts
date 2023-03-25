@@ -77,6 +77,8 @@ export class CreatedCanvas extends ChangeCar {
 
     // 渲染方法
     this.render()
+    // 开启换色
+    this.changeCarMaterial()
     // 添加监听画布大小变化
     this.onAddEventListener()
     // 监听鼠标事件

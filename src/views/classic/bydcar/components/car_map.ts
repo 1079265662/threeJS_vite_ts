@@ -1,6 +1,5 @@
 // 导入three.js
 import * as THREE from 'three'
-
 // 导入gsap
 import { gsap } from 'gsap'
 
