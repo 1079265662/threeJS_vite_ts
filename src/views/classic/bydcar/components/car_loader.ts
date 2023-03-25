@@ -314,24 +314,4 @@ export class LoaderCar extends CreatedUtils {
 
     this.soundClose.setBuffer(music)
   }
-
-  // 设置场景方面的内容
-  setScene = () => {
-    // 加载汽车模型
-    this.loadCar()
-
-    // 加载音频
-    this.createAudio()
-
-    this.createCloseAudio()
-
-    // 设置环境贴图
-    this.setEnvMap()
-
-    // 创建地面
-    this.createPlane()
-
-    // 添加雾化
-    this.addFog()
-  }
 }

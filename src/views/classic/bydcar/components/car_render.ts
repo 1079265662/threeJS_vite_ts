@@ -11,6 +11,29 @@ export class CreatedCanvas extends ChangeCar {
     this.canvas = canvas
   }
 
+  // 设置场景方面的内容
+  setScene = async () => {
+    // 加载音频
+    this.createAudio()
+
+    this.createCloseAudio()
+
+    // 设置环境贴图
+    this.setEnvMap()
+
+    // 创建地面
+    this.createPlane()
+
+    // 添加雾化
+    this.addFog()
+
+    // 加载汽车模型
+    await this.loadCar()
+
+    // 开启换色
+    this.changeCarMaterial()
+  }
+
   // 创建场景
   createScene = () => {
     // 修改渲染编码
@@ -77,8 +100,6 @@ export class CreatedCanvas extends ChangeCar {
 
     // 渲染方法
     this.render()
-    // 开启换色
-    this.changeCarMaterial()
     // 添加监听画布大小变化
     this.onAddEventListener()
     // 监听鼠标事件
