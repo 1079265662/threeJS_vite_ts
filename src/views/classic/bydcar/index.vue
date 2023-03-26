@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
 <script lang="ts">
 export const colorMap = new Map([
   ['珊瑚红', '#9d0b12'],
-  ['幻夜黑', '#010304'],
+  ['幻夜黑', '#0a0a0a'],
   ['钛白色', '#8f8f8f'],
   ['极光蓝', '#0b5d9d']
 ])
