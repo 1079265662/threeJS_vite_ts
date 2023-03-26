@@ -20,6 +20,7 @@ import carClose from '@/assets/car/music/car_close.mp3'
 export class LoaderCar extends CreatedUtils {
   // 创建汽车glTF加载器
   loader = new GLTFLoader(this.createLoadingGLTF())
+
   // 创建汽车组
   carGroup = new THREE.Group()
 
@@ -209,8 +210,10 @@ export class LoaderCar extends CreatedUtils {
       new THREE.MeshLambertMaterial({ map: planeTexture })
     )
 
+    this.carGroup.add(planeMesh)
+
     // 添加到场景中
-    this.scene.add(planeMesh)
+    // this.scene.add(planeMesh)
   }
 
   // 加载精灵贴图

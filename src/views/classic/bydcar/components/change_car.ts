@@ -6,13 +6,36 @@ import * as THREE from 'three'
 import { colorMap } from '../index.vue'
 // 导入gsap
 import { gsap } from 'gsap'
+// 导入镜头光晕
+import {
+  Lensflare,
+  LensflareElement
+} from 'three/examples/jsm/objects/Lensflare.js'
+// 导入加载器
+import { getAssetsFile } from '@/utils/getAssetsFile'
 
 export class ChangeCar extends GuiCreated {
+  // 旋转动画
+  rotateAnimation = 0.001
+
   // 创建一个光线投射器
   raycaster = new THREE.Raycaster()
 
   // 换色时间轴
-  changeColorTimeline = gsap.timeline()
+  changeColorTimeline = gsap.timeline({
+    yoyo: true,
+    repeat: -1,
+    repeatDelay: 3 // 重复的延迟时间
+  })
+
+  // 镜头贴图
+  lensFlareImage!: THREE.Texture
+
+  // 镜头光晕1
+  lensflare1!: Lensflare
+
+  // 镜头光晕2
+  lensflare2!: Lensflare
 
   // 修改汽车默认颜色
   changeCarColor = (color: string | undefined) => {
@@ -137,6 +160,91 @@ export class ChangeCar extends GuiCreated {
         }
       }
     })
+  }
+
+  // 开始旋转
+  rotateScene = () => {
+    this.rotateAnimation = 0.001
+  }
+
+  // 结束旋转
+  stopRotateScene = () => {
+    this.rotateAnimation = 0
+  }
+
+  // 创建镜头光晕
+  createLensflare = async () => {
+    // 加载镜头光晕贴图
+    this.lensFlareImage = await this.textureLoader.loadAsync(
+      getAssetsFile('car/lensflare.jpg')
+    )
+
+    this.lensFlareImage.encoding = THREE.sRGBEncoding
+
+    // 创建镜头光晕1
+    this.lensflare1 = new Lensflare()
+
+    // 设置光晕1的贴图
+    this.lensflare1.addElement(
+      new LensflareElement(this.lensFlareImage, 512, 0)
+    )
+
+    this.lensflare1.renderOrder = 2
+
+    // 创建镜头光晕2
+    this.lensflare2 = new Lensflare()
+
+    this.lensflare2.renderOrder = 2
+
+    // 设置光晕2的贴图
+    this.lensflare2.addElement(
+      new LensflareElement(this.lensFlareImage, 512, 0)
+    )
+
+    // 设置光晕位置
+    this.carGroup.getObjectByName('镜头光晕1')?.add(this.lensflare1)
+    this.carGroup.getObjectByName('镜头光晕2')?.add(this.lensflare2)
+  }
+
+  // 开启镜头光晕
+  startLensflare = () => {
+    // 降低灯光效果
+    this.startLightEffect()
+
+    // 如果没有镜头光晕贴图则创建
+    if (!this.lensFlareImage) {
+      this.createLensflare()
+    } else {
+      // 显示镜头光晕
+      this.lensflare1.visible = true
+      this.lensflare2.visible = true
+    }
+  }
+
+  // 移除镜头光晕
+  removeLensflare = () => {
+    // 恢复灯光效果
+    this.stopLightEffect()
+
+    // 隐藏镜头光晕
+    this.lensflare1.visible = false
+    this.lensflare2.visible = false
+  }
+
+  // 降低灯光效果
+  startLightEffect = () => {
+    // 降低平行光的亮度
+    this.directionalLight.intensity = 0.4
+    // 降低环境光的亮度
+    this.ambientLight.intensity = 0.2
+  }
+
+  // 恢复灯光效果
+  stopLightEffect = () => {
+    // 恢复平行光的亮度
+    this.directionalLight.intensity = 0.6
+    // 恢复环境光的亮度
+    this.ambientLight.intensity = 0.8
   }
 
   // 监听光线投射内容

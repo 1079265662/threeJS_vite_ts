@@ -44,4 +44,10 @@ export class Type {
   textureLoader = new THREE.TextureLoader()
   // 创建时钟
   clock = new THREE.Clock()
+
+  // 创建平行光
+  directionalLight!: THREE.DirectionalLight
+
+  // 创建环境光
+  ambientLight!: THREE.AmbientLight
 }

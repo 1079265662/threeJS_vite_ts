@@ -6,24 +6,33 @@
     <!-- 格式化 -->
 
     <div
-      class="absolute left-6 bottom-32 flex flex-col gap-4 lg:left-1/2 lg:bottom-10 lg:-translate-x-1/2 lg:flex-row"
+      class="absolute left-6 bottom-4 flex flex-col gap-4 lg:left-1/2 lg:bottom-10 lg:-translate-x-1/2 lg:flex-row"
     >
-      <div
-        @click="rotateColor()"
-        class="flex h-11 w-20 cursor-pointer items-center justify-center rounded-md bg-sky-500 ring-2 ring-sky-300"
-      >
+      <div @click="clickAll()" class="button ring-red-500">全部展开</div>
+
+      <div @click="rotateColor()" class="button ring-blue-500">
         <span v-if="isChangeColorVue">自动换色</span>
         <span v-else>暂停换色</span>
       </div>
-      <div
-        @click="clickAll()"
-        class="flex h-11 w-20 cursor-pointer items-center justify-center rounded-md bg-sky-500 ring-2 ring-sky-300"
-      >
-        全部展开
+
+      <div @click="clickRotate()" class="button ring-gray-800">
+        <span v-if="isRotateVue">开始旋转</span>
+        <span v-else>暂停旋转</span>
       </div>
+
+      <div @click="clickLight()" class="button ring-gray-400">
+        <span v-if="isLightVue">开启车灯</span>
+        <span v-else>关闭车灯</span>
+      </div>
+
       <div
         @click="cilckColor('珊瑚红')"
         class="color from-red-600 via-red-500 to-gray-200"
+      />
+
+      <div
+        @click="cilckColor('极光蓝')"
+        class="color from-blue-500 via-sky-400 to-gray-100"
       />
 
       <div @click="cilckColor('幻夜黑')" class="color from-black to-gray-300" />
@@ -31,11 +40,6 @@
       <div
         @click="cilckColor('钛白色')"
         class="color from-slate-400 via-slate-200 to-white"
-      />
-
-      <div
-        @click="cilckColor('极光蓝')"
-        class="color from-blue-500 via-sky-400 to-gray-100"
       />
     </div>
   </div>
@@ -52,6 +56,10 @@ const stateDom = ref()
 const Three = shallowRef<CreatedCanvas>()
 // 是否在换色
 const isChangeColorVue = ref(false)
+// 是否在旋转
+const isRotateVue = ref(false)
+// 是否开启灯光
+const isLightVue = ref(true)
 
 // 点击切换不同颜色
 const cilckColor = (mapName: string) => {
@@ -77,7 +85,27 @@ const rotateColor = () => {
   }
 
   isChangeColorVue.value = !isChangeColorVue.value
-  // console.log(Three.value!.changeColorTimeline.isActive())
+}
+
+// 旋转
+const clickRotate = () => {
+  if (isRotateVue.value) {
+    Three.value?.rotateScene()
+  } else {
+    Three.value?.stopRotateScene()
+  }
+
+  isRotateVue.value = !isRotateVue.value
+}
+
+// 点击灯光
+const clickLight = () => {
+  if (isLightVue.value) {
+    Three.value?.startLensflare()
+  } else {
+    Three.value?.removeLensflare()
+  }
+  isLightVue.value = !isLightVue.value
 }
 
 onMounted(() => {
@@ -92,6 +120,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   // 销毁three.js实例
   Three.value?.dispose()
+  // 移除事件监听
   Three.value?.onRemoveEventListener()
 })
 </script>
@@ -110,5 +139,8 @@ export default {
 <style lang="postcss" scoped>
 .color {
   @apply h-10 w-10 rounded-full bg-gradient-to-tr;
+}
+.button {
+  @apply flex h-11 w-20 cursor-pointer select-none items-center justify-center rounded-md ring-2  backdrop-blur-sm;
 }
 </style>

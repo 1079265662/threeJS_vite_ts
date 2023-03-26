@@ -19,11 +19,13 @@ import GUI from 'lil-gui'
 
 export class GuiCreated extends LoaderCar {
   // 创建GUI调试面板的实例
-  gui = new GUI()
+  gui = new GUI({ closeFolders: true })
 
   // 创建GUI调试面板
   createGui = () => {
     this.gui.hide()
+
+    this.gui.close()
 
     this.gui.title('汽车调试面板')
 
@@ -450,7 +452,7 @@ export class GuiCreated extends LoaderCar {
         })
       })
 
-    folder1.close()
+    // folder1.close()
     // folder4.close()
   }
 

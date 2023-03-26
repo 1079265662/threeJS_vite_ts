@@ -43,10 +43,14 @@ export class CreatedCanvas extends ChangeCar {
     this.setScene()
 
     // 创建平行光
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
-    directionalLight.position.x = 15
+    this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
+    this.directionalLight.position.x = 15
     // 把光源添加到相机上
-    this.camera.add(directionalLight)
+    this.camera.add(this.directionalLight)
+
+    // 环境光
+    this.ambientLight = new THREE.AmbientLight(0xffffff, 0.8) // soft white light
+    this.scene.add(this.ambientLight)
 
     // // 创建平行光2
     // const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8)
@@ -64,15 +68,11 @@ export class CreatedCanvas extends ChangeCar {
     // this.scene.add(directionalLight3)
     // this.setLightHelper(directionalLight3)
 
-    // 环境光
-    const light = new THREE.AmbientLight(0xffffff, 0.8) // soft white light
-    this.scene.add(light)
-
     // 创建辅助线
-    this.addaxesHelper(800)
+    // this.addaxesHelper(800)
 
     // 设置相机的所在位置 通过三维向量Vector3的set()设置其坐标系 (基于世界坐标)
-    this.camera.position.set(-249, 234, 220) // 默认没有参数 需要设置参数
+    this.camera.position.set(-249, 164, 380) // 默认没有参数 需要设置参数
 
     // 把相机添加到场景中
     this.scene.add(this.camera)
@@ -121,6 +121,10 @@ export class CreatedCanvas extends ChangeCar {
     // 使用动画更新的回调API实现持续更新动画的效果
     this.animationId = requestAnimationFrame(this.render)
 
+    // 旋转场景
+    this.carGroup.rotation.y += this.rotateAnimation
     // console.log(this.camera.position)
+
+    // this.carGroup.rotateY(0.001)
   }
 }
